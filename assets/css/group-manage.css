@@ -1,0 +1,83 @@
+/* Quản lý nhóm (Tùy chọn) — mobile */
+.gm-body{background:var(--bg-base);min-height:100vh;display:flex;justify-content:center}
+.gm-screen{width:100%;max-width:480px;min-height:100vh;background:var(--bg-base);display:flex;flex-direction:column;position:relative}
+
+.gm-header{display:flex;align-items:center;padding:14px var(--screen-padding);position:relative}
+.gm-header .back{background:none;border:none;cursor:pointer;color:var(--text-primary);display:flex;padding:0}
+.gm-header .back svg{width:26px;height:26px}
+.gm-header .ttl{position:absolute;left:0;right:0;text-align:center;font-size:22px;font-weight:700;color:var(--text-primary);pointer-events:none}
+
+.gm-content{flex:1;padding:8px var(--screen-padding) 32px}
+
+/* Avatar + tên */
+.gm-top{text-align:center;margin-bottom:18px}
+.gm-ava{
+  width:110px;height:110px;border-radius:50%;margin:0 auto 12px;position:relative;
+  background:linear-gradient(135deg,#c9b458,#4a7edb);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:40px;
+}
+.gm-ava .cam{
+  position:absolute;right:2px;bottom:2px;width:34px;height:34px;border-radius:50%;
+  background:var(--primary);border:3px solid #fff;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+}
+.gm-ava .cam svg{width:17px;height:17px}
+.gm-name{display:flex;align-items:center;justify-content:center;gap:8px;font-size:24px;font-weight:700}
+.gm-name .edit{cursor:pointer;color:var(--primary)}
+.gm-name .edit svg{width:20px;height:20px}
+
+/* 5 nút hành động */
+.gm-actions{display:flex;gap:10px;margin-bottom:16px}
+.gm-actions button{
+  flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:7px;
+  background:var(--bg-subtle);border:1px solid var(--border);border-radius:14px;
+  padding:14px 4px;font-size:14px;color:var(--primary);cursor:pointer;
+  white-space:nowrap;overflow:hidden;
+}
+.gm-actions svg{width:24px;height:24px}
+.gm-actions button.on{background:#E3EEFD}
+
+/* Menu Thêm */
+.gm-more{
+  display:none;position:absolute;right:var(--screen-padding);top:340px;z-index:30;
+  background:#fff;border-radius:14px;box-shadow:0 10px 36px rgba(0,0,0,.2);
+  padding:4px 0;min-width:230px;
+}
+.gm-more.show{display:block}
+.gm-more .it{display:flex;align-items:center;gap:14px;padding:15px 18px;font-size:17px;color:var(--text-primary);cursor:pointer;border-bottom:1px solid var(--border)}
+.gm-more .it:last-child{border-bottom:none}
+.gm-more .it svg{width:22px;height:22px;flex:none;color:var(--text-secondary)}
+.gm-more .it.danger{color:#E5484D}
+.gm-more .it.danger svg{color:#E5484D}
+
+/* Tabs pill */
+.gm-tabs{display:flex;gap:4px;background:#fff;border:1px solid var(--border);border-radius:26px;padding:5px;margin-bottom:16px}
+.gm-tab{flex:1;text-align:center;padding:9px 4px;font-size:15px;color:var(--text-primary);border-radius:20px;cursor:pointer;white-space:nowrap}
+.gm-tab.active{background:var(--primary);color:#fff;font-weight:600}
+
+.gm-panel{display:none}
+.gm-panel.active{display:block}
+
+/* Thêm người + thành viên */
+.gm-addrow{display:flex;align-items:center;gap:14px;padding:12px 2px;color:var(--primary);font-size:18px;cursor:pointer;border-bottom:1px solid var(--border)}
+.gm-addrow svg{width:24px;height:24px}
+.gm-mem{display:flex;align-items:center;gap:14px;padding:13px 2px;border-bottom:1px solid var(--border)}
+.gm-mem .av{width:48px;height:48px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:14px}
+.gm-mem .nm{flex:1;font-size:17px;color:var(--text-primary)}
+.gm-mem .role{font-size:15px;color:var(--text-secondary)}
+
+.gm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gm-grid .m{aspect-ratio:1/1;border-radius:10px}
+.gm-empty{text-align:center;color:var(--text-secondary);padding:32px 0}
+
+/* Sheet đổi tên nhóm */
+.gm-rename h3{text-align:center;font-size:20px;font-weight:700;padding:18px}
+.gm-rename .rn-body{padding:0 var(--screen-padding) 24px}
+.gm-rename input{
+  width:100%;height:54px;background:var(--bg-subtle);border:none;border-radius:12px;
+  padding:0 16px;font-size:17px;outline:none;margin-bottom:16px;
+}
+.gm-rename .rn-save{
+  width:100%;height:54px;border:none;border-radius:28px;
+  background:var(--primary-strong);color:#fff;font-size:17px;font-weight:600;cursor:pointer;
+}
