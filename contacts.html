@@ -4,33 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FBV.ONE — Danh bạ</title>
-<link rel="stylesheet" href="styles.css" />
-<style>
-
-  .msg-header{background:var(--header-gradient);color:#fff;display:flex;align-items:center;gap:16px;padding:16px var(--screen-padding)}
-  .msg-header .search{flex:1;display:flex;align-items:center;gap:10px;font-size:18px;color:rgba(255,255,255,.95);cursor:pointer}
-  .msg-header .search svg{width:22px;height:22px}
-  .msg-header .h-icon{width:26px;height:26px;cursor:pointer;flex:none}
-
-  /* Hàng lời mời kết bạn */
-  .invite-row{display:flex;align-items:center;gap:16px;padding:16px var(--screen-padding);cursor:pointer}
-  .invite-row .ic{width:48px;height:48px;border-radius:50%;background:var(--primary);flex:none;display:flex;align-items:center;justify-content:center}
-  .invite-row .ic svg{width:26px;height:26px;color:#fff}
-  .invite-row .t{font-size:18px;color:var(--text-primary)}
-
-  /* Tabs Tất cả / Trực tuyến */
-  .c-tabs{display:flex;gap:32px;padding:6px var(--screen-padding) 0;border-bottom:1px solid var(--border)}
-  .c-tab{padding:12px 0;font-size:18px;color:var(--text-secondary);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
-  .c-tab.active{color:var(--primary);font-weight:600;border-bottom-color:var(--primary)}
-
-  .c-list{flex:1;overflow-y:auto}
-  .c-item{display:flex;align-items:center;gap:16px;padding:14px var(--screen-padding)}
-  .c-item .avatar{width:54px;height:54px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:13px;background:linear-gradient(135deg,#3A1C5A,#7B2FF7)}
-  .c-item .nm{flex:1;min-width:0;font-size:18px;color:var(--text-primary)}
-  .c-item .act{width:28px;height:28px;color:var(--primary);cursor:pointer;flex:none;margin-left:6px}
-
-  .bottom-tab .tab-item svg{width:24px;height:24px}
-</style>
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/contacts.css" />
 </head>
 <body class="app-body">
   <div class="app-screen">
@@ -89,16 +64,6 @@
 
   </div>
 
-<script>
-  // Màn rộng dùng bản desktop danh bạ
-  function goDesktopIfWide(){ if(window.innerWidth >= 1024) location.replace('app-contacts.html'); }
-  goDesktopIfWide();
-  window.addEventListener('resize', goDesktopIfWide);
-
-  function switchTab(el){
-    document.querySelectorAll('.c-tab').forEach(function(t){ t.classList.remove('active'); });
-    el.classList.add('active');
-  }
-</script>
+<script src="assets/js/contacts.js"></script>
 </body>
 </html>

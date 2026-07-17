@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FBV.ONE — Đăng nhập</title>
-<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body class="auth-body">
 
@@ -59,20 +59,6 @@
     </div>
   </section>
 
-<script>
-  var currentTab = 'email';
-
-  function switchTab(t){
-    currentTab = t;
-    document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active', el.dataset.tab===t));
-    document.getElementById('emailGroup').style.display = t==='email' ? '' : 'none';
-    document.getElementById('phoneGroup').style.display = t==='phone' ? '' : 'none';
-  }
-
-  function goNext(){
-    // SĐT → xác thực OTP; Email → nhập mật khẩu
-    window.location.href = currentTab === 'phone' ? 'otp.html' : 'password.html';
-  }
-</script>
+<script src="assets/js/login.js"></script>
 </body>
 </html>

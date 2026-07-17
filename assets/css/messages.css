@@ -1,0 +1,46 @@
+.app-screen{position:relative}   /* cần cho menu "+" định vị tuyệt đối */
+
+/* Menu "+" thả xuống */
+.add-overlay{position:absolute;inset:0;z-index:30;display:none}
+.add-overlay.show{display:block}
+.add-menu{
+  position:absolute;top:60px;right:14px;z-index:31;display:none;
+  background:#fff;border-radius:14px;box-shadow:0 10px 36px rgba(0,0,0,.2);
+  padding:6px 0;min-width:235px;animation:ctx-in .12s ease;
+}
+.add-menu.show{display:block}
+@keyframes ctx-in{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.add-item{display:flex;align-items:center;gap:14px;padding:14px 18px;font-size:17px;color:var(--text-primary);cursor:pointer}
+.add-item:hover{background:var(--bg-subtle)}
+.add-item svg{width:24px;height:24px;flex:none;color:var(--text-primary)}
+.add-item:not(:last-child){border-bottom:1px solid var(--border)}
+
+/* Header gradient: search + QR + plus */
+.msg-header{
+  background:var(--header-gradient);color:#fff;
+  display:flex;align-items:center;gap:16px;padding:16px var(--screen-padding);
+}
+.msg-header .search{flex:1;display:flex;align-items:center;gap:10px;font-size:18px;color:rgba(255,255,255,.95)}
+.msg-header .search svg{width:22px;height:22px}
+.msg-header .h-icon{width:26px;height:26px;cursor:pointer;flex:none}
+
+/* List */
+.msg-list{flex:1;overflow-y:auto}
+.list-item .meta{flex:1;min-width:0}
+.list-item .name{font-size:17px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.list-item .preview{font-size:14px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.list-item .preview .sub{color:var(--text-secondary)}
+
+/* Avatar variants */
+.avatar{display:flex;align-items:center;justify-content:center;font-weight:600;color:#fff;font-size:16px;overflow:hidden}
+.avatar svg{width:26px;height:26px}
+.av-rn{background:linear-gradient(135deg,#F5C543,#9B6BF0)}
+.av-leaf{background:linear-gradient(135deg,#1FB6D6,#1877F2)}
+.av-dark{background:linear-gradient(135deg,#3A1C5A,#7B2FF7)}
+.av-land{background:linear-gradient(135deg,#4FA8F5,#16A085)}
+.av-person{background:#8E8E93}
+.av-plus-blue{background:linear-gradient(135deg,#4FA8F5,#1877F2)}
+.av-plus-gray{background:#5B6470}
+
+/* Bottom tab icons */
+.bottom-tab .tab-item svg{width:24px;height:24px}

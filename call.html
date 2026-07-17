@@ -4,49 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FBV.ONE — Cuộc gọi</title>
-<link rel="stylesheet" href="styles.css" />
-<style>
-  .call-body{min-height:100vh;display:flex;justify-content:center;background:#1877F2}
-  .call-screen{
-    width:100%;max-width:480px;min-height:100vh;color:#fff;
-    display:flex;flex-direction:column;align-items:center;
-    padding:48px var(--screen-padding) 40px;text-align:center;
-    background:linear-gradient(180deg,#2E8BF0 0%,#1877F2 45%,#0A66FF 100%);
-  }
-  .call-type{font-size:18px;font-weight:600;letter-spacing:.3px}
-
-  .call-avatar{
-    width:180px;height:180px;border-radius:50%;margin:64px 0 36px;
-    background:linear-gradient(135deg,#3A1C5A,#7B2FF7);
-    display:flex;align-items:center;justify-content:center;
-    color:#fff;font-size:40px;font-weight:700;
-    box-shadow:0 0 0 0 rgba(255,255,255,.35);animation:ring 1.8s ease-out infinite;
-  }
-  @keyframes ring{
-    0%{box-shadow:0 0 0 0 rgba(255,255,255,.35)}
-    70%{box-shadow:0 0 0 26px rgba(255,255,255,0)}
-    100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}
-  }
-
-  .call-name{font-size:42px;font-weight:700;line-height:1.1}
-  .call-status{font-size:20px;color:rgba(255,255,255,.8);margin-top:14px}
-
-  /* Hàng điều khiển */
-  .call-controls{margin-top:auto;display:flex;gap:28px;justify-content:center;align-items:flex-end;flex-wrap:wrap}
-  .ctrl{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:14px;color:#fff;cursor:pointer;background:none;border:none}
-  .ctrl .ic{
-    width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.18);
-    display:flex;align-items:center;justify-content:center;transition:.15s;
-  }
-  .ctrl .ic svg{width:26px;height:26px;color:#fff}
-  .ctrl.active .ic{background:#fff}
-  .ctrl.active .ic svg{color:var(--primary)}
-  .ctrl:hover .ic{background:rgba(255,255,255,.28)}
-
-  .ctrl.end .ic{background:#F0473E}
-  .ctrl.end .ic svg{transform:rotate(135deg)}
-  .ctrl.end:hover .ic{background:#e23b32}
-</style>
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/call.css" />
 </head>
 <body class="call-body">
   <div class="call-screen">
@@ -81,23 +40,6 @@
 
   </div>
 
-<script>
-  var params = new URLSearchParams(location.search);
-  var type = params.get('type') || 'voice';      // voice | video
-  var name = params.get('name') || 'account001';
-
-  document.getElementById('callName').textContent = name;
-  if(type === 'video'){
-    document.getElementById('callType').textContent = 'Cuộc gọi video đi';
-    document.getElementById('camBtn').style.display = '';   // hiện nút camera cho video
-    document.getElementById('camBtn').classList.add('active');
-  }
-
-  function toggle(btn){ btn.classList.toggle('active'); }
-  function endCall(){
-    if(history.length > 1) history.back();
-    else window.location.href = 'chat.html';
-  }
-</script>
+<script src="assets/js/call.js"></script>
 </body>
 </html>

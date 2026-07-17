@@ -4,37 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FBV.ONE — Cài đặt</title>
-<link rel="stylesheet" href="styles.css" />
-<style>
-  .st-body{background:var(--bg-base);min-height:100vh;display:flex;justify-content:center}
-  .st-screen{width:100%;max-width:480px;min-height:100vh;background:var(--bg-base);display:flex;flex-direction:column}
-
-  .st-header{display:flex;align-items:center;gap:16px;padding:14px var(--screen-padding)}
-  .st-header .back{background:none;border:none;cursor:pointer;color:var(--text-primary);display:flex;padding:0}
-  .st-header .back svg{width:26px;height:26px}
-  .st-header .ttl{font-size:22px;font-weight:700;color:var(--text-primary)}
-
-  .st-list{padding:8px var(--screen-padding)}
-  .st-item{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--border);cursor:pointer}
-  .st-item:last-child{border-bottom:none}
-  .st-item .ic{width:26px;height:26px;flex:none;color:var(--text-secondary)}
-  .st-item .t{flex:1;font-size:18px;color:var(--text-primary)}
-  .st-item .chev{color:var(--text-secondary);font-size:22px}
-
-  /* Dialog (alert) */
-  .dlg-overlay{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;padding:24px}
-  .dlg-overlay.show{display:flex}
-  .dlg{width:100%;max-width:300px;background:#fff;border-radius:16px;overflow:hidden;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.25)}
-  .dlg .body{padding:22px 20px}
-  .dlg .title{font-size:19px;font-weight:700;color:var(--text-primary);margin-bottom:10px}
-  .dlg .msg{font-size:16px;color:var(--text-secondary);line-height:1.5}
-  .dlg .acts{display:flex;border-top:1px solid var(--border)}
-  .dlg .acts button{flex:1;padding:14px;font-size:17px;background:none;border:none;cursor:pointer}
-  .dlg .acts button + button{border-left:1px solid var(--border)}
-  .dlg .cancel{color:var(--text-secondary)}
-  .dlg .ok{color:var(--primary);font-weight:600}
-  .dlg .ok.danger{color:#E5484D}
-</style>
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/settings.css" />
 </head>
 <body class="st-body">
   <div class="st-screen">
@@ -90,31 +61,6 @@
     </div>
   </div>
 
-<script>
-  var _cb = null;
-  function showDialog(o){
-    var title = document.getElementById('dlgTitle');
-    title.textContent = o.title || ''; title.style.display = o.title ? '' : 'none';
-    document.getElementById('dlgMsg').textContent = o.msg;
-    var ok = document.getElementById('dlgOk');
-    ok.textContent = o.okText || 'Xác nhận';
-    ok.className = 'ok' + (o.danger ? ' danger' : '');
-    _cb = o.onConfirm || null;
-    ok.onclick = function(){ dlgClose(); if(_cb) _cb(); };
-    document.getElementById('dlgOverlay').classList.add('show');
-  }
-  function dlgClose(){ document.getElementById('dlgOverlay').classList.remove('show'); }
-
-  function confirmPassword(){
-    showDialog({ title:'Xác nhận đổi mật khẩu', msg:'Chúng tôi sẽ gửi một liên kết đặt lại mật khẩu đến email đã đăng ký của bạn. Bạn có chắc chắn muốn tiếp tục?', okText:'Xác nhận', onConfirm:function(){ location.href='reset-link.html'; } });
-  }
-  function confirmDelete(){
-    showDialog({ msg:'Xóa tài khoản sẽ xóa tất cả dữ liệu cá nhân của bạn và không thể hoàn tác. Bạn có chắc muốn tiếp tục?', okText:'Xoá', danger:true, onConfirm:function(){ location.href='welcome.html'; } });
-  }
-  function confirmLogout(){
-    showDialog({ msg:'Đăng xuất khỏi thiết bị này?', okText:'Đăng xuất', danger:true, onConfirm:function(){ location.href='welcome.html'; } });
-  }
-  document.getElementById('dlgOverlay').addEventListener('click', function(e){ if(e.target === this) dlgClose(); });
-</script>
+<script src="assets/js/settings.js"></script>
 </body>
 </html>

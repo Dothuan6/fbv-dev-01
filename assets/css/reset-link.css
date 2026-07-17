@@ -1,0 +1,7 @@
+/* Riêng màn này: tiêu đề & nội dung căn trái theo ảnh gốc */
+.reset .title{text-align:left;margin-bottom:20px}
+.reset .subtitle{color:var(--text-primary);font-size:18px;line-height:1.5;margin-bottom:20px}
+.reset .resend{text-align:center;margin:8px 0 24px}
+.reset .resend .caption{display:block;margin-bottom:4px}
+.reset .resend .countdown{font-size:16px;font-weight:600;color:var(--text-primary)}
+.email{color:var(--text-primary);font-weight:600}

@@ -4,53 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FBV.ONE — Nhật ký làm việc</title>
-<link rel="stylesheet" href="styles.css" />
-<style>
-  .chat-screen{width:100%;max-width:480px;height:100vh;background:var(--bg-chat);display:flex;flex-direction:column}
-
-  /* Header thường */
-  .chat-header{background:var(--header-gradient);color:#fff;display:flex;align-items:center;gap:16px;padding:12px var(--screen-padding)}
-  .chat-header .back{background:none;border:none;cursor:pointer;color:#fff;display:flex;padding:0}
-  .chat-header .back svg{width:26px;height:26px}
-  .chat-header .ttl{flex:1;font-size:20px;font-weight:700}
-  .chat-header .h-icon{width:26px;height:26px;cursor:pointer;flex:none}
-
-  /* Header tìm kiếm */
-  .search-bar{display:none;background:var(--header-gradient);align-items:center;gap:14px;padding:14px var(--screen-padding)}
-  .searching .search-bar{display:flex}
-  .searching .chat-header{display:none}
-  .search-bar .field{flex:1;display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:11px 14px}
-  .search-bar .field svg{width:22px;height:22px;color:var(--text-secondary)}
-  .search-bar .field input{flex:1;border:none;outline:none;font-size:18px;background:transparent}
-  .search-bar .field .clr{background:#C7CCD1;border:none;border-radius:50%;width:22px;height:22px;display:none;align-items:center;justify-content:center;cursor:pointer}
-  .search-bar .field .clr.show{display:flex}
-  .search-bar .field .clr svg{width:13px;height:13px;color:#fff}
-  .search-bar .x{background:none;border:none;cursor:pointer;color:#fff;display:flex;padding:0}
-  .search-bar .x svg{width:26px;height:26px}
-
-  .chat-body{flex:1;overflow-y:auto;padding:16px var(--screen-padding);display:flex;flex-direction:column;gap:8px}
-  .chat-body > :first-child{margin-top:auto}   /* neo tin nhắn từ đáy lên */
-  .media-msg{align-self:flex-end;position:relative;width:60%;max-width:240px;border-radius:16px;overflow:hidden;background:#9aa3ad;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center}
-  .media-msg svg{width:46%;height:46%;color:#fff}
-  .media-msg .time{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.5);color:#fff;font-size:12px;padding:2px 7px;border-radius:10px}
-
-  /* Composer / search nav ở đáy */
-  .composer{background:var(--bg-base);border-top:1px solid var(--border);display:flex;align-items:center;gap:14px;padding:12px var(--screen-padding)}
-  .composer input{flex:1;border:none;outline:none;font-size:16px;background:transparent;color:var(--text-primary)}
-  .composer input::placeholder{color:var(--text-secondary)}
-  .composer .c-icon{width:26px;height:26px;cursor:pointer;color:var(--text-secondary);flex:none}
-  .searching .composer{display:none}
-
-  .search-nav{display:none;align-items:center;gap:16px;padding:14px var(--screen-padding);border-top:1px solid var(--border);background:var(--bg-base)}
-  .searching .search-nav{display:flex}
-  .search-nav .mag{width:22px;height:22px;color:var(--primary)}
-  .search-nav .count{flex:1;font-size:17px;color:var(--text-primary)}
-  .search-nav .nav{background:none;border:none;cursor:pointer;color:var(--text-secondary)}
-  .search-nav .nav svg{width:24px;height:24px}
-
-  mark{background:#FFE14D;color:inherit;border-radius:2px;padding:0 1px}
-  mark.cur{background:#FFB300}
-</style>
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/worklog.css" />
 </head>
 <body class="app-body">
   <div class="chat-screen" id="screen">
@@ -102,72 +57,6 @@
 
   </div>
 
-<script>
-  // Màn rộng dùng bản desktop nhật ký
-  if(window.innerWidth >= 1024) location.replace('app-worklog.html');
-  window.addEventListener('resize', function(){ if(window.innerWidth >= 1024) location.replace('app-worklog.html'); });
-
-  function goBack(){
-    if(document.referrer) history.back();
-    else if(history.length > 1) history.back();
-    else location.href = 'account.html';
-  }
-
-  var screen = document.getElementById('screen');
-  var input = document.getElementById('msgInput');
-  var q = document.getElementById('q');
-  var clr = document.getElementById('clr');
-  var texts = Array.from(document.querySelectorAll('.msg-text'));
-  var originals = texts.map(function(t){ return t.textContent; });
-  var marks = [], cur = 0;
-
-  // Gửi nhật ký
-  input.addEventListener('keydown', function(e){
-    if(e.key === 'Enter' && this.value.trim()){
-      var t = new Date(), hh = String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0');
-      var b = document.createElement('div'); b.className = 'bubble sent';
-      var m = document.createElement('span'); m.className='msg-text'; m.textContent = this.value.trim();
-      var tm = document.createElement('span'); tm.className='time'; tm.textContent = hh;
-      b.appendChild(m); b.appendChild(tm);
-      document.getElementById('body').appendChild(b);
-      texts.push(m); originals.push(m.textContent);
-      document.getElementById('body').scrollTop = 1e9;
-      this.value = '';
-    }
-  });
-
-  function openSearch(){ screen.classList.add('searching'); q.focus(); }
-  function closeSearch(){ screen.classList.remove('searching'); q.value=''; clearMarks(); clr.classList.remove('show'); }
-  function clearQ(){ q.value=''; clr.classList.remove('show'); clearMarks(); updateCount(); q.focus(); }
-
-  function clearMarks(){
-    texts.forEach(function(t,i){ t.textContent = originals[i]; });
-    marks = []; cur = 0;
-  }
-  function escapeRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
-
-  function doSearch(){
-    var term = q.value.trim();
-    clr.classList.toggle('show', term.length>0);
-    clearMarks();
-    if(term){
-      var re = new RegExp('('+escapeRe(term)+')','gi');
-      texts.forEach(function(t,i){
-        if(re.test(originals[i])){
-          t.innerHTML = originals[i].replace(re, '<mark>$1</mark>');
-        }
-      });
-      marks = Array.from(document.querySelectorAll('mark'));
-      if(marks.length){ cur = 0; focusMark(); }
-    }
-    updateCount();
-  }
-  function focusMark(){
-    marks.forEach(function(m){ m.classList.remove('cur'); });
-    if(marks[cur]){ marks[cur].classList.add('cur'); marks[cur].scrollIntoView({block:'center'}); }
-  }
-  function navMatch(d){ if(!marks.length) return; cur=(cur+d+marks.length)%marks.length; focusMark(); updateCount(); }
-  function updateCount(){ document.getElementById('count').textContent = (marks.length? (cur+1):0) + ' / ' + marks.length; }
-</script>
+<script src="assets/js/worklog.js"></script>
 </body>
 </html>

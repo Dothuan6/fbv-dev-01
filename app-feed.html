@@ -4,93 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FBV.ONE — Bản tin</title>
-<link rel="stylesheet" href="styles.css" />
-<style>
-  html,body{height:100%}
-  .shell{display:flex;height:100vh;overflow:hidden;background:var(--bg-subtle)}
-
-  .rail{width:64px;flex:none;background:linear-gradient(180deg,#1565E0,#0A66FF);display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 0;color:#fff}
-  .rail .me{width:44px;height:44px;border-radius:50%;background:#5B6470;margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-weight:600;cursor:pointer}
-  .rail .nav{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,.85)}
-  .rail .nav:hover{background:rgba(255,255,255,.14)}
-  .rail .nav.active{background:rgba(255,255,255,.22);color:#fff}
-  .rail .nav svg{width:26px;height:26px}
-  .rail .spacer{flex:1}
-
-  .feed-wrap{flex:1;overflow-y:auto;display:flex;justify-content:center;padding:24px 16px}
-  .feed{width:100%;max-width:600px;display:flex;flex-direction:column;gap:14px}
-  #postList{display:flex;flex-direction:column;gap:14px}
-  .feed-head{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:2px}
-
-  .card{background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-  .composer{padding:16px}
-  .cp-row{display:flex;align-items:center;gap:12px}
-  .cp-row .av{width:44px;height:44px;border-radius:50%;background:#5B6470;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;flex:none}
-  .cp-prompt{flex:1;background:var(--surface-field);border-radius:22px;padding:12px 18px;color:var(--text-secondary);cursor:pointer}
-  .cp-actions{display:flex;gap:14px;margin-top:12px}
-  .cp-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;border-radius:22px;font-weight:600;cursor:pointer;border:none}
-  .cp-btn svg{width:22px;height:22px}
-  .cp-photo{background:#E8F1FE;color:var(--primary)}
-  .cp-video{background:#F3EAFE;color:#7B2FF7}
-
-  .post{padding:16px}
-  .post .ph{display:flex;align-items:center;gap:12px;position:relative}
-  .post .ph .av{width:44px;height:44px;border-radius:50%;background:#5B6470;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;flex:none}
-  .post .ph .nm{font-size:16px;font-weight:600}
-  .post .ph .meta{font-size:13px;color:var(--text-secondary)}
-  .post .ph .more{margin-left:auto;cursor:pointer;color:var(--text-secondary);font-size:22px;line-height:1;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-  .post .ph .more:hover{background:var(--bg-subtle)}
-  .post .txt{font-size:16px;margin:12px 0}
-  .post .media{border-radius:12px;background:#d3d8de;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center}
-  .post .media .play{width:60px;height:60px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}
-  .post .media .play svg{width:28px;height:28px;color:#fff}
-  .post .stat{font-size:13px;color:var(--text-secondary);padding:10px 0 6px;border-bottom:1px solid var(--border)}
-  .post .bar{display:flex;gap:6px;padding-top:6px}
-  .post .bar .a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px;border-radius:8px;color:var(--text-secondary);cursor:pointer;font-weight:600}
-  .post .bar .a:hover{background:var(--bg-subtle)}
-  .post .bar .a.liked{color:var(--primary)}
-  .post .bar svg{width:20px;height:20px}
-
-  .comments{margin-top:12px;border-top:1px solid var(--border);padding-top:12px;display:none}
-  .comments.show{display:block}
-  .cmt{display:flex;gap:10px;margin-bottom:12px}
-  .cmt .av{width:34px;height:34px;border-radius:50%;background:#5B6470;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none}
-  .cmt .bub{background:var(--surface-field);border-radius:14px;padding:8px 12px}
-  .cmt .bub .n{font-size:13px;font-weight:600}
-  .cmt .bub .c{font-size:14px}
-  .cmt-input{display:flex;gap:10px;align-items:center}
-  .cmt-input .av{width:34px;height:34px;border-radius:50%;background:#5B6470;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none}
-  .cmt-input input{flex:1;background:var(--surface-field);border:none;border-radius:18px;padding:9px 14px;outline:none;font-size:14px}
-  .cmt-input .send{color:var(--primary);cursor:pointer}
-  .cmt-input .send svg{width:22px;height:22px}
-
-  /* Menu bài đăng */
-  .pop{position:fixed;z-index:80;background:#fff;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.2);padding:6px 0;min-width:200px;display:none}
-  .pop.show{display:block}
-  .pop .it{padding:11px 16px;font-size:15px;cursor:pointer;display:flex;align-items:center;gap:12px}
-  .pop .it:hover{background:var(--bg-subtle)}
-  .pop .it .chev{margin-left:auto;color:var(--text-secondary)}
-  .pop .it.danger{color:#E5484D}
-  .pop .it svg{width:19px;height:19px;color:var(--text-secondary)}
-  .pop .it.danger svg{color:#E5484D}
-
-  /* Modal soạn bài */
-  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:none;align-items:center;justify-content:center;padding:24px}
-  .modal-overlay.show{display:flex}
-  .modal{width:560px;max-width:94vw;background:#fff;border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
-  .modal .mh{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border)}
-  .modal .mh .x{background:none;border:none;cursor:pointer;font-size:24px;color:var(--text-primary)}
-  .modal .mh .priv{flex:1;display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer}
-  .modal .mh .priv svg{width:20px;height:20px}
-  .modal .mh .post-btn{background:var(--primary-soft);color:#fff;border:none;border-radius:20px;padding:9px 22px;font-weight:600;cursor:pointer}
-  .modal .mh .post-btn.ready{background:var(--primary)}
-  .modal textarea{border:none;outline:none;resize:none;padding:18px 20px;font-size:17px;min-height:180px;font-family:inherit}
-  .modal .mtools{display:flex;gap:14px;padding:12px 20px;border-top:1px solid var(--border)}
-  .modal .mtools .t{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border-radius:20px;font-weight:600;cursor:pointer}
-  .modal .mtools .t svg{width:20px;height:20px}
-
-  @media (max-width:1023px){ .shell{display:none} }
-</style>
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/app-feed.css" />
 </head>
 <body>
   <div class="shell">
@@ -151,72 +66,8 @@
     </div>
   </div>
 
-<script>
-  if(window.innerWidth < 1024) location.replace('feed.html');
-  window.addEventListener('resize', function(){ if(window.innerWidth < 1024) location.replace('feed.html'); });
-
-  function esc(s){ return s.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-
-  var posts = [
-    {id:1, author:'rtetetet', av:'R', time:'9 giờ trước', text:'Video tets', media:true, liked:false, likes:3, comments:[]},
-    {id:2, author:'account001', av:'200', ac:'linear-gradient(135deg,#3A1C5A,#7B2FF7)', time:'29/04/2026 (đã chỉnh sửa)', text:'Hi, Im Thomas. here my new account', media:false, liked:false, likes:4, comments:[{n:'Change name55', c:'Chào bạn 👋'}]}
-  ];
-
-  function render(){
-    var box=document.getElementById('postList'); box.innerHTML='';
-    posts.forEach(function(p){
-      var el=document.createElement('div'); el.className='card post'; el.dataset.id=p.id;
-      el.innerHTML =
-        '<div class="ph"><div class="av" style="background:'+(p.ac||'#5B6470')+'">'+p.av+'</div>'+
-          '<div><div class="nm">'+p.author+'</div><div class="meta">'+p.time+'</div></div>'+
-          '<div class="more" onclick="openPostMenu(event,'+p.id+')">&#8943;</div></div>'+
-        '<div class="txt">'+esc(p.text)+'</div>'+
-        (p.media?'<div class="media"><div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div></div>':'')+
-        '<div class="stat">'+p.likes+' lượt thích · '+p.comments.length+' bình luận</div>'+
-        '<div class="bar"><div class="a '+(p.liked?'liked':'')+'" onclick="toggleLike('+p.id+')"><svg viewBox="0 0 24 24" fill="'+(p.liked?'currentColor':'none')+'" stroke="currentColor" stroke-width="2"><path d="M12 21C5 14.5 3 11 3 8a4.5 4.5 0 018-2.8A4.5 4.5 0 0121 8c0 3-2 6.5-9 13z"/></svg>Thích</div>'+
-          '<div class="a" onclick="toggleComments('+p.id+')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.5 8.5 0 01-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1121 11.5z"/></svg>Bình luận</div></div>'+
-        '<div class="comments" id="cmt'+p.id+'">'+
-          p.comments.map(function(c){ return '<div class="cmt"><div class="av">'+c.n[0]+'</div><div class="bub"><div class="n">'+c.n+'</div><div class="c">'+esc(c.c)+'</div></div></div>'; }).join('')+
-          '<div class="cmt-input"><div class="av">R</div><input placeholder="Viết bình luận..." onkeydown="if(event.key===\'Enter\')addComment('+p.id+',this)"><span class="send" onclick="addComment('+p.id+',this.previousElementSibling)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l18-8L3 4l3 8-3 8z"/></svg></span></div>'+
-        '</div>';
-      box.appendChild(el);
-    });
-  }
-
-  function toggleLike(id){ var p=posts.find(function(x){return x.id===id;}); p.liked=!p.liked; p.likes+=p.liked?1:-1; render(); }
-  function toggleComments(id){ var c=document.getElementById('cmt'+id); c.classList.toggle('show'); }
-  function addComment(id, inp){
-    if(!inp.value.trim()) return;
-    var p=posts.find(function(x){return x.id===id;}); p.comments.push({n:'Bạn', c:inp.value.trim()});
-    render(); document.getElementById('cmt'+id).classList.add('show');
-  }
-
-  // Menu bài đăng
-  var _pid=null;
-  function openPostMenu(e, id){
-    e.stopPropagation(); _pid=id;
-    var m=document.getElementById('postMenu'); m.classList.add('show');
-    var r=e.currentTarget.getBoundingClientRect();
-    m.style.left=Math.min(r.left,window.innerWidth-m.offsetWidth-8)+'px'; m.style.top=(r.bottom+6)+'px';
-  }
-  function closePop(){ document.getElementById('postMenu').classList.remove('show'); }
-  function deletePost(){ posts=posts.filter(function(p){return p.id!==_pid;}); render(); closePop(); }
-  document.addEventListener('click', function(e){ if(!e.target.closest('.more') && !e.target.closest('#postMenu')) closePop(); });
-
-  // Modal soạn bài
-  function openCompose(){ document.getElementById('composeOverlay').classList.add('show'); document.getElementById('composeText').focus(); }
-  function closeCompose(){ document.getElementById('composeOverlay').classList.remove('show'); document.getElementById('composeText').value=''; onType(); }
-  function onType(){ document.getElementById('postBtn').classList.toggle('ready', document.getElementById('composeText').value.trim().length>0); }
-  function publish(){
-    var t=document.getElementById('composeText').value.trim(); if(!t) return;
-    posts.unshift({id:Date.now(), author:'rtetetet', av:'R', time:'Vừa xong', text:t, media:false, liked:false, likes:0, comments:[]});
-    render(); closeCompose();
-  }
-  document.getElementById('composeOverlay').addEventListener('click', function(e){ if(e.target===this) closeCompose(); });
-
-  render();
-</script>
-<script src="account-modal.js"></script>
-<script src="desktop-modals.js"></script>
+<script src="assets/js/app-feed.js"></script>
+<script src="assets/js/account-modal.js"></script>
+<script src="assets/js/desktop-modals.js"></script>
 </body>
 </html>

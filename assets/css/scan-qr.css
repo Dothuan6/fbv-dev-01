@@ -1,0 +1,39 @@
+.qr-body{min-height:100vh;display:flex;justify-content:center;background:#0B1622}
+.qr-screen{
+  width:100%;max-width:480px;min-height:100vh;position:relative;overflow:hidden;
+  /* mô phỏng khung hình camera (tối) */
+  background:linear-gradient(160deg,#3a4250 0%,#262d38 40%,#1a2029 100%);
+  display:flex;flex-direction:column;
+}
+
+/* Header tối */
+.qr-header{
+  position:relative;z-index:3;display:flex;align-items:center;gap:16px;
+  padding:14px var(--screen-padding);background:#0B1622;color:#fff;
+}
+.qr-header .back{background:none;border:none;cursor:pointer;color:#fff;display:flex;padding:0}
+.qr-header .back svg{width:26px;height:26px}
+.qr-header .ttl{font-size:20px;font-weight:700}
+
+/* Lớp phủ tối + khung quét */
+.qr-view{flex:1;position:relative;display:flex;align-items:center;justify-content:center}
+.qr-view::before{content:"";position:absolute;inset:0;background:rgba(10,20,35,.35)}
+
+.qr-frame{
+  position:relative;z-index:2;width:62%;max-width:300px;aspect-ratio:1/1;
+  border:3px solid var(--primary);border-radius:24px;
+  box-shadow:0 0 0 9999px rgba(10,20,35,.35);
+}
+/* Đường quét chạy */
+.qr-line{
+  position:absolute;left:8%;right:8%;height:2px;top:8%;
+  background:linear-gradient(90deg,transparent,#4FA8F5,transparent);
+  box-shadow:0 0 12px 2px rgba(79,168,245,.7);
+  animation:scan 2.2s ease-in-out infinite;
+}
+@keyframes scan{0%{top:8%}50%{top:90%}100%{top:8%}}
+
+.qr-hint{
+  position:relative;z-index:3;text-align:center;color:#fff;font-size:18px;
+  padding:0 24px 48px;text-shadow:0 1px 6px rgba(0,0,0,.5);
+}

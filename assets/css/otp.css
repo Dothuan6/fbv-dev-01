@@ -1,0 +1,5 @@
+.otp .subtitle{text-align:center;color:var(--text-primary);font-size:17px;line-height:1.5;margin-bottom:24px}
+.otp .phone{font-weight:600}
+.otp .resend{text-align:center;margin:20px 0 24px}
+.otp .resend .caption{display:block;margin-bottom:4px}
+.otp .resend .countdown{font-size:16px;font-weight:600;color:var(--text-primary)}

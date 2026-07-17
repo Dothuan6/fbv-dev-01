@@ -1,0 +1,56 @@
+html,body{height:100%}
+body{background:rgba(15,25,45,.55);display:flex;align-items:center;justify-content:center;padding:24px}
+
+.modal{width:520px;max-width:94vw;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.m-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+.m-head h3{font-size:18px;font-weight:700}
+.m-head .x{background:none;border:none;cursor:pointer;color:var(--text-secondary)}
+.m-head .x svg{width:24px;height:24px}
+
+.cover{height:180px;background:linear-gradient(120deg,#f6a55c,#e98a3e 45%,#8a6a52);}
+.av-row{padding:0 20px;margin-top:-42px;display:flex;align-items:flex-end;gap:14px}
+.av{width:84px;height:84px;border-radius:50%;border:4px solid #fff;background:linear-gradient(135deg,#3A1C5A,#7B2FF7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:700;flex:none}
+.name-row{display:flex;align-items:center;gap:8px;padding-bottom:6px}
+.name-row .nm{font-size:20px;font-weight:700}
+.name-row .edit{cursor:pointer;color:var(--text-secondary)}
+.name-row .edit svg{width:18px;height:18px}
+
+.sec{padding:18px 20px}
+.sec h4{font-size:16px;font-weight:700;margin-bottom:14px}
+.irow{display:flex;margin-bottom:14px}
+.irow .l{width:110px;color:var(--text-secondary);font-size:15px}
+.irow .v{flex:1;font-size:15px;color:var(--text-primary)}
+.note{font-size:14px;color:var(--text-secondary);border-top:1px solid var(--border);padding-top:14px}
+
+.m-foot{border-top:1px solid var(--border);padding:12px}
+.update{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:none;border:none;cursor:pointer;padding:12px;font-size:16px;font-weight:600;color:var(--text-primary);border-radius:8px}
+.update:hover{background:var(--bg-subtle)}
+.update svg{width:20px;height:20px}
+
+/* Modal cập nhật */
+.edit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:20;display:none;align-items:center;justify-content:center;padding:24px}
+.edit-overlay.show{display:flex}
+.edit-modal{width:460px;max-width:94vw;background:#fff;border-radius:14px;overflow:hidden}
+.edit-modal .eh{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border)}
+.edit-modal .eh .back{background:none;border:none;cursor:pointer}
+.edit-modal .eh .back svg{width:22px;height:22px}
+.edit-modal .eh h3{flex:1;font-size:18px;font-weight:700}
+.edit-modal .eh .x{background:none;border:none;cursor:pointer;color:var(--text-secondary)}
+.edit-modal .eh .x svg{width:22px;height:22px}
+.edit-modal .eb{padding:18px 20px}
+.fld{margin-bottom:16px}
+.fld label{display:block;font-size:14px;color:var(--text-secondary);margin-bottom:6px}
+.fld input{width:100%;height:44px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-size:15px;outline:none}
+.fld input:focus{border-color:var(--primary)}
+.sec-t{font-size:16px;font-weight:700;margin:6px 0 12px}
+.genders{display:flex;gap:28px;margin-bottom:16px}
+.gopt{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:15px}
+.gopt .r{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);position:relative}
+.gopt.sel .r{border-color:var(--primary)}
+.gopt.sel .r::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--primary)}
+.dob{display:flex;gap:10px}
+.dob select{flex:1;height:44px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:15px}
+.edit-modal .ef{display:flex;justify-content:flex-end;gap:12px;padding:14px 20px;border-top:1px solid var(--border)}
+.edit-modal .ef button{border:none;border-radius:10px;padding:10px 24px;font-size:15px;font-weight:600;cursor:pointer}
+.edit-modal .ef .cancel{background:var(--surface-field)}
+.edit-modal .ef .ok{background:var(--primary);color:#fff}

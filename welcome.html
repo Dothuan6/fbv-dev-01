@@ -4,49 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FBV.ONE</title>
-<link rel="stylesheet" href="styles.css" />
-<style>
-  .welcome-body{background:var(--bg-base);min-height:100vh;display:flex;justify-content:center}
-  .welcome-screen{
-    width:100%;max-width:480px;min-height:100vh;
-    display:flex;flex-direction:column;align-items:center;
-    padding:40px var(--screen-padding) 28px;
-  }
-  .welcome-logo{font-size:48px;font-weight:800;letter-spacing:1px;color:var(--primary);margin:12px 0 8px}
-
-  /* Vùng carousel */
-  .slides{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;text-align:center}
-  .slide{display:none;flex-direction:column;align-items:center;gap:8px;animation:fade .35s ease}
-  .slide.active{display:flex}
-  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-  .illus{
-    width:220px;height:220px;border-radius:50%;background:#3A4658;
-    display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:24px;
-  }
-  .illus .main{width:120px;height:120px;color:#3A4658}
-  .illus .side{
-    position:absolute;top:50%;transform:translateY(-50%);
-    width:54px;height:54px;border-radius:50%;background:#4B5870;border:3px solid #3A4658;
-    display:flex;align-items:center;justify-content:center;color:#C9D2E0;
-  }
-  .illus .side.left{left:-14px}
-  .illus .side.right{right:-14px}
-  .illus .side svg{width:26px;height:26px}
-
-  .slide h2{font-size:24px;font-weight:700;color:var(--text-primary)}
-  .slide p{font-size:17px;line-height:1.5;color:var(--text-secondary);max-width:330px}
-
-  /* Dots */
-  .dots{display:flex;gap:8px;justify-content:center;margin:20px 0 0}
-  .dots .dot{width:9px;height:9px;border-radius:50%;background:#1C1C1E;opacity:.25;cursor:pointer;transition:.2s}
-  .dots .dot.active{opacity:1;background:var(--primary);width:22px;border-radius:5px}
-
-  /* Nút */
-  .welcome-actions{width:100%;margin-top:28px}
-  .welcome-actions .btn{margin-top:0}
-  .welcome-actions .btn-secondary{margin-top:12px}
-</style>
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/welcome.css" />
 </head>
 <body class="welcome-body">
   <div class="welcome-screen">
@@ -111,39 +70,6 @@
 
   </div>
 
-<script>
-  var slides = document.querySelectorAll('.slide');
-  var dotsBox = document.getElementById('dots');
-  var idx = 0;
-
-  // tạo dots
-  slides.forEach(function(_, i){
-    var d = document.createElement('div');
-    d.className = 'dot' + (i===0 ? ' active' : '');
-    d.onclick = function(){ go(i); };
-    dotsBox.appendChild(d);
-  });
-  var dots = document.querySelectorAll('.dot');
-
-  function go(n){
-    slides[idx].classList.remove('active');
-    dots[idx].classList.remove('active');
-    idx = (n + slides.length) % slides.length;
-    slides[idx].classList.add('active');
-    dots[idx].classList.add('active');
-  }
-
-  // tự chạy + vuốt
-  var auto = setInterval(function(){ go(idx+1); }, 3500);
-  var startX = null;
-  var sl = document.getElementById('slides');
-  sl.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; clearInterval(auto); });
-  sl.addEventListener('touchend', function(e){
-    if(startX===null) return;
-    var dx = e.changedTouches[0].clientX - startX;
-    if(Math.abs(dx) > 40) go(idx + (dx < 0 ? 1 : -1));
-    startX = null;
-  });
-</script>
+<script src="assets/js/welcome.js"></script>
 </body>
 </html>

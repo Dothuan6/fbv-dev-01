@@ -4,48 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FBV.ONE — Thông tin cá nhân</title>
-<link rel="stylesheet" href="styles.css" />
-<style>
-  .ep-body{background:var(--bg-base);min-height:100vh;display:flex;justify-content:center}
-  .ep-screen{width:100%;max-width:480px;min-height:100vh;background:var(--bg-base);display:flex;flex-direction:column}
-
-  .ep-header{display:flex;align-items:center;gap:16px;padding:14px var(--screen-padding)}
-  .ep-header .back{background:none;border:none;cursor:pointer;color:var(--text-primary);display:flex;padding:0}
-  .ep-header .back svg{width:26px;height:26px}
-  .ep-header .ttl{font-size:22px;font-weight:700;color:var(--text-primary)}
-
-  .ep-content{flex:1;padding:8px var(--screen-padding) 32px}
-
-  /* Avatar + tên */
-  .ep-top{display:flex;align-items:center;gap:18px;padding:14px 0 18px;border-bottom:1px solid var(--border)}
-  .ep-ava{position:relative;flex:none}
-  .ep-ava .a{width:70px;height:70px;border-radius:50%;background:#5B6470;display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:600}
-  .ep-ava .cam{position:absolute;right:-2px;bottom:-2px;width:26px;height:26px;border-radius:50%;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
-  .ep-ava .cam svg{width:15px;height:15px;color:var(--primary)}
-  .ep-top .nm{flex:1;font-size:19px;color:var(--text-primary)}
-  .ep-top .edit{cursor:pointer;color:var(--text-primary)}
-  .ep-top .edit svg{width:22px;height:22px}
-
-  /* Hàng trường */
-  .ep-row{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--border)}
-  .ep-row .ic{width:24px;height:24px;flex:none;color:var(--text-secondary)}
-  .ep-row .val{flex:1;font-size:18px;color:var(--text-primary);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .ep-row .val.muted{color:var(--text-secondary)}
-  .ep-row.disabled .val{color:var(--text-secondary)}
-  .ep-row .edit{cursor:pointer;color:var(--text-primary);flex:none}
-  .ep-row .edit svg{width:22px;height:22px}
-
-  /* Giới tính */
-  .ep-gender{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--border)}
-  .ep-gender .ic{width:24px;height:24px;flex:none;color:var(--text-secondary)}
-  .gender-opt{display:flex;align-items:center;gap:10px;font-size:18px;color:var(--text-primary);cursor:pointer;margin-right:36px}
-  .gender-opt .radio{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);position:relative}
-  .gender-opt.sel .radio{border-color:var(--primary)}
-  .gender-opt.sel .radio::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--primary)}
-
-  .ep-update{height:56px;width:100%;margin-top:28px;border:none;border-radius:28px;background:var(--primary-soft);color:#fff;font-size:17px;font-weight:600;cursor:pointer}
-  .ep-update.ready{background:var(--primary)}
-</style>
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/edit-profile.css" />
 </head>
 <body class="ep-body">
   <div class="ep-screen">
@@ -109,12 +69,6 @@
     </div>
   </div>
 
-<script>
-  function pickGender(el){
-    document.querySelectorAll('.gender-opt').forEach(function(g){ g.classList.remove('sel'); });
-    el.classList.add('sel');
-    document.querySelector('.ep-update').classList.add('ready');
-  }
-</script>
+<script src="assets/js/edit-profile.js"></script>
 </body>
 </html>

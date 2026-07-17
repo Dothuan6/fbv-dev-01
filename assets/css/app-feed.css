@@ -1,0 +1,85 @@
+html,body{height:100%}
+.shell{display:flex;height:100vh;overflow:hidden;background:var(--bg-subtle)}
+
+.rail{width:64px;flex:none;background:linear-gradient(180deg,#1565E0,#0A66FF);display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 0;color:#fff}
+.rail .me{width:44px;height:44px;border-radius:50%;background:#5B6470;margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-weight:600;cursor:pointer}
+.rail .nav{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,.85)}
+.rail .nav:hover{background:rgba(255,255,255,.14)}
+.rail .nav.active{background:rgba(255,255,255,.22);color:#fff}
+.rail .nav svg{width:26px;height:26px}
+.rail .spacer{flex:1}
+
+.feed-wrap{flex:1;overflow-y:auto;display:flex;justify-content:center;padding:24px 16px}
+.feed{width:100%;max-width:600px;display:flex;flex-direction:column;gap:14px}
+#postList{display:flex;flex-direction:column;gap:14px}
+.feed-head{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:2px}
+
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.composer{padding:16px}
+.cp-row{display:flex;align-items:center;gap:12px}
+.cp-row .av{width:44px;height:44px;border-radius:50%;background:#5B6470;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;flex:none}
+.cp-prompt{flex:1;background:var(--surface-field);border-radius:22px;padding:12px 18px;color:var(--text-secondary);cursor:pointer}
+.cp-actions{display:flex;gap:14px;margin-top:12px}
+.cp-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;border-radius:22px;font-weight:600;cursor:pointer;border:none}
+.cp-btn svg{width:22px;height:22px}
+.cp-photo{background:#E8F1FE;color:var(--primary)}
+.cp-video{background:#F3EAFE;color:#7B2FF7}
+
+.post{padding:16px}
+.post .ph{display:flex;align-items:center;gap:12px;position:relative}
+.post .ph .av{width:44px;height:44px;border-radius:50%;background:#5B6470;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;flex:none}
+.post .ph .nm{font-size:16px;font-weight:600}
+.post .ph .meta{font-size:13px;color:var(--text-secondary)}
+.post .ph .more{margin-left:auto;cursor:pointer;color:var(--text-secondary);font-size:22px;line-height:1;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.post .ph .more:hover{background:var(--bg-subtle)}
+.post .txt{font-size:16px;margin:12px 0}
+.post .media{border-radius:12px;background:#d3d8de;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;margin-top:12px}
+.post .txt + .media{margin-top:0}
+.post .media .play{width:60px;height:60px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}
+.post .media .play svg{width:28px;height:28px;color:#fff}
+.post .stat{font-size:13px;color:var(--text-secondary);padding:10px 0 6px;border-bottom:1px solid var(--border)}
+.post .bar{display:flex;gap:6px;padding-top:6px}
+.post .bar .a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px;border-radius:8px;color:var(--text-secondary);cursor:pointer;font-weight:600}
+.post .bar .a:hover{background:var(--bg-subtle)}
+.post .bar .a.liked{color:var(--primary)}
+.post .bar svg{width:20px;height:20px}
+
+.comments{margin-top:12px;border-top:1px solid var(--border);padding-top:12px;display:none}
+.comments.show{display:block}
+.cmt{display:flex;gap:10px;margin-bottom:12px}
+.cmt .av{width:34px;height:34px;border-radius:50%;background:#5B6470;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none}
+.cmt .bub{background:var(--surface-field);border-radius:14px;padding:8px 12px}
+.cmt .bub .n{font-size:13px;font-weight:600}
+.cmt .bub .c{font-size:14px}
+.cmt-input{display:flex;gap:10px;align-items:center}
+.cmt-input .av{width:34px;height:34px;border-radius:50%;background:#5B6470;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none}
+.cmt-input input{flex:1;background:var(--surface-field);border:none;border-radius:18px;padding:9px 14px;outline:none;font-size:14px}
+.cmt-input .send{color:var(--primary);cursor:pointer}
+.cmt-input .send svg{width:22px;height:22px}
+
+/* Menu bài đăng */
+.pop{position:fixed;z-index:80;background:#fff;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.2);padding:6px 0;min-width:200px;display:none}
+.pop.show{display:block}
+.pop .it{padding:11px 16px;font-size:15px;cursor:pointer;display:flex;align-items:center;gap:12px}
+.pop .it:hover{background:var(--bg-subtle)}
+.pop .it .chev{margin-left:auto;color:var(--text-secondary)}
+.pop .it.danger{color:#E5484D}
+.pop .it svg{width:19px;height:19px;color:var(--text-secondary)}
+.pop .it.danger svg{color:#E5484D}
+
+/* Modal soạn bài */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:none;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.show{display:flex}
+.modal{width:560px;max-width:94vw;background:#fff;border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
+.modal .mh{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border)}
+.modal .mh .x{background:none;border:none;cursor:pointer;font-size:24px;color:var(--text-primary)}
+.modal .mh .priv{flex:1;display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer}
+.modal .mh .priv svg{width:20px;height:20px}
+.modal .mh .post-btn{background:var(--primary-soft);color:#fff;border:none;border-radius:20px;padding:9px 22px;font-weight:600;cursor:pointer}
+.modal .mh .post-btn.ready{background:var(--primary)}
+.modal textarea{border:none;outline:none;resize:none;padding:18px 20px;font-size:17px;min-height:180px;font-family:inherit}
+.modal .mtools{display:flex;gap:14px;padding:12px 20px;border-top:1px solid var(--border)}
+.modal .mtools .t{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border-radius:20px;font-weight:600;cursor:pointer}
+.modal .mtools .t svg{width:20px;height:20px}
+
+@media (max-width:1023px){ .shell{display:none} }

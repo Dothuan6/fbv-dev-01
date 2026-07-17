@@ -4,16 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FBV.ONE — Đổi mật khẩu</title>
-<link rel="stylesheet" href="styles.css" />
-<style>
-  /* Riêng màn này: tiêu đề & nội dung căn trái theo ảnh gốc */
-  .reset .title{text-align:left;margin-bottom:20px}
-  .reset .subtitle{color:var(--text-primary);font-size:18px;line-height:1.5;margin-bottom:20px}
-  .reset .resend{text-align:center;margin:8px 0 24px}
-  .reset .resend .caption{display:block;margin-bottom:4px}
-  .reset .resend .countdown{font-size:16px;font-weight:600;color:var(--text-primary)}
-  .email{color:var(--text-primary);font-weight:600}
-</style>
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/reset-link.css" />
 </head>
 <body class="auth-body">
 
@@ -45,19 +37,6 @@
     </div>
   </section>
 
-<script>
-  // Đếm ngược gửi lại mã
-  var sec = 118;
-  var el = document.getElementById('countdown');
-  var timer = setInterval(function(){
-    sec--;
-    if(sec <= 0){
-      clearInterval(timer);
-      el.innerHTML = '<a href="#" style="color:var(--primary-link);text-decoration:none">Gửi lại mã</a>';
-    } else {
-      el.textContent = 'Gửi lại mã (' + sec + 's)';
-    }
-  }, 1000);
-</script>
+<script src="assets/js/reset-link.js"></script>
 </body>
 </html>

@@ -4,101 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FBV.ONE — account001</title>
-<link rel="stylesheet" href="styles.css" />
-<style>
-  .pf-body{min-height:100vh;display:flex;justify-content:center;background:var(--bg-subtle)}
-  .pf-screen{width:100%;max-width:480px;min-height:100vh;display:flex;flex-direction:column}
-
-  /* Header gradient */
-  .pf-header{
-    background:var(--header-gradient);color:#fff;padding:14px var(--screen-padding) 20px;text-align:center;
-  }
-  .pf-header .back{background:none;border:none;cursor:pointer;color:#fff;display:flex;padding:0;margin-bottom:8px}
-  .pf-header .back svg{width:26px;height:26px}
-  .pf-avatar{
-    width:120px;height:120px;border-radius:50%;margin:0 auto 14px;
-    background:linear-gradient(135deg,#3A1C5A,#7B2FF7);
-    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:26px;
-  }
-  .pf-name{font-size:28px;font-weight:700}
-  .pf-handle{font-size:18px;color:rgba(255,255,255,.85);margin-top:2px}
-
-  /* Hàng nút hành động */
-  .pf-actions{display:flex;gap:10px;margin-top:18px}
-  .pf-act{
-    flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:7px;
-    background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);border-radius:14px;
-    padding:12px 4px;color:#fff;font-size:13px;cursor:pointer;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  }
-  .pf-act:hover{background:rgba(255,255,255,.26)}
-  .pf-act svg{width:24px;height:24px}
-  .pf-act span{max-width:100%;overflow:hidden;text-overflow:ellipsis}
-
-  /* Thân */
-  .pf-content{flex:1;padding:16px 12px 32px;display:flex;flex-direction:column;gap:16px}
-  .pf-card{background:#fff;border-radius:16px;padding:6px 18px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-
-  .info-row{padding:14px 0;border-bottom:1px solid var(--border)}
-  .info-row:last-child{border-bottom:none}
-  .info-row .lbl{font-size:16px;color:var(--text-primary);margin-bottom:4px}
-  .info-row .val{font-size:17px;color:var(--primary-link)}
-  .info-row .val.dark{color:var(--text-primary);font-weight:600}
-  .info-row.danger .lbl{color:#E5484D;margin:0;font-weight:600;cursor:pointer}
-
-  /* Tabs */
-  .pf-tabs{display:flex;gap:4px;background:#fff;border-radius:30px;padding:5px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-  .pf-tab{flex:1;text-align:center;padding:10px 4px;font-size:15px;color:var(--text-secondary);border-radius:24px;cursor:pointer;white-space:nowrap}
-  .pf-tab.active{background:var(--primary);color:#fff;font-weight:600}
-
-  .panel{display:none}
-  .panel.active{display:block}
-  .empty{text-align:center;color:var(--text-secondary);font-size:16px;padding:24px 0}
-
-  /* Bài viết */
-  .post{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-  .post .ph{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-  .post .ph .av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#3A1C5A,#7B2FF7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700}
-  .post .ph .nm{font-size:17px;font-weight:600;color:var(--text-primary)}
-  .post .ph .dt{font-size:14px;color:var(--text-secondary)}
-  .post .txt{font-size:17px;color:var(--text-primary);margin-bottom:12px}
-  .post .img{width:100%;aspect-ratio:1/1;border-radius:14px;background:linear-gradient(135deg,#9aa6b2,#6b7785);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6)}
-  .post .img svg{width:64px;height:64px}
-  .post .pf-foot{display:flex;gap:24px;margin-top:14px;color:var(--text-secondary);font-size:16px}
-  .post .pf-foot .a{display:flex;align-items:center;gap:7px;cursor:pointer}
-  .post .pf-foot svg{width:22px;height:22px}
-
-  /* Phương tiện */
-  .media-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-  .media-grid .m{aspect-ratio:1/1;border-radius:10px;position:relative;overflow:hidden;background:#cdd4dc}
-  .media-grid .m.dark{background:#1f2630}
-  .media-grid .m.green{background:linear-gradient(135deg,#8bd17c,#4a8f3c)}
-  .media-grid .m.red{background:linear-gradient(135deg,#e5524d,#16a085)}
-  .media-grid .m.gray{background:#9aa3ad;display:flex;align-items:center;justify-content:center}
-  .media-grid .m .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-  .media-grid .m .play svg{width:34px;height:34px;color:#fff}
-  .media-grid .m.gray svg{width:40px;height:40px;color:#fff}
-
-  /* Liên kết */
-  .link-item{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--border)}
-  .link-item:last-child{border-bottom:none}
-  .link-item .ic{width:48px;height:48px;border-radius:12px;flex:none;background:var(--bg-subtle);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--primary)}
-  .link-item .ic svg{width:22px;height:22px}
-  .link-item .lk{flex:1;min-width:0}
-  .link-item .lk .nm{font-size:17px;color:var(--text-primary);margin-bottom:6px}
-  .link-card{border:1px solid var(--border);border-radius:10px;padding:10px 12px}
-  .link-card .t{color:var(--primary-link);font-weight:700;font-size:16px}
-  .link-card .u{color:var(--text-secondary);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .link-item .tm{font-size:13px;color:var(--text-secondary);margin-top:8px}
-
-  /* Tệp */
-  .file-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
-  .file-item:last-child{border-bottom:none}
-  .file-item .ic{width:46px;height:46px;border-radius:10px;flex:none;background:#E3EEFD;color:var(--primary);display:flex;align-items:center;justify-content:center}
-  .file-item .ic svg{width:22px;height:22px}
-  .file-item .fn{font-size:16px;color:var(--text-primary)}
-  .file-item .sz{font-size:13px;color:var(--text-secondary);margin-top:2px}
-</style>
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/profile.css" />
 </head>
 <body class="pf-body">
   <div class="pf-screen">
@@ -240,12 +147,6 @@
     </div>
   </div>
 
-<script>
-  function showTab(id, el){
-    document.querySelectorAll('.pf-tab').forEach(function(t){ t.classList.remove('active'); });
-    el.classList.add('active');
-    document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id === id); });
-  }
-</script>
+<script src="assets/js/profile.js"></script>
 </body>
 </html>

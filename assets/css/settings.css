@@ -1,0 +1,28 @@
+.st-body{background:var(--bg-base);min-height:100vh;display:flex;justify-content:center}
+.st-screen{width:100%;max-width:480px;min-height:100vh;background:var(--bg-base);display:flex;flex-direction:column}
+
+.st-header{display:flex;align-items:center;gap:16px;padding:14px var(--screen-padding)}
+.st-header .back{background:none;border:none;cursor:pointer;color:var(--text-primary);display:flex;padding:0}
+.st-header .back svg{width:26px;height:26px}
+.st-header .ttl{font-size:22px;font-weight:700;color:var(--text-primary)}
+
+.st-list{padding:8px var(--screen-padding)}
+.st-item{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.st-item:last-child{border-bottom:none}
+.st-item .ic{width:26px;height:26px;flex:none;color:var(--text-secondary)}
+.st-item .t{flex:1;font-size:18px;color:var(--text-primary)}
+.st-item .chev{color:var(--text-secondary);font-size:22px}
+
+/* Dialog (alert) */
+.dlg-overlay{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;padding:24px}
+.dlg-overlay.show{display:flex}
+.dlg{width:100%;max-width:300px;background:#fff;border-radius:16px;overflow:hidden;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.dlg .body{padding:22px 20px}
+.dlg .title{font-size:19px;font-weight:700;color:var(--text-primary);margin-bottom:10px}
+.dlg .msg{font-size:16px;color:var(--text-secondary);line-height:1.5}
+.dlg .acts{display:flex;border-top:1px solid var(--border)}
+.dlg .acts button{flex:1;padding:14px;font-size:17px;background:none;border:none;cursor:pointer}
+.dlg .acts button + button{border-left:1px solid var(--border)}
+.dlg .cancel{color:var(--text-secondary)}
+.dlg .ok{color:var(--primary);font-weight:600}
+.dlg .ok.danger{color:#E5484D}
