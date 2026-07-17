@@ -1,0 +1,42 @@
+/* Thêm người vào nhóm — mobile */
+.gam-body{background:var(--bg-base);min-height:100vh;display:flex;justify-content:center}
+.gam-screen{width:100%;max-width:480px;min-height:100vh;background:var(--bg-base);display:flex;flex-direction:column}
+
+.gam-header{display:flex;align-items:center;gap:16px;padding:14px var(--screen-padding)}
+.gam-header .x{background:none;border:none;cursor:pointer;color:var(--text-primary);display:flex;padding:0}
+.gam-header .x svg{width:24px;height:24px}
+.gam-header .ttl{font-size:20px;font-weight:700;color:var(--text-primary)}
+.gam-header .sub{font-size:15px;color:var(--primary)}
+
+.gam-search{
+  display:flex;align-items:center;gap:12px;margin:4px var(--screen-padding) 12px;
+  background:var(--bg-subtle);border-radius:14px;padding:15px 16px;
+}
+.gam-search svg{width:24px;height:24px;color:var(--text-secondary);flex:none}
+.gam-search input{flex:1;border:none;outline:none;background:transparent;font-size:17px;color:var(--text-primary)}
+.gam-search input::placeholder{color:var(--text-secondary)}
+
+.gam-list{flex:1;overflow-y:auto}
+.gam-item{display:flex;align-items:center;gap:14px;padding:12px var(--screen-padding);cursor:pointer}
+.gam-item:active{background:var(--bg-subtle)}
+.gam-item .cb{
+  width:24px;height:24px;border-radius:50%;border:2px solid var(--border);flex:none;position:relative;
+}
+.gam-item.sel .cb{background:var(--primary);border-color:var(--primary)}
+.gam-item.sel .cb::after{
+  content:"";position:absolute;left:7px;top:3px;width:6px;height:11px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);
+}
+.gam-item .av{width:48px;height:48px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:14px}
+.gam-item .nm{flex:1;font-size:17px;color:var(--text-primary)}
+.gam-item .in{font-size:14px;color:var(--text-secondary)}
+
+.gam-empty{flex:1;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:18px;letter-spacing:.5px}
+
+.gam-foot{border-top:1px solid var(--border);padding:14px var(--screen-padding);display:flex;justify-content:flex-end}
+.gam-send{
+  width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;
+}
+.gam-send svg{width:24px;height:24px}
+.gam-send:disabled{background:var(--primary-soft);cursor:not-allowed}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Thêm người</title>
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/group-add-member.css" />
+</head>
+<body class="gam-body">
+  <div class="gam-screen">
+
+    <!-- Header -->
+    <header class="gam-header">
+      <button class="x" aria-label="Đóng" onclick="window.location.href='group-manage.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+      <div class="who">
+        <div class="ttl">Thêm người</div>
+        <div class="sub">Đã chọn: <span id="pickedCount">0</span></div>
+      </div>
+    </header>
+
+    <!-- Ô tìm kiếm -->
+    <div class="gam-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <input type="text" id="q" placeholder="Tìm theo tên, username, SĐT, email..." oninput="filterList()" />
+    </div>
+
+    <!-- Danh sách bạn bè -->
+    <div class="gam-list" id="list"></div>
+    <div class="gam-empty" id="empty" style="display:none">Không có bạn bè để thêm</div>
+
+    <!-- Nút gửi -->
+    <div class="gam-foot">
+      <button class="gam-send" id="sendBtn" disabled onclick="addMembers()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l18-8L3 4l3 8-3 8z"/></svg>
+      </button>
+    </div>
+
+  </div>
+
+<script src="assets/js/group-add-member.js"></script>
+</body>
+</html>
