@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Thông tin cá nhân</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .ep-body{background:var(--bg-base);min-height:100vh;display:flex;justify-content:center}
+  .ep-screen{width:100%;max-width:480px;min-height:100vh;background:var(--bg-base);display:flex;flex-direction:column}
+
+  .ep-header{display:flex;align-items:center;gap:16px;padding:14px var(--screen-padding)}
+  .ep-header .back{background:none;border:none;cursor:pointer;color:var(--text-primary);display:flex;padding:0}
+  .ep-header .back svg{width:26px;height:26px}
+  .ep-header .ttl{font-size:22px;font-weight:700;color:var(--text-primary)}
+
+  .ep-content{flex:1;padding:8px var(--screen-padding) 32px}
+
+  /* Avatar + tên */
+  .ep-top{display:flex;align-items:center;gap:18px;padding:14px 0 18px;border-bottom:1px solid var(--border)}
+  .ep-ava{position:relative;flex:none}
+  .ep-ava .a{width:70px;height:70px;border-radius:50%;background:#5B6470;display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:600}
+  .ep-ava .cam{position:absolute;right:-2px;bottom:-2px;width:26px;height:26px;border-radius:50%;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+  .ep-ava .cam svg{width:15px;height:15px;color:var(--primary)}
+  .ep-top .nm{flex:1;font-size:19px;color:var(--text-primary)}
+  .ep-top .edit{cursor:pointer;color:var(--text-primary)}
+  .ep-top .edit svg{width:22px;height:22px}
+
+  /* Hàng trường */
+  .ep-row{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--border)}
+  .ep-row .ic{width:24px;height:24px;flex:none;color:var(--text-secondary)}
+  .ep-row .val{flex:1;font-size:18px;color:var(--text-primary);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ep-row .val.muted{color:var(--text-secondary)}
+  .ep-row.disabled .val{color:var(--text-secondary)}
+  .ep-row .edit{cursor:pointer;color:var(--text-primary);flex:none}
+  .ep-row .edit svg{width:22px;height:22px}
+
+  /* Giới tính */
+  .ep-gender{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--border)}
+  .ep-gender .ic{width:24px;height:24px;flex:none;color:var(--text-secondary)}
+  .gender-opt{display:flex;align-items:center;gap:10px;font-size:18px;color:var(--text-primary);cursor:pointer;margin-right:36px}
+  .gender-opt .radio{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);position:relative}
+  .gender-opt.sel .radio{border-color:var(--primary)}
+  .gender-opt.sel .radio::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--primary)}
+
+  .ep-update{height:56px;width:100%;margin-top:28px;border:none;border-radius:28px;background:var(--primary-soft);color:#fff;font-size:17px;font-weight:600;cursor:pointer}
+  .ep-update.ready{background:var(--primary)}
+</style>
+</head>
+<body class="ep-body">
+  <div class="ep-screen">
+
+    <!-- Header -->
+    <header class="ep-header">
+      <button class="back" aria-label="Quay lại" onclick="location.href='my-profile.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="ttl">Thông tin cá nhân</div>
+    </header>
+
+    <div class="ep-content">
+
+      <!-- Avatar + tên -->
+      <div class="ep-top">
+        <div class="ep-ava">
+          <div class="a">R</div>
+          <div class="cam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h3l1.5-2h5L16 8h3a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2z"/><circle cx="12" cy="13" r="3"/></svg></div>
+        </div>
+        <div class="nm">rtetetet</div>
+        <span class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></span>
+      </div>
+
+      <!-- @username -->
+      <div class="ep-row">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M14 9h4M14 13h3"/></svg>
+        <span class="val">@yase0</span>
+        <span class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></span>
+      </div>
+
+      <!-- Ngày sinh -->
+      <div class="ep-row">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="3" x2="8" y2="6"/><line x1="16" y1="3" x2="16" y2="6"/></svg>
+        <span class="val muted">Chọn ngày sinh</span>
+        <span class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></span>
+      </div>
+
+      <!-- Email (chỉ đọc) -->
+      <div class="ep-row disabled">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        <span class="val">sbz6sd66zb@privaterelay.appleid.com</span>
+      </div>
+
+      <!-- Điện thoại -->
+      <div class="ep-row">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4c.5 0 1 .3 1.2.8l1.2 2.8c.2.5.1 1-.3 1.4l-1.3 1.3c1 2 2.6 3.6 4.6 4.6l1.3-1.3c.4-.4.9-.5 1.4-.3l2.8 1.2c.5.2.8.7.8 1.2v2.8c0 .8-.7 1.5-1.5 1.4C9.6 19.6 4.4 14.4 4 6.5 3.9 5.7 4.6 5 5.4 5z"/></svg>
+        <span class="val">+84995588023</span>
+        <span class="edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></span>
+      </div>
+
+      <!-- Giới tính -->
+      <div class="ep-gender">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/></svg>
+        <div class="gender-opt" onclick="pickGender(this)"><span class="radio"></span>Nam</div>
+        <div class="gender-opt" onclick="pickGender(this)"><span class="radio"></span>Nữ</div>
+      </div>
+
+      <button class="ep-update" onclick="history.back()">Cập nhật</button>
+
+    </div>
+  </div>
+
+<script>
+  function pickGender(el){
+    document.querySelectorAll('.gender-opt').forEach(function(g){ g.classList.remove('sel'); });
+    el.classList.add('sel');
+    document.querySelector('.ep-update').classList.add('ready');
+  }
+</script>
+</body>
+</html>

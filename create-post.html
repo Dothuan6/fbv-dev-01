@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Đăng bài</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .cp-body{background:var(--bg-base);min-height:100vh;display:flex;justify-content:center}
+  .cp-screen{width:100%;max-width:480px;min-height:100vh;background:var(--bg-base);display:flex;flex-direction:column;position:relative}
+
+  .cp-header{display:flex;align-items:center;gap:14px;padding:14px var(--screen-padding);border-bottom:1px solid var(--border)}
+  .cp-header .x{background:none;border:none;cursor:pointer;color:var(--text-primary);display:flex;padding:0;font-size:26px;line-height:1}
+  .cp-priv{flex:1;display:flex;align-items:center;gap:8px;font-size:18px;font-weight:600;color:var(--text-primary);cursor:pointer}
+  .cp-priv svg{width:22px;height:22px}
+  .cp-priv .cv{color:var(--text-secondary)}
+  .cp-post{background:var(--primary-soft);color:#fff;border:none;border-radius:22px;padding:10px 24px;font-size:17px;font-weight:600;cursor:pointer}
+  .cp-post.ready{background:var(--primary)}
+
+  .cp-area{flex:1;display:flex;flex-direction:column;background:var(--bg-subtle)}
+  .cp-area textarea{flex:1;border:none;outline:none;resize:none;background:transparent;padding:20px var(--screen-padding);font-size:19px;color:var(--text-primary);font-family:inherit}
+  .cp-area textarea::placeholder{color:var(--text-secondary)}
+  .cp-count{text-align:right;padding:8px var(--screen-padding);color:var(--text-secondary);font-size:15px}
+  .cp-count .small{display:block;font-size:14px}
+
+  .cp-tools{display:flex;gap:14px;padding:14px var(--screen-padding);background:var(--bg-base)}
+  .cp-tool{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:24px;font-size:17px;font-weight:600;cursor:pointer;border:none}
+  .cp-tool svg{width:22px;height:22px}
+  .t-photo{background:#E8F1FE;color:var(--primary)}
+  .t-video{background:#F3EAFE;color:#7B2FF7}
+</style>
+</head>
+<body class="cp-body">
+  <div class="cp-screen">
+
+    <!-- Header -->
+    <header class="cp-header">
+      <button class="x" aria-label="Đóng" onclick="history.back()">&times;</button>
+      <div class="cp-priv" onclick="openSheet()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 19c0-3 2.5-4.5 5.5-4.5"/><path d="M22 19c0-3-2.5-4.5-5.5-4.5"/></svg>
+        <span id="privLabel">Tất cả bạn bè</span>
+        <span class="cv">▾</span>
+      </div>
+      <button class="cp-post" id="postBtn" onclick="history.back()">Đăng</button>
+    </header>
+
+    <!-- Vùng soạn -->
+    <div class="cp-area">
+      <textarea id="ta" maxlength="2000" placeholder="Bạn đang nghĩ gì?" oninput="count()"></textarea>
+      <div class="cp-count"><span id="num">0/2000</span><span class="small" id="left">Còn 2000 ký tự</span></div>
+    </div>
+
+    <!-- Công cụ -->
+    <div class="cp-tools">
+      <button class="cp-tool t-photo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M5 19l5-5 3 3 3-3 3 3"/></svg>
+        Ảnh
+      </button>
+      <button class="cp-tool t-video">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>
+        Video
+      </button>
+    </div>
+  </div>
+
+  <!-- Sheet quyền xem -->
+  <div class="sheet-overlay" id="overlay" onclick="closeSheet()"></div>
+  <div class="sheet" id="privSheet">
+    <h3>Quyền xem bài đăng</h3>
+    <div class="opt-item" onclick="pick('Tất cả bạn bè', this)">
+      <span>Tất cả bạn bè</span>
+      <svg class="ck" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-11"/></svg>
+    </div>
+    <div class="opt-item" onclick="pick('Mình tôi', this)">
+      <span>Mình tôi</span>
+      <svg class="ck" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="visibility:hidden"><path d="M5 12l5 5 9-11"/></svg>
+    </div>
+  </div>
+
+<style>
+  .opt-item{display:flex;align-items:center;padding:18px var(--screen-padding);font-size:18px;color:var(--text-primary);cursor:pointer;border-bottom:1px solid var(--border)}
+  .opt-item:last-child{border-bottom:none}
+  .opt-item span{flex:1}
+  .opt-item .ck{width:24px;height:24px;flex:none}
+</style>
+
+<script>
+  var ta = document.getElementById('ta');
+  function count(){
+    var n = ta.value.length;
+    document.getElementById('num').textContent = n + '/2000';
+    document.getElementById('left').textContent = 'Còn ' + (2000 - n) + ' ký tự';
+    document.getElementById('postBtn').classList.toggle('ready', n > 0);
+  }
+  function openSheet(){ document.getElementById('overlay').classList.add('show'); document.getElementById('privSheet').classList.add('show'); }
+  function closeSheet(){ document.getElementById('overlay').classList.remove('show'); document.getElementById('privSheet').classList.remove('show'); }
+  function pick(label, el){
+    document.getElementById('privLabel').textContent = label;
+    document.querySelectorAll('#privSheet .ck').forEach(function(c){ c.style.visibility = 'hidden'; });
+    el.querySelector('.ck').style.visibility = 'visible';
+    closeSheet();
+  }
+</script>
+</body>
+</html>

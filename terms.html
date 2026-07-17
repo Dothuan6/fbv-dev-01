@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Điều khoản sử dụng</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .terms-body{background:var(--bg-base);min-height:100vh;display:flex;flex-direction:column;align-items:center}
+  /* Khung mô phỏng chiều rộng mobile, căn giữa trên web */
+  .terms-screen{width:100%;max-width:480px;background:var(--bg-base);min-height:100vh;display:flex;flex-direction:column}
+
+  /* Header trắng: back · tiêu đề · shield */
+  .terms-header{
+    position:sticky;top:0;z-index:10;background:var(--bg-base);
+    display:flex;align-items:center;gap:12px;padding:14px var(--screen-padding);
+    border-bottom:1px solid var(--border);
+  }
+  .terms-header .back{background:none;border:none;cursor:pointer;padding:0;display:flex}
+  .terms-header .back svg{width:26px;height:26px}
+  .terms-header h1{flex:1;text-align:center;font-size:20px;font-weight:700;color:var(--text-primary)}
+  .terms-header .shield{width:30px;height:30px;color:var(--primary);flex:none}
+
+  /* Hero gradient */
+  .terms-hero{
+    background:var(--header-gradient);color:#fff;text-align:center;
+    padding:28px 24px 60px;position:relative;
+  }
+  .terms-hero .hero-badge{
+    width:72px;height:72px;border-radius:20px;margin:0 auto 16px;
+    background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;
+  }
+  .terms-hero .hero-badge svg{width:36px;height:36px;color:#fff}
+  .terms-hero h2{font-size:24px;font-weight:700;margin-bottom:10px}
+  .terms-hero p{font-size:16px;line-height:1.5;color:rgba(255,255,255,.92);max-width:340px;margin:0 auto}
+
+  /* Nội dung — tấm trắng bo góc trên, trượt lên che hero */
+  .terms-content{
+    background:var(--bg-base);border-radius:28px 28px 0 0;
+    margin-top:-28px;position:relative;z-index:1;
+    padding:12px var(--screen-padding) 28px;
+  }
+  .section{display:flex;gap:16px;padding:20px 0}
+  .sec-badge{
+    width:56px;height:56px;border-radius:16px;flex:none;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .sec-badge svg{width:26px;height:26px}
+  .badge-blue{background:#E3EEFD;color:var(--primary)}
+  .badge-red{background:#FDE3E3;color:#E5484D}
+  .section .body h3{font-size:20px;font-weight:700;color:var(--text-primary);margin-bottom:8px}
+  .section .body p{font-size:17px;line-height:1.6;color:var(--text-secondary)}
+
+  /* Card "Quy định chung" */
+  .rules-card{
+    background:var(--bg-subtle);border:1px solid var(--border);border-radius:18px;
+    padding:22px 20px;margin:8px 0 24px;
+  }
+  .rules-card h3{font-size:20px;font-weight:700;color:var(--text-primary);margin-bottom:16px}
+  .rules-card ul{list-style:none;display:flex;flex-direction:column;gap:14px}
+  .rules-card li{display:flex;gap:12px;font-size:17px;line-height:1.5;color:var(--text-secondary)}
+  .rules-card li svg{width:22px;height:22px;flex:none;color:var(--primary);margin-top:1px}
+
+  /* Banner cuối */
+  .terms-banner{
+    border-radius:18px;overflow:hidden;position:relative;min-height:170px;
+    display:flex;align-items:flex-end;padding:20px;color:#fff;
+    background:
+      radial-gradient(120px 80px at 75% 35%, rgba(255,255,255,.35), transparent 70%),
+      linear-gradient(160deg,#7FB5D6 0%,#4E8FB8 45%,#2E6F9E 100%);
+  }
+  .terms-banner::after{
+    content:"";position:absolute;right:18px;top:26px;width:46px;height:54px;
+    background:rgba(255,255,255,.85);
+    -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2l8 3v6c0 5-3.4 8.7-8 11-4.6-2.3-8-6-8-11V5l8-3z'/></svg>") center/contain no-repeat;
+    mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2l8 3v6c0 5-3.4 8.7-8 11-4.6-2.3-8-6-8-11V5l8-3z'/></svg>") center/contain no-repeat;
+  }
+  .terms-banner span{font-size:19px;font-weight:600;line-height:1.4;position:relative;z-index:1;max-width:75%;
+    text-shadow:0 1px 6px rgba(0,0,0,.35)}
+</style>
+</head>
+<body class="terms-body">
+  <div class="terms-screen">
+
+    <!-- Header -->
+    <header class="terms-header">
+      <button class="back" aria-label="Quay lại" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1C1C1E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <h1>Điều khoản</h1>
+      <svg class="shield" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l8 3v6c0 5-3.4 8.7-8 11-4.6-2.3-8-6-8-11V5l8-3z"/><path d="M10.2 13.2l-2-2-1.2 1.2 3.2 3.2 5.6-5.6-1.2-1.2z" fill="#fff"/></svg>
+    </header>
+
+    <!-- Hero -->
+    <section class="terms-hero">
+      <div class="hero-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 21h18M6 21V11M18 21V11M4 11l8-7 8 7M9 21v-5h6v5"/>
+        </svg>
+      </div>
+      <h2>Điều khoản sử dụng</h2>
+      <p>Vui lòng đọc kỹ các quy định để đảm bảo môi trường cộng đồng văn minh.</p>
+    </section>
+
+    <!-- Content -->
+    <main class="terms-content">
+
+      <div class="section">
+        <div class="sec-badge badge-red">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="5.6" y1="5.6" x2="18.4" y2="18.4"/></svg>
+        </div>
+        <div class="body">
+          <h3>1. Nội dung lạm dụng</h3>
+          <p>Chúng tôi áp dụng chính sách không khoan nhượng đối với các hành vi đăng tải nội dung lạm dụng, quấy rối, thù ghét hoặc kích động bạo lực. Mọi nội dung vi phạm sẽ bị gỡ bỏ ngay lập tức mà không cần thông báo trước.</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-badge badge-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0"/><path d="M12 14v2"/></svg>
+        </div>
+        <div class="body">
+          <h3>2. Quyền khóa tài khoản</h3>
+          <p>Hệ thống có quyền tạm ngưng hoặc khóa vĩnh viễn tài khoản của người dùng nếu phát hiện bất kỳ hành vi vi phạm điều khoản dịch vụ hoặc gây ảnh hưởng tiêu cực đến trải nghiệm của người dùng khác.</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-badge badge-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </div>
+        <div class="body">
+          <h3>3. Cơ chế báo cáo</h3>
+          <p>Người dùng có thể gửi báo cáo (Report) về các nội dung hoặc hành vi nghi ngờ vi phạm. Đội ngũ kiểm duyệt cam kết xử lý và phản hồi tất cả các báo cáo trong vòng 24 giờ làm việc.</p>
+        </div>
+      </div>
+
+      <div class="rules-card">
+        <h3>4. Quy định chung</h3>
+        <ul>
+          <li>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1.2 14.2l-3.8-3.8 1.4-1.4 2.4 2.4 5-5 1.4 1.4z"/></svg>
+            Sử dụng dịch vụ đúng mục đích và không can thiệp vào mã nguồn.
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1.2 14.2l-3.8-3.8 1.4-1.4 2.4 2.4 5-5 1.4 1.4z"/></svg>
+            Bảo mật thông tin đăng nhập cá nhân.
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1.2 14.2l-3.8-3.8 1.4-1.4 2.4 2.4 5-5 1.4 1.4z"/></svg>
+            Tôn trọng quyền sở hữu trí tuệ của nội dung trên ứng dụng.
+          </li>
+        </ul>
+      </div>
+
+      <div class="terms-banner">
+        <span>Chúng tôi cùng bạn xây dựng cộng đồng an toàn.</span>
+      </div>
+
+    </main>
+  </div>
+</body>
+</html>

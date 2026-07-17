@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Nhật ký làm việc</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .chat-screen{width:100%;max-width:480px;height:100vh;background:var(--bg-chat);display:flex;flex-direction:column}
+
+  /* Header thường */
+  .chat-header{background:var(--header-gradient);color:#fff;display:flex;align-items:center;gap:16px;padding:12px var(--screen-padding)}
+  .chat-header .back{background:none;border:none;cursor:pointer;color:#fff;display:flex;padding:0}
+  .chat-header .back svg{width:26px;height:26px}
+  .chat-header .ttl{flex:1;font-size:20px;font-weight:700}
+  .chat-header .h-icon{width:26px;height:26px;cursor:pointer;flex:none}
+
+  /* Header tìm kiếm */
+  .search-bar{display:none;background:var(--header-gradient);align-items:center;gap:14px;padding:14px var(--screen-padding)}
+  .searching .search-bar{display:flex}
+  .searching .chat-header{display:none}
+  .search-bar .field{flex:1;display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:11px 14px}
+  .search-bar .field svg{width:22px;height:22px;color:var(--text-secondary)}
+  .search-bar .field input{flex:1;border:none;outline:none;font-size:18px;background:transparent}
+  .search-bar .field .clr{background:#C7CCD1;border:none;border-radius:50%;width:22px;height:22px;display:none;align-items:center;justify-content:center;cursor:pointer}
+  .search-bar .field .clr.show{display:flex}
+  .search-bar .field .clr svg{width:13px;height:13px;color:#fff}
+  .search-bar .x{background:none;border:none;cursor:pointer;color:#fff;display:flex;padding:0}
+  .search-bar .x svg{width:26px;height:26px}
+
+  .chat-body{flex:1;overflow-y:auto;padding:16px var(--screen-padding);display:flex;flex-direction:column;gap:8px}
+  .chat-body > :first-child{margin-top:auto}   /* neo tin nhắn từ đáy lên */
+  .media-msg{align-self:flex-end;position:relative;width:60%;max-width:240px;border-radius:16px;overflow:hidden;background:#9aa3ad;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center}
+  .media-msg svg{width:46%;height:46%;color:#fff}
+  .media-msg .time{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.5);color:#fff;font-size:12px;padding:2px 7px;border-radius:10px}
+
+  /* Composer / search nav ở đáy */
+  .composer{background:var(--bg-base);border-top:1px solid var(--border);display:flex;align-items:center;gap:14px;padding:12px var(--screen-padding)}
+  .composer input{flex:1;border:none;outline:none;font-size:16px;background:transparent;color:var(--text-primary)}
+  .composer input::placeholder{color:var(--text-secondary)}
+  .composer .c-icon{width:26px;height:26px;cursor:pointer;color:var(--text-secondary);flex:none}
+  .searching .composer{display:none}
+
+  .search-nav{display:none;align-items:center;gap:16px;padding:14px var(--screen-padding);border-top:1px solid var(--border);background:var(--bg-base)}
+  .searching .search-nav{display:flex}
+  .search-nav .mag{width:22px;height:22px;color:var(--primary)}
+  .search-nav .count{flex:1;font-size:17px;color:var(--text-primary)}
+  .search-nav .nav{background:none;border:none;cursor:pointer;color:var(--text-secondary)}
+  .search-nav .nav svg{width:24px;height:24px}
+
+  mark{background:#FFE14D;color:inherit;border-radius:2px;padding:0 1px}
+  mark.cur{background:#FFB300}
+</style>
+</head>
+<body class="app-body">
+  <div class="chat-screen" id="screen">
+
+    <!-- Header thường -->
+    <header class="chat-header">
+      <button class="back" aria-label="Quay lại" onclick="goBack()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="ttl">Nhật ký làm việc</div>
+      <svg class="h-icon" onclick="openSearch()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <svg class="h-icon" onclick="location.href='worklog-info.html'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </header>
+
+    <!-- Header tìm kiếm -->
+    <header class="search-bar">
+      <div class="field">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+        <input id="q" type="text" placeholder="Tìm kiếm" oninput="doSearch()" />
+        <button class="clr" id="clr" onclick="clearQ()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
+      </div>
+      <button class="x" onclick="closeSearch()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
+    </header>
+
+    <!-- Nội dung -->
+    <div class="chat-body" id="body">
+      <div class="media-msg">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 1c-1 .1-2.1.6-2.8 1.4-.6.7-1.1 1.7-.9 2.7 1 .1 2.1-.5 2.8-1.2.6-.7 1.1-1.7.9-2.9zM20.5 17.2c-.5 1.2-.8 1.8-1.5 2.9-1 1.5-2.4 3.5-4.1 3.5-1.5 0-1.9-1-4-1-2 0-2.5 1-4 1-1.7 0-3-1.8-4-3.3C-.1 16.8-.4 11.8 1.3 9.2c1-1.6 2.7-2.6 4.3-2.6 1.6 0 2.6 1 3.9 1 1.3 0 2-1 3.9-1 1.4 0 2.9.8 3.9 2.1-3.4 1.9-2.9 6.8.9 8.5z"/></svg>
+        <span class="time">11:32</span>
+      </div>
+      <div class="bubble sent"><span class="msg-text">hi</span><span class="time">11:52</span></div>
+      <div class="bubble sent"><span class="msg-text">Tôi yêu Việt Nam</span><span class="time">11:53</span></div>
+    </div>
+
+    <!-- Composer -->
+    <div class="composer">
+      <input type="text" id="msgInput" placeholder="Nhật ký..." />
+      <svg class="c-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.5l-8.5 8.5a5 5 0 01-7-7l8.5-8.5a3.5 3.5 0 015 5l-8.5 8.5a2 2 0 01-3-3l8-8"/></svg>
+      <svg class="c-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M5 19l5-5 3 3 3-3 3 3"/></svg>
+    </div>
+
+    <!-- Thanh điều hướng kết quả tìm kiếm -->
+    <div class="search-nav">
+      <svg class="mag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span class="count" id="count">0 / 0</span>
+      <button class="nav" onclick="navMatch(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button>
+      <button class="nav" onclick="navMatch(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+    </div>
+
+  </div>
+
+<script>
+  // Màn rộng dùng bản desktop nhật ký
+  if(window.innerWidth >= 1024) location.replace('app-worklog.html');
+  window.addEventListener('resize', function(){ if(window.innerWidth >= 1024) location.replace('app-worklog.html'); });
+
+  function goBack(){
+    if(document.referrer) history.back();
+    else if(history.length > 1) history.back();
+    else location.href = 'account.html';
+  }
+
+  var screen = document.getElementById('screen');
+  var input = document.getElementById('msgInput');
+  var q = document.getElementById('q');
+  var clr = document.getElementById('clr');
+  var texts = Array.from(document.querySelectorAll('.msg-text'));
+  var originals = texts.map(function(t){ return t.textContent; });
+  var marks = [], cur = 0;
+
+  // Gửi nhật ký
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' && this.value.trim()){
+      var t = new Date(), hh = String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0');
+      var b = document.createElement('div'); b.className = 'bubble sent';
+      var m = document.createElement('span'); m.className='msg-text'; m.textContent = this.value.trim();
+      var tm = document.createElement('span'); tm.className='time'; tm.textContent = hh;
+      b.appendChild(m); b.appendChild(tm);
+      document.getElementById('body').appendChild(b);
+      texts.push(m); originals.push(m.textContent);
+      document.getElementById('body').scrollTop = 1e9;
+      this.value = '';
+    }
+  });
+
+  function openSearch(){ screen.classList.add('searching'); q.focus(); }
+  function closeSearch(){ screen.classList.remove('searching'); q.value=''; clearMarks(); clr.classList.remove('show'); }
+  function clearQ(){ q.value=''; clr.classList.remove('show'); clearMarks(); updateCount(); q.focus(); }
+
+  function clearMarks(){
+    texts.forEach(function(t,i){ t.textContent = originals[i]; });
+    marks = []; cur = 0;
+  }
+  function escapeRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+
+  function doSearch(){
+    var term = q.value.trim();
+    clr.classList.toggle('show', term.length>0);
+    clearMarks();
+    if(term){
+      var re = new RegExp('('+escapeRe(term)+')','gi');
+      texts.forEach(function(t,i){
+        if(re.test(originals[i])){
+          t.innerHTML = originals[i].replace(re, '<mark>$1</mark>');
+        }
+      });
+      marks = Array.from(document.querySelectorAll('mark'));
+      if(marks.length){ cur = 0; focusMark(); }
+    }
+    updateCount();
+  }
+  function focusMark(){
+    marks.forEach(function(m){ m.classList.remove('cur'); });
+    if(marks[cur]){ marks[cur].classList.add('cur'); marks[cur].scrollIntoView({block:'center'}); }
+  }
+  function navMatch(d){ if(!marks.length) return; cur=(cur+d+marks.length)%marks.length; focusMark(); updateCount(); }
+  function updateCount(){ document.getElementById('count').textContent = (marks.length? (cur+1):0) + ' / ' + marks.length; }
+</script>
+</body>
+</html>

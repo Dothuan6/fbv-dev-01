@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Đổi mật khẩu</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  /* Riêng màn này: tiêu đề & nội dung căn trái theo ảnh gốc */
+  .reset .title{text-align:left;margin-bottom:20px}
+  .reset .subtitle{color:var(--text-primary);font-size:18px;line-height:1.5;margin-bottom:20px}
+  .reset .resend{text-align:center;margin:8px 0 24px}
+  .reset .resend .caption{display:block;margin-bottom:4px}
+  .reset .resend .countdown{font-size:16px;font-weight:600;color:var(--text-primary)}
+  .email{color:var(--text-primary);font-weight:600}
+</style>
+</head>
+<body class="auth-body">
+
+  <!-- Brand panel (desktop) -->
+  <section class="brand-panel">
+    <div class="logo-mark"><div class="core"><span></span></div></div>
+    <div class="wordmark">FBV.ONE</div>
+    <p class="tagline">Kết nối tức thì — nhắn tin, gọi thoại và video an toàn trên mọi thiết bị.</p>
+  </section>
+
+  <!-- Form panel -->
+  <section class="form-panel">
+    <div class="card reset">
+      <button class="back-btn" aria-label="Quay lại" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1C1C1E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+
+      <h1 class="title">Đã gửi liên kết đổi mật khẩu</h1>
+
+      <p class="subtitle">Chúng tôi đã gửi liên kết đổi mật khẩu đến email <span class="email">thuann2622@gmail.com</span></p>
+      <p class="subtitle">Vui lòng kiểm tra hộp thư và nhấn vào liên kết để hoàn tất thay đổi mật khẩu</p>
+
+      <div class="resend">
+        <span class="caption">Bạn không nhận được mã xác thực?</span>
+        <span class="countdown" id="countdown">Gửi lại mã (118s)</span>
+      </div>
+
+      <a href="login.html" class="btn btn-strong btn-link">Trở về đăng nhập</a>
+    </div>
+  </section>
+
+<script>
+  // Đếm ngược gửi lại mã
+  var sec = 118;
+  var el = document.getElementById('countdown');
+  var timer = setInterval(function(){
+    sec--;
+    if(sec <= 0){
+      clearInterval(timer);
+      el.innerHTML = '<a href="#" style="color:var(--primary-link);text-decoration:none">Gửi lại mã</a>';
+    } else {
+      el.textContent = 'Gửi lại mã (' + sec + 's)';
+    }
+  }, 1000);
+</script>
+</body>
+</html>

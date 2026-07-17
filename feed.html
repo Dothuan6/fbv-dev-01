@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Bản tin</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .app-body{background:var(--bg-subtle)}
+  .app-screen{background:var(--bg-subtle);position:relative}
+
+  .fd-header{background:var(--header-gradient);color:#fff;display:flex;align-items:center;gap:16px;padding:16px var(--screen-padding)}
+  .fd-header .search{flex:1;display:flex;align-items:center;gap:10px;font-size:18px;color:rgba(255,255,255,.95);cursor:pointer}
+  .fd-header .search svg{width:22px;height:22px}
+  .fd-header .h-icon{width:26px;height:26px;cursor:pointer;flex:none}
+
+  .fd-scroll{flex:1;overflow-y:auto}
+
+  /* Bộ soạn nhanh */
+  .composer-card{background:#fff;padding:14px var(--screen-padding)}
+  .cp-row{display:flex;align-items:center;gap:14px}
+  .cp-row .avatar{width:48px;height:48px;border-radius:50%;background:#5B6470;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;flex:none}
+  .cp-prompt{flex:1;background:var(--surface-field);border-radius:24px;padding:13px 18px;color:var(--text-secondary);font-size:17px;cursor:pointer}
+  .cp-actions{display:flex;gap:14px;margin-top:14px}
+  .cp-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:24px;font-size:17px;font-weight:600;cursor:pointer;border:none}
+  .cp-btn svg{width:22px;height:22px}
+  .cp-photo{background:#E8F1FE;color:var(--primary)}
+  .cp-video{background:#F3EAFE;color:#7B2FF7}
+
+  /* Bài đăng */
+  .post{background:#fff;margin-top:10px;padding:16px var(--screen-padding)}
+  .post .ph{display:flex;align-items:center;gap:12px}
+  .post .ph .av{width:46px;height:46px;border-radius:50%;background:#5B6470;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;flex:none}
+  .post .ph .nm{font-size:17px;font-weight:600;color:var(--text-primary)}
+  .post .ph .meta{font-size:14px;color:var(--text-secondary);display:flex;align-items:center;gap:5px}
+  .post .ph .meta svg{width:15px;height:15px}
+  .post .ph .more{margin-left:auto;cursor:pointer;color:var(--text-secondary);font-size:24px;line-height:1;padding:0 4px}
+  .post .txt{font-size:17px;color:var(--text-primary);margin:12px 0}
+  .post .media{position:relative;border-radius:14px;overflow:hidden;background:#d3d8de;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center}
+  .post .media .play{width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}
+  .post .media .play svg{width:30px;height:30px;color:#fff}
+  .post .pfoot{display:flex;gap:28px;margin-top:14px;color:var(--text-secondary);font-size:17px}
+  .post .pfoot .a{display:flex;align-items:center;gap:8px;cursor:pointer}
+  .post .pfoot svg{width:23px;height:23px}
+
+  .bottom-tab .tab-item svg{width:24px;height:24px}
+
+  /* Bottom sheets */
+  .sheet h3{position:relative}
+  .sheet .close{position:absolute;right:0;top:50%;transform:translateY(-50%);width:30px;height:30px;border:none;border-radius:50%;background:var(--surface-field);color:var(--text-secondary);cursor:pointer;font-size:18px}
+  .opt-item{display:flex;align-items:center;gap:14px;padding:18px var(--screen-padding);font-size:18px;color:var(--text-primary);cursor:pointer;border-bottom:1px solid var(--border)}
+  .opt-item:last-child{border-bottom:none}
+  .opt-item svg{width:24px;height:24px;flex:none;color:var(--text-secondary)}
+  .opt-item .chev{margin-left:auto;color:var(--text-secondary)}
+  .opt-item.danger{color:#E5484D}
+  .opt-item.danger svg{color:#E5484D}
+
+  /* Sheet bình luận */
+  .cmt-sheet{height:70vh;display:flex;flex-direction:column}
+  .cmt-empty{flex:1;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:17px}
+  .cmt-input{display:flex;align-items:center;gap:12px;padding:14px var(--screen-padding);border-top:1px solid var(--border)}
+  .cmt-input .av{width:44px;height:44px;border-radius:50%;background:#5B6470;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;flex:none}
+  .cmt-input .fld{flex:1;background:var(--surface-field);border-radius:24px;padding:12px 18px;border:none;outline:none;font-size:16px}
+  .cmt-input .send{width:44px;height:44px;border-radius:50%;background:var(--surface-field);border:none;cursor:pointer;color:var(--text-secondary);flex:none;display:flex;align-items:center;justify-content:center}
+  .cmt-input .send svg{width:22px;height:22px}
+</style>
+</head>
+<body class="app-body">
+  <div class="app-screen">
+
+    <!-- Header -->
+    <header class="fd-header">
+      <div class="search" onclick="location.href='search.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+        <span>Tìm kiếm</span>
+      </div>
+      <svg class="h-icon" onclick="location.href='create-post.html'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </header>
+
+    <div class="fd-scroll">
+
+      <!-- Soạn nhanh -->
+      <div class="composer-card">
+        <div class="cp-row">
+          <div class="avatar">R</div>
+          <div class="cp-prompt" onclick="location.href='create-post.html'">Hôm nay bạn thế nào?</div>
+        </div>
+        <div class="cp-actions">
+          <button class="cp-btn cp-photo" onclick="location.href='create-post.html'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M5 19l5-5 3 3 3-3 3 3"/></svg>
+            Ảnh
+          </button>
+          <button class="cp-btn cp-video" onclick="location.href='create-post.html'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>
+            Video
+          </button>
+        </div>
+      </div>
+
+      <!-- Bài đăng -->
+      <div class="post">
+        <div class="ph">
+          <div class="av">R</div>
+          <div>
+            <div class="nm">rtetetet</div>
+            <div class="meta">9 giờ trước
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 19c0-3 2.5-4.5 5.5-4.5"/><path d="M22 19c0-3-2.5-4.5-5.5-4.5"/></svg>
+            </div>
+          </div>
+          <div class="more" onclick="openSheet('optSheet')">&#8943;</div>
+        </div>
+        <div class="txt">Video tets</div>
+        <div class="media">
+          <div class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="pfoot">
+          <span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21C5 14.5 3 11 3 8a4.5 4.5 0 018-2.8A4.5 4.5 0 0121 8c0 3-2 6.5-9 13z"/></svg> Thích</span>
+          <span class="a" onclick="openSheet('cmtSheet')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.5 8.5 0 01-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1121 11.5z"/></svg> Bình luận</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom tab -->
+    <nav class="bottom-tab">
+      <div class="tab-item" onclick="location.href='messages.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 4h16v12H7l-3 3z"/></svg>
+        Tin nhắn
+      </div>
+      <div class="tab-item" onclick="location.href='contacts.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/><path d="M16 5a3.5 3.5 0 010 6"/><path d="M18 14.5c2.6.4 4 2 4 5.5"/></svg>
+        Danh bạ
+      </div>
+      <div class="tab-item active">
+        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M9 15l1.5-4.5L15 9l-1.5 4.5z" fill="#fff"/></svg>
+        Bản tin
+      </div>
+      <div class="tab-item" onclick="location.href='account.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        Cá nhân
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- Overlay chung -->
+  <div class="sheet-overlay" id="overlay" onclick="closeSheet()"></div>
+
+  <!-- Sheet: tuỳ chọn bài đăng -->
+  <div class="sheet" id="optSheet">
+    <div class="opt-item" onclick="closeSheet()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0"/></svg>
+      Chỉnh sửa quyền xem <span class="chev">›</span>
+    </div>
+    <div class="opt-item" onclick="location.href='create-post.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>
+      Chỉnh sửa bài đăng <span class="chev">›</span>
+    </div>
+    <div class="opt-item danger" onclick="closeSheet()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/></svg>
+      Xoá bài đăng
+    </div>
+  </div>
+
+  <!-- Sheet: bình luận -->
+  <div class="sheet cmt-sheet" id="cmtSheet">
+    <h3>rtetetet đã đăng <button class="close" onclick="closeSheet()">&times;</button></h3>
+    <div class="cmt-empty">Chưa có bình luận</div>
+    <div class="cmt-input">
+      <div class="av">R</div>
+      <input class="fld" type="text" placeholder="Viết bình luận..." />
+      <button class="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><path d="M13 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+
+<script>
+  // Màn rộng dùng bản desktop bản tin
+  function goDesktopIfWide(){ if(window.innerWidth >= 1024) location.replace('app-feed.html'); }
+  goDesktopIfWide();
+  window.addEventListener('resize', goDesktopIfWide);
+
+  function openSheet(id){
+    document.getElementById('overlay').classList.add('show');
+    document.getElementById(id).classList.add('show');
+  }
+  function closeSheet(){
+    document.getElementById('overlay').classList.remove('show');
+    document.querySelectorAll('.sheet').forEach(function(s){ s.classList.remove('show'); });
+  }
+</script>
+</body>
+</html>

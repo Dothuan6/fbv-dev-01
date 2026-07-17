@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Tin nhắn</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .app-screen{position:relative}   /* cần cho menu "+" định vị tuyệt đối */
+
+  /* Menu "+" thả xuống */
+  .add-overlay{position:absolute;inset:0;z-index:30;display:none}
+  .add-overlay.show{display:block}
+  .add-menu{
+    position:absolute;top:60px;right:14px;z-index:31;display:none;
+    background:#fff;border-radius:14px;box-shadow:0 10px 36px rgba(0,0,0,.2);
+    padding:6px 0;min-width:235px;animation:ctx-in .12s ease;
+  }
+  .add-menu.show{display:block}
+  @keyframes ctx-in{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+  .add-item{display:flex;align-items:center;gap:14px;padding:14px 18px;font-size:17px;color:var(--text-primary);cursor:pointer}
+  .add-item:hover{background:var(--bg-subtle)}
+  .add-item svg{width:24px;height:24px;flex:none;color:var(--text-primary)}
+  .add-item:not(:last-child){border-bottom:1px solid var(--border)}
+
+  /* Header gradient: search + QR + plus */
+  .msg-header{
+    background:var(--header-gradient);color:#fff;
+    display:flex;align-items:center;gap:16px;padding:16px var(--screen-padding);
+  }
+  .msg-header .search{flex:1;display:flex;align-items:center;gap:10px;font-size:18px;color:rgba(255,255,255,.95)}
+  .msg-header .search svg{width:22px;height:22px}
+  .msg-header .h-icon{width:26px;height:26px;cursor:pointer;flex:none}
+
+  /* List */
+  .msg-list{flex:1;overflow-y:auto}
+  .list-item .meta{flex:1;min-width:0}
+  .list-item .name{font-size:17px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .list-item .preview{font-size:14px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+  .list-item .preview .sub{color:var(--text-secondary)}
+
+  /* Avatar variants */
+  .avatar{display:flex;align-items:center;justify-content:center;font-weight:600;color:#fff;font-size:16px;overflow:hidden}
+  .avatar svg{width:26px;height:26px}
+  .av-rn{background:linear-gradient(135deg,#F5C543,#9B6BF0)}
+  .av-leaf{background:linear-gradient(135deg,#1FB6D6,#1877F2)}
+  .av-dark{background:linear-gradient(135deg,#3A1C5A,#7B2FF7)}
+  .av-land{background:linear-gradient(135deg,#4FA8F5,#16A085)}
+  .av-person{background:#8E8E93}
+  .av-plus-blue{background:linear-gradient(135deg,#4FA8F5,#1877F2)}
+  .av-plus-gray{background:#5B6470}
+
+  /* Bottom tab icons */
+  .bottom-tab .tab-item svg{width:24px;height:24px}
+</style>
+</head>
+<body class="app-body">
+  <div class="app-screen">
+
+    <!-- Header -->
+    <header class="msg-header">
+      <div class="search" style="cursor:pointer" onclick="window.location.href='search.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+        <span>Tìm kiếm</span>
+      </div>
+      <svg class="h-icon" onclick="location.href='scan-qr.html'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><line x1="14" y1="14" x2="14" y2="21"/><line x1="18" y1="14" x2="18" y2="18"/><line x1="21" y1="17" x2="21" y2="21"/></svg>
+      <svg class="h-icon" onclick="toggleAddMenu(event)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </header>
+
+    <!-- Menu "+" -->
+    <div class="add-overlay" id="addOverlay" onclick="toggleAddMenu()"></div>
+    <div class="add-menu" id="addMenu">
+      <div class="add-item" onclick="location.href='add-friend.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-5.5 6.5-5.5 1.2 0 2.3.2 3.2.6"/><path d="M19 8v6M16 11h6"/></svg>
+        Thêm bạn
+      </div>
+      <div class="add-item" onclick="alert('Tạo nhóm')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M2 20c0-3.3 2.7-5 6-5s6 1.7 6 5"/><path d="M14 15.2c2.6.4 4.5 2 4.5 4.8H22"/></svg>
+        Tạo nhóm
+      </div>
+      <div class="add-item" onclick="location.href='worklog.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="13" y2="14"/></svg>
+        Nhật ký làm việc
+      </div>
+    </div>
+
+    <!-- Conversation list -->
+    <div class="msg-list">
+
+      <a class="list-item" href="chat.html" style="text-decoration:none">
+        <div class="avatar av-rn">RN</div>
+        <div class="meta">
+          <div class="name">rtetetet, account001, Chang...</div>
+          <div class="preview">rtetetet đã thêm account001, Change nam...</div>
+        </div>
+        <div class="time">15:55</div>
+      </a>
+
+      <a class="list-item" href="chat.html" style="text-decoration:none">
+        <div class="avatar av-leaf"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 3c5 1 7 5 6 11-4 1-8-1-9-5 2 1 4 1 5 0-2-1-3-3-2-6z"/></svg></div>
+        <div class="meta">
+          <div class="name">Change name55</div>
+          <div class="preview"><span class="sub">Bạn:</span> hi</div>
+        </div>
+        <div class="time">11:16</div>
+      </a>
+
+      <a class="list-item" href="chat.html" style="text-decoration:none">
+        <div class="avatar av-dark">200</div>
+        <div class="meta">
+          <div class="name">account001</div>
+          <div class="preview"><span class="sub">Bạn:</span> Gọi video</div>
+        </div>
+        <div class="time">10:42</div>
+      </a>
+
+      <a class="list-item" href="chat.html" style="text-decoration:none">
+        <div class="avatar av-land"><svg viewBox="0 0 24 24" fill="#fff" opacity=".9"><path d="M4 18l4-5 3 3 4-6 5 8z"/><circle cx="8" cy="8" r="2"/></svg></div>
+        <div class="meta">
+          <div class="name">[2.HOÀNG TÚ]</div>
+        </div>
+      </a>
+
+      <a class="list-item" href="chat.html" style="text-decoration:none">
+        <div class="avatar av-person"><svg viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6z"/></svg></div>
+        <div class="meta">
+          <div class="name">Thuận Đỗ</div>
+        </div>
+      </a>
+
+      <a class="list-item" href="chat.html" style="text-decoration:none">
+        <div class="avatar av-plus-blue"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg></div>
+        <div class="meta">
+          <div class="name">+84966613625</div>
+        </div>
+      </a>
+
+      <a class="list-item" href="chat.html" style="text-decoration:none">
+        <div class="avatar av-plus-gray"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="6" x2="12" y2="18"/><line x1="6" y1="12" x2="18" y2="12"/></svg></div>
+        <div class="meta">
+          <div class="name">+84912345678</div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Bottom tab bar -->
+    <nav class="bottom-tab">
+      <div class="tab-item active">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v12H7l-3 3z"/></svg>
+        Tin nhắn
+      </div>
+      <div class="tab-item" onclick="location.href='contacts.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/><path d="M16 5a3.5 3.5 0 010 6"/><path d="M18 14.5c2.6.4 4 2 4 5.5"/></svg>
+        Danh bạ
+      </div>
+      <div class="tab-item" onclick="location.href='feed.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 15l1.5-4.5L15 9l-1.5 4.5z" fill="currentColor" stroke="none"/></svg>
+        Bản tin
+      </div>
+      <div class="tab-item" onclick="location.href='account.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        Cá nhân
+      </div>
+    </nav>
+
+  </div>
+
+<script>
+  // Màn rộng dùng bản desktop (shell 3 cột); màn hẹp giữ bản mobile này
+  function goDesktopIfWide(){ if(window.innerWidth >= 1024) location.replace('app.html'); }
+  goDesktopIfWide();
+  window.addEventListener('resize', goDesktopIfWide);
+
+  function toggleAddMenu(e){
+    if(e) e.stopPropagation();
+    document.getElementById('addMenu').classList.toggle('show');
+    document.getElementById('addOverlay').classList.toggle('show');
+  }
+</script>
+</body>
+</html>

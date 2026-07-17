@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Danh bạ</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+
+  .msg-header{background:var(--header-gradient);color:#fff;display:flex;align-items:center;gap:16px;padding:16px var(--screen-padding)}
+  .msg-header .search{flex:1;display:flex;align-items:center;gap:10px;font-size:18px;color:rgba(255,255,255,.95);cursor:pointer}
+  .msg-header .search svg{width:22px;height:22px}
+  .msg-header .h-icon{width:26px;height:26px;cursor:pointer;flex:none}
+
+  /* Hàng lời mời kết bạn */
+  .invite-row{display:flex;align-items:center;gap:16px;padding:16px var(--screen-padding);cursor:pointer}
+  .invite-row .ic{width:48px;height:48px;border-radius:50%;background:var(--primary);flex:none;display:flex;align-items:center;justify-content:center}
+  .invite-row .ic svg{width:26px;height:26px;color:#fff}
+  .invite-row .t{font-size:18px;color:var(--text-primary)}
+
+  /* Tabs Tất cả / Trực tuyến */
+  .c-tabs{display:flex;gap:32px;padding:6px var(--screen-padding) 0;border-bottom:1px solid var(--border)}
+  .c-tab{padding:12px 0;font-size:18px;color:var(--text-secondary);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+  .c-tab.active{color:var(--primary);font-weight:600;border-bottom-color:var(--primary)}
+
+  .c-list{flex:1;overflow-y:auto}
+  .c-item{display:flex;align-items:center;gap:16px;padding:14px var(--screen-padding)}
+  .c-item .avatar{width:54px;height:54px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:13px;background:linear-gradient(135deg,#3A1C5A,#7B2FF7)}
+  .c-item .nm{flex:1;min-width:0;font-size:18px;color:var(--text-primary)}
+  .c-item .act{width:28px;height:28px;color:var(--primary);cursor:pointer;flex:none;margin-left:6px}
+
+  .bottom-tab .tab-item svg{width:24px;height:24px}
+</style>
+</head>
+<body class="app-body">
+  <div class="app-screen">
+
+    <!-- Header -->
+    <header class="msg-header">
+      <div class="search" onclick="location.href='search.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+        <span>Tìm kiếm</span>
+      </div>
+      <svg class="h-icon" onclick="location.href='scan-qr.html'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><line x1="14" y1="14" x2="14" y2="21"/><line x1="18" y1="14" x2="18" y2="18"/><line x1="21" y1="17" x2="21" y2="21"/></svg>
+      <svg class="h-icon" onclick="location.href='add-friend.html'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </header>
+
+    <!-- Lời mời kết bạn -->
+    <div class="invite-row" onclick="location.href='friend-requests.html'">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/><path d="M16 9.5l2 2 4-4"/></svg></div>
+      <div class="t">Lời mời kết bạn (3)</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="c-tabs">
+      <div class="c-tab active" onclick="switchTab(this)">Tất cả</div>
+      <div class="c-tab" onclick="switchTab(this)">Trực tuyến</div>
+    </div>
+
+    <!-- Danh sách liên hệ -->
+    <div class="c-list">
+      <div class="c-item">
+        <div class="avatar" style="cursor:pointer" onclick="location.href='profile.html'">200</div>
+        <div class="nm">account001</div>
+        <svg class="act" onclick="location.href='call.html?type=voice&name=account001'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4c.5 0 1 .3 1.2.8l1.2 2.8c.2.5.1 1-.3 1.4l-1.3 1.3c1 2 2.6 3.6 4.6 4.6l1.3-1.3c.4-.4.9-.5 1.4-.3l2.8 1.2c.5.2.8.7.8 1.2v2.8c0 .8-.7 1.5-1.5 1.4C9.6 19.6 4.4 14.4 4 6.5 3.9 5.7 4.6 5 5.4 5z"/></svg>
+        <svg class="act" onclick="location.href='call.html?type=video&name=account001'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>
+      </div>
+    </div>
+
+    <!-- Bottom tab -->
+    <nav class="bottom-tab">
+      <div class="tab-item" onclick="location.href='messages.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 4h16v12H7l-3 3z"/></svg>
+        Tin nhắn
+      </div>
+      <div class="tab-item active">
+        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-5.5 6.5-5.5s6.5 1.9 6.5 5.5z"/><path d="M16 5a3.5 3.5 0 010 6"/><path d="M18 14.5c2.6.4 4 2 4 5.5h-3.5"/></svg>
+        Danh bạ
+      </div>
+      <div class="tab-item" onclick="location.href='feed.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 15l1.5-4.5L15 9l-1.5 4.5z" fill="currentColor" stroke="none"/></svg>
+        Bản tin
+      </div>
+      <div class="tab-item" onclick="location.href='account.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        Cá nhân
+      </div>
+    </nav>
+
+  </div>
+
+<script>
+  // Màn rộng dùng bản desktop danh bạ
+  function goDesktopIfWide(){ if(window.innerWidth >= 1024) location.replace('app-contacts.html'); }
+  goDesktopIfWide();
+  window.addEventListener('resize', goDesktopIfWide);
+
+  function switchTab(el){
+    document.querySelectorAll('.c-tab').forEach(function(t){ t.classList.remove('active'); });
+    el.classList.add('active');
+  }
+</script>
+</body>
+</html>

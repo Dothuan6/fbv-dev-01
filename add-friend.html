@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Thêm bạn</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .af-body{background:var(--bg-subtle);min-height:100vh;display:flex;justify-content:center}
+  .af-screen{width:100%;max-width:480px;min-height:100vh;background:var(--bg-subtle);display:flex;flex-direction:column}
+
+  .af-header{display:flex;align-items:center;gap:16px;padding:14px var(--screen-padding);background:var(--bg-subtle)}
+  .af-header .back{background:none;border:none;cursor:pointer;color:var(--text-primary);display:flex;padding:0}
+  .af-header .back svg{width:26px;height:26px}
+  .af-header .ttl{font-size:20px;font-weight:700;color:var(--text-primary)}
+
+  .af-content{flex:1;padding:16px var(--screen-padding) 32px}
+
+  /* Thẻ QR gradient */
+  .qr-card{
+    background:linear-gradient(150deg,#4FA8F5 0%,#1877F2 55%,#0A66FF 100%);
+    border-radius:24px;padding:24px;text-align:center;color:#fff;
+  }
+  .qr-card .uname{font-size:28px;font-weight:700;margin-bottom:18px}
+  .qr-box{background:#fff;border-radius:14px;padding:14px;display:inline-block;position:relative}
+  .qr-box canvas{display:block;width:240px;height:240px}
+  .qr-logo{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:54px;height:54px;border-radius:50%;background:#0B1622;color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;
+    border:4px solid #fff;
+  }
+  .qr-card .cap{margin-top:16px;font-size:17px;color:rgba(255,255,255,.95)}
+
+  /* Ô nhập */
+  .af-input-row{display:flex;align-items:center;gap:14px;margin:24px 0 16px}
+  .af-input-row input{
+    flex:1;height:56px;background:#fff;border:1px solid var(--border);border-radius:14px;
+    padding:0 18px;font-size:17px;color:var(--text-primary);outline:none;
+  }
+  .af-input-row input::placeholder{color:var(--text-secondary)}
+  .af-input-row input:focus{border-color:var(--primary)}
+  .af-send{
+    width:56px;height:56px;flex:none;border:none;border-radius:50%;background:var(--primary);
+    color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  }
+  .af-send svg{width:24px;height:24px}
+
+  .af-scan{display:flex;align-items:center;gap:16px;padding:16px 2px;border-top:1px solid var(--border);cursor:pointer}
+  .af-scan svg{width:26px;height:26px;color:var(--text-primary)}
+  .af-scan span{font-size:18px;font-weight:600;color:var(--text-primary)}
+
+  .af-hint{text-align:center;color:var(--text-secondary);font-size:16px;padding:28px 0;cursor:pointer}
+</style>
+</head>
+<body class="af-body">
+  <div class="af-screen">
+
+    <!-- Header -->
+    <header class="af-header">
+      <button class="back" aria-label="Quay lại" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="ttl">Thêm bạn</div>
+    </header>
+
+    <div class="af-content">
+
+      <!-- Thẻ QR -->
+      <div class="qr-card">
+        <div class="uname">@yase0</div>
+        <div class="qr-box">
+          <canvas id="qr" width="240" height="240"></canvas>
+          <div class="qr-logo">CTT</div>
+        </div>
+        <div class="cap">Quét mã để thêm bạn với tôi</div>
+      </div>
+
+      <!-- Ô nhập -->
+      <div class="af-input-row">
+        <input type="text" placeholder="Nhập @username, email ..." />
+        <button class="af-send" aria-label="Tìm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><path d="M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+
+      <!-- Quét QR -->
+      <div class="af-scan" onclick="location.href='scan-qr.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><line x1="14" y1="14" x2="14" y2="21"/><line x1="18" y1="14" x2="18" y2="18"/><line x1="21" y1="17" x2="21" y2="21"/></svg>
+        <span>Quét mã QR</span>
+      </div>
+
+      <!-- Hint -->
+      <div class="af-hint" onclick="location.href='friend-requests.html'">Xem lời mời kết bạn đã gửi tại danh bạ</div>
+
+    </div>
+  </div>
+
+<script>
+  // Vẽ mã QR trang trí (mô phỏng) lên canvas
+  (function(){
+    var c = document.getElementById('qr'), ctx = c.getContext('2d');
+    var N = 25, cell = c.width / N;
+    ctx.fillStyle = '#fff'; ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle = '#0B1622';
+
+    function finder(r0, c0){
+      // 7x7 đen, 5x5 trắng, 3x3 đen
+      for(var i=0;i<7;i++)for(var j=0;j<7;j++){ if(i===0||i===6||j===0||j===6) cell_fill(r0+i,c0+j); }
+      for(var i=2;i<5;i++)for(var j=2;j<5;j++) cell_fill(r0+i,c0+j);
+    }
+    function cell_fill(r,col){ ctx.fillRect(col*cell, r*cell, cell, cell); }
+    function inFinder(r,col){
+      return (r<8&&col<8) || (r<8&&col>=N-8) || (r>=N-8&&col<8);
+    }
+    // module ngẫu nhiên
+    for(var r=0;r<N;r++)for(var col=0;col<N;col++){
+      if(inFinder(r,col)) continue;
+      if(Math.random() < 0.46) cell_fill(r,col);
+    }
+    finder(0,0); finder(0,N-7); finder(N-7,0);
+  })();
+</script>
+</body>
+</html>

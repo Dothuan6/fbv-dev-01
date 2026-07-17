@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  html,body{height:100%}
+  .shell{display:flex;height:100vh;overflow:hidden;background:var(--bg-base)}
+
+  /* ===== Rail điều hướng ===== */
+  .rail{
+    width:64px;flex:none;background:linear-gradient(180deg,#1565E0,#0A66FF);
+    display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 0;color:#fff;
+  }
+  .rail .me{width:44px;height:44px;border-radius:50%;background:#5B6470;overflow:hidden;margin-bottom:12px;
+    display:flex;align-items:center;justify-content:center;font-weight:600;cursor:pointer}
+  .rail .nav{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,.85)}
+  .rail .nav:hover{background:rgba(255,255,255,.14)}
+  .rail .nav.active{background:rgba(255,255,255,.22);color:#fff}
+  .rail .nav svg{width:26px;height:26px}
+  .rail .spacer{flex:1}
+
+  /* ===== Cột danh sách ===== */
+  .list-col{width:340px;flex:none;border-right:1px solid var(--border);display:flex;flex-direction:column;background:#fff}
+  .lc-top{display:flex;align-items:center;gap:12px;padding:14px 16px}
+  .lc-search{flex:1;display:flex;align-items:center;gap:8px;background:var(--surface-field);border-radius:20px;padding:8px 12px;color:var(--text-secondary)}
+  .lc-search svg{width:18px;height:18px}
+  .lc-search input{flex:1;border:none;background:transparent;outline:none;font-size:15px}
+  .lc-top .ic{width:24px;height:24px;color:var(--text-primary);cursor:pointer}
+  .lc-tabs{display:flex;align-items:center;gap:20px;padding:4px 16px 8px}
+  .lc-tab{font-size:15px;font-weight:600;color:var(--text-secondary);cursor:pointer;padding-bottom:6px;border-bottom:2px solid transparent}
+  .lc-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+  .conv-list{flex:1;overflow-y:auto}
+  .conv{display:flex;align-items:center;gap:12px;padding:11px 16px;cursor:pointer;border-left:3px solid transparent}
+  .conv:hover{background:var(--bg-subtle)}
+  .conv.active{background:#E8F1FE;border-left-color:var(--primary)}
+  .conv .av{width:48px;height:48px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:14px}
+  .conv .mid{flex:1;min-width:0}
+  .conv .nm{font-size:16px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .conv .pv{font-size:14px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+  .conv .tm{font-size:12px;color:var(--text-secondary);flex:none;align-self:flex-start}
+
+  /* ===== Cột chính ===== */
+  .main-col{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--bg-chat)}
+  .mc-header{display:flex;align-items:center;gap:12px;padding:10px 18px;background:#fff;border-bottom:1px solid var(--border)}
+  .mc-header .av{width:44px;height:44px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:13px}
+  .mc-header .who{flex:1;min-width:0}
+  .mc-header .nm{font-size:17px;font-weight:700;color:var(--text-primary)}
+  .mc-header .st{font-size:13px;color:var(--text-secondary)}
+  .mc-header .acts{display:flex;gap:16px;color:var(--text-primary)}
+  .mc-header .acts svg{width:22px;height:22px;cursor:pointer}
+  .mc-header .acts .toggle.active{color:var(--primary)}
+
+  .mc-body{flex:1;overflow-y:auto;padding:18px 22px;display:flex;flex-direction:column;gap:10px}
+  .mc-body > :first-child{margin-top:auto}
+  .day{align-self:center;background:rgba(0,0,0,.06);color:var(--text-secondary);font-size:13px;padding:3px 12px;border-radius:12px;margin:6px 0}
+  .row{display:flex;gap:10px;max-width:70%}
+  .row.me{align-self:flex-end;flex-direction:row-reverse}
+  .row .ra{width:34px;height:34px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;align-self:flex-end}
+  .row.me .ra{display:none}
+  .msg{background:#fff;border:1px solid var(--border);border-radius:14px;padding:9px 13px;font-size:15px;color:var(--text-primary)}
+  .row.me .msg{background:#DBEBFF;border-color:#CFE3FB}
+  .msg .t{display:block;font-size:11px;color:var(--text-secondary);margin-top:4px}
+
+  .mc-composer{background:#fff;border-top:1px solid var(--border);padding:10px 18px}
+  .mc-tools{display:flex;gap:18px;color:var(--text-secondary);padding-bottom:8px}
+  .mc-tools svg{width:22px;height:22px;cursor:pointer}
+  .mc-input{display:flex;align-items:center;gap:12px}
+  .mc-input input{flex:1;border:none;outline:none;font-size:15px;background:transparent}
+  .mc-input .send{color:var(--primary);cursor:pointer}
+  .mc-input .send svg{width:24px;height:24px}
+
+  /* ===== Cột thông tin ===== */
+  .info-col{width:340px;flex:none;border-left:1px solid var(--border);background:#fff;overflow-y:auto;display:none}
+  .info-col.show{display:block}
+  .ic-head{text-align:center;font-size:17px;font-weight:700;padding:16px;border-bottom:1px solid var(--border)}
+  .ic-profile{text-align:center;padding:20px}
+  .ic-profile .av{width:76px;height:76px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:22px}
+  .ic-profile .nm{font-size:18px;font-weight:700}
+  .ic-quick{display:flex;justify-content:center;gap:26px;padding:6px 0 18px}
+  .ic-quick .q{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary);cursor:pointer;width:66px;text-align:center}
+  .ic-quick .q .cir{width:40px;height:40px;border-radius:50%;background:var(--surface-field);display:flex;align-items:center;justify-content:center;color:var(--text-primary)}
+  .ic-quick .q svg{width:20px;height:20px}
+  .ic-sec{padding:16px;border-top:8px solid var(--bg-subtle)}
+  .ic-sec h4{font-size:15px;font-weight:700;margin-bottom:12px}
+  .ic-media{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+  .ic-media .m{aspect-ratio:1/1;border-radius:8px;background:#c9d3de}
+  /* Thành viên nhóm */
+  .ic-members .mem{display:flex;align-items:center;gap:12px;padding:8px 0}
+  .ic-members .mem .a{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:12px}
+  .ic-members .mem .nm{flex:1;font-size:15px;color:var(--text-primary)}
+  .ic-members .mem .role{font-size:12px;color:var(--text-secondary)}
+  .ic-members .mem .add{color:var(--primary);font-size:14px;font-weight:600;cursor:pointer;background:none;border:none}
+  /* Tìm kiếm trong trò chuyện */
+  .search-view{display:none;padding:16px}
+  .search-view.show{display:block}
+  .sv-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .sv-head h4{font-size:16px;font-weight:700}
+  .sv-head .x{background:none;border:none;cursor:pointer;color:var(--text-secondary);font-size:20px}
+  .sv-field{display:flex;align-items:center;gap:8px;background:var(--surface-field);border-radius:10px;padding:9px 12px}
+  .sv-field svg{width:18px;height:18px;color:var(--text-secondary)}
+  .sv-field input{flex:1;border:none;outline:none;background:transparent;font-size:15px}
+  .sv-count{margin-top:14px;font-size:14px;color:var(--text-secondary)}
+  mark{background:#FFE14D;border-radius:2px}
+
+  /* ===== Menu tin nhắn (hover) ===== */
+  .msg{position:relative}
+  .msg-acts{position:absolute;top:50%;transform:translateY(-50%);display:none;gap:2px;background:#fff;border:1px solid var(--border);border-radius:18px;padding:2px;box-shadow:0 2px 10px rgba(0,0,0,.14);white-space:nowrap}
+  .row:hover .msg-acts{display:flex}
+  .row.me .msg-acts{right:calc(100% + 8px)}
+  .row:not(.me) .msg-acts{left:calc(100% + 8px)}
+  /* Cầu nối trong suốt lấp khoảng hở để hover không bị ngắt */
+  .msg-acts::after{content:"";position:absolute;top:0;height:100%;width:10px}
+  .row.me .msg-acts::after{left:100%}
+  .row:not(.me) .msg-acts::after{right:100%}
+  .msg-acts button{width:28px;height:28px;border:none;background:none;border-radius:50%;cursor:pointer;color:var(--text-secondary);display:inline-flex;align-items:center;justify-content:center}
+  .msg-acts button:hover{background:var(--bg-subtle);color:var(--primary)}
+  .msg-acts svg{width:16px;height:16px}
+  .rct{position:absolute;bottom:-9px;right:6px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:1px 6px;font-size:12px;line-height:1.3;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+  .row.has-rct{margin-bottom:12px}   /* chừa chỗ cho pill cảm xúc, tránh đè tin kế */
+
+  .pop{position:fixed;z-index:80;background:#fff;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.2);display:none}
+  .pop.show{display:block}
+  .pop.menu{padding:6px 0;min-width:180px}
+  .pop.menu .it{padding:10px 16px;font-size:14px;color:var(--text-primary);cursor:pointer;display:flex;align-items:center;gap:10px}
+  .pop.menu .it:hover{background:var(--bg-subtle)}
+  .pop.menu .it.danger{color:#E5484D}
+  .pop.menu svg{width:17px;height:17px}
+  .pop.picker{padding:5px 8px;border-radius:22px}
+  .pop.picker.show{display:flex;gap:4px}
+  .pop.picker span{font-size:21px;cursor:pointer;transition:.1s}
+  .pop.picker span:hover{transform:scale(1.25)}
+
+  /* Thanh trả lời trên ô soạn */
+  .mc-reply{display:none;align-items:center;gap:12px;background:var(--surface-field);border-left:3px solid var(--primary);border-radius:8px;padding:8px 12px;margin-bottom:8px}
+  .mc-reply.show{display:flex}
+  .mc-reply .rb-body{flex:1;min-width:0}
+  .mc-reply .rb-title{font-size:13px;font-weight:700;color:var(--text-primary);display:flex;align-items:center;gap:6px}
+  .mc-reply .rb-text{font-size:13px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+  .mc-reply .rb-x{background:none;border:none;cursor:pointer;color:var(--text-secondary);font-size:20px}
+  /* Trích dẫn trong bóng chat */
+  .msg .q{border-left:3px solid var(--primary);padding-left:8px;margin-bottom:5px}
+  .msg .q .qn{font-size:12px;color:var(--primary);font-weight:600}
+  .msg .q .qt{font-size:13px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px}
+
+  /* Modal Chia sẻ (chuyển tiếp) */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:none;align-items:center;justify-content:center;padding:24px}
+  .modal-overlay.show{display:flex}
+  .modal{width:520px;max-width:94vw;max-height:86vh;background:#fff;border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
+  .modal .mh{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--border)}
+  .modal .mh h3{font-size:19px;font-weight:700}
+  .modal .mh .x{background:none;border:none;cursor:pointer;color:var(--text-secondary)}
+  .modal .mh .x svg{width:24px;height:24px}
+  .modal .mbody{padding:16px 22px;overflow-y:auto;flex:1}
+  .fw-search{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:22px;padding:10px 14px;color:var(--text-secondary);margin-bottom:14px}
+  .fw-search svg{width:18px;height:18px}
+  .fw-search input{flex:1;border:none;outline:none;font-size:15px}
+  .fw-tabs{display:flex;gap:22px;border-bottom:1px solid var(--border);margin-bottom:8px}
+  .fw-tab{font-size:15px;font-weight:600;color:var(--text-secondary);padding-bottom:8px;border-bottom:2px solid transparent;cursor:pointer}
+  .fw-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+  .fw-item{display:flex;align-items:center;gap:14px;padding:9px 2px;cursor:pointer}
+  .fw-item input{width:20px;height:20px;accent-color:var(--primary)}
+  .fw-item .av{width:44px;height:44px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:12px}
+  .fw-item .nm{font-size:16px;color:var(--text-primary)}
+  .fw-link{background:var(--surface-field);border-radius:8px;padding:10px 14px;margin-top:10px}
+  .fw-link .l{font-size:13px;font-weight:600;color:var(--text-primary)}
+  .fw-link .u{font-size:14px;color:var(--text-secondary);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .modal .mf{display:flex;justify-content:flex-end;gap:12px;padding:14px 22px;border-top:1px solid var(--border)}
+  .modal .mf button{border:none;border-radius:10px;padding:11px 26px;font-size:16px;font-weight:600;cursor:pointer}
+  .modal .mf .cancel{background:var(--surface-field);color:var(--text-primary)}
+  .modal .mf .ok{background:var(--primary);color:#fff}
+  .modal .mf .ok:disabled{background:var(--primary-soft);cursor:not-allowed}
+
+  /* Modal Biểu cảm */
+  .rx-modal{width:640px;height:520px;max-width:94vw}
+  .rx-body{display:flex;flex:1;overflow:hidden}
+  .rx-tabs{width:130px;flex:none;border-right:1px solid var(--border);overflow-y:auto}
+  .rx-tab{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 16px;cursor:pointer;font-size:16px;border-bottom:1px solid var(--border)}
+  .rx-tab.active{background:var(--bg-subtle);font-weight:600}
+  .rx-people{flex:1;overflow-y:auto;padding:6px 18px}
+  .rx-person{display:flex;align-items:center;gap:12px;padding:12px 2px}
+  .rx-person .av{width:44px;height:44px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:13px}
+  .rx-person .nm{flex:1;font-size:16px;color:var(--text-primary)}
+  .rx-person .emo{font-size:16px}
+
+  /* Panel Chủ đề (trả lời trong chuỗi) */
+  .thread-panel{position:fixed;top:0;right:0;width:400px;max-width:92vw;height:100vh;background:#fff;border-left:1px solid var(--border);z-index:70;display:none;flex-direction:column;box-shadow:-6px 0 24px rgba(0,0,0,.1)}
+  .thread-panel.show{display:flex}
+  .tp-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border)}
+  .tp-head .who{flex:1}
+  .tp-head .nm{font-size:17px;font-weight:700}
+  .tp-head .sub{font-size:13px;color:var(--text-secondary)}
+  .tp-head .x{background:none;border:none;cursor:pointer;color:var(--text-secondary)}
+  .tp-head .x svg{width:22px;height:22px}
+  .tp-body{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+  .tp-root{border:1px solid var(--border);border-radius:12px;padding:12px 14px}
+  .tp-root .rn{font-size:14px;color:var(--primary);font-weight:600;margin-bottom:3px}
+  .tp-root .rt{font-size:15px;color:var(--text-primary)}
+  .tp-root .rtm{font-size:12px;color:var(--text-secondary);margin-top:5px}
+  .tp-div{display:flex;align-items:center;gap:10px;color:var(--text-secondary);font-size:13px;margin:4px 0}
+  .tp-div::after{content:"";flex:1;height:1px;background:var(--border)}
+  .tp-reply{position:relative;align-self:flex-end;background:#DBEBFF;border:1px solid #CFE3FB;border-radius:14px;padding:9px 13px;font-size:15px;max-width:80%}
+  .tp-reply .t{display:block;font-size:11px;color:var(--text-secondary);margin-top:4px}
+  .tp-reply .msg-acts{right:calc(100% + 8px)}
+  .tp-reply:hover .msg-acts{display:flex}
+  .tp-reply .msg-acts::after{left:100%;right:auto}
+  .tp-reply.has-rct{margin-bottom:12px}
+  .tp-composer{border-top:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;gap:10px}
+  .tp-composer input{flex:1;border:none;outline:none;font-size:15px;background:transparent}
+  .tp-composer .send{color:var(--primary);cursor:pointer}
+  .tp-composer .send svg{width:24px;height:24px}
+
+  /* Màn hẹp (<1024px) tự chuyển sang bản mobile messages.html (xử lý bằng JS) */
+</style>
+</head>
+<body>
+
+  <div class="shell">
+
+    <!-- Rail -->
+    <nav class="rail">
+      <div class="me" title="Cá nhân" onclick="openAccountModal()">R</div>
+      <div class="nav active" title="Tin nhắn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v12H7l-3 3z"/></svg></div>
+      <div class="nav" title="Danh bạ" onclick="location.href='app-contacts.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/><path d="M16 5a3.5 3.5 0 010 6"/><path d="M18 14.5c2.6.4 4 2 4 5.5"/></svg></div>
+      <div class="nav" title="Bản tin" onclick="location.href='app-feed.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 15l1.5-4.5L15 9l-1.5 4.5z" fill="currentColor" stroke="none"/></svg></div>
+      <div class="spacer"></div>
+      <div class="nav" title="Cài đặt" onclick="openSettingsModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a7.9 7.9 0 000-2l2-1.5-2-3.4-2.3 1a8 8 0 00-1.7-1l-.3-2.6h-4l-.3 2.6a8 8 0 00-1.7 1l-2.3-1-2 3.4L4.6 11a7.9 7.9 0 000 2l-2 1.5 2 3.4 2.3-1a8 8 0 001.7 1l.3 2.6h4l.3-2.6a8 8 0 001.7-1l2.3 1 2-3.4z"/></svg></div>
+    </nav>
+
+    <!-- Danh sách -->
+    <aside class="list-col">
+      <div class="lc-top">
+        <div class="lc-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg><input placeholder="Tìm kiếm" /></div>
+        <svg class="ic" onclick="openAddFriendModal()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-5.5 6.5-5.5 1.2 0 2.3.2 3.2.6"/><path d="M19 8v6M16 11h6"/></svg>
+        <svg class="ic" onclick="openCreateGroupModal()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M2 20c0-3.3 2.7-5 6-5"/><path d="M14 15.2c2.6.4 4.5 2 4.5 4.8"/></svg>
+      </div>
+      <div class="lc-tabs">
+        <span class="lc-tab active">Ưu tiên</span>
+        <span class="lc-tab" onclick="location.href='app-worklog.html'">Khác</span>
+      </div>
+      <div class="conv-list" id="convList"></div>
+    </aside>
+
+    <!-- Khung chat -->
+    <section class="main-col">
+      <header class="mc-header">
+        <div class="av" id="hAv"></div>
+        <div class="who"><div class="nm" id="hNm"></div><div class="st" id="hSt"></div></div>
+        <div class="acts">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4c.5 0 1 .3 1.2.8l1.2 2.8c.2.5.1 1-.3 1.4l-1.3 1.3c1 2 2.6 3.6 4.6 4.6l1.3-1.3c.4-.4.9-.5 1.4-.3l2.8 1.2c.5.2.8.7.8 1.2v2.8c0 .8-.7 1.5-1.5 1.4C9.6 19.6 4.4 14.4 4 6.5 3.9 5.7 4.6 5 5.4 5z"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>
+          <svg onclick="openConvSearch()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+          <svg class="toggle active" id="infoToggle" onclick="toggleInfo()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="15" y1="4" x2="15" y2="20"/></svg>
+        </div>
+      </header>
+
+      <div class="mc-body" id="mcBody"></div>
+
+      <div class="mc-composer">
+        <div class="mc-tools">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/><path d="M8.5 14.5a4 4 0 007 0" stroke-linecap="round"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M5 19l5-5 3 3 3-3 3 3"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.5l-8.5 8.5a5 5 0 01-7-7l8.5-8.5a3.5 3.5 0 015 5l-8.5 8.5a2 2 0 01-3-3l8-8"/></svg>
+        </div>
+        <div class="mc-reply" id="mcReply">
+          <div class="rb-body">
+            <div class="rb-title"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17l-5-5 5-5"/><path d="M4 12h11a5 5 0 015 5v1"/></svg> Trả lời <span id="rbName"></span></div>
+            <div class="rb-text" id="rbText"></div>
+          </div>
+          <button class="rb-x" onclick="cancelReply()">&times;</button>
+        </div>
+        <div class="mc-input">
+          <input id="mcInput" placeholder="Nhập tin nhắn..." />
+          <span class="send" onclick="sendMsg()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l18-8L3 4l3 8-3 8z"/></svg></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel phải: thông tin / tìm kiếm -->
+    <aside class="info-col show" id="infoCol">
+
+      <!-- View: Thông tin -->
+      <div class="info-view" id="infoView">
+        <div class="ic-head" id="icHead">Thông tin hội thoại</div>
+        <div class="ic-profile">
+          <div class="av" id="iAv"></div>
+          <div class="nm" id="iNm"></div>
+        </div>
+        <div class="ic-quick">
+          <div class="q"><span class="cir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg></span>Tắt thông báo</div>
+          <div class="q"><span class="cir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v6l-2 5h10l-2-5V4"/><line x1="12" y1="15" x2="12" y2="21"/></svg></span>Ghim hội thoại</div>
+          <div class="q" id="qGroup"><span class="cir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 19c0-3 2.5-4.5 5.5-4.5"/><path d="M14 15c3 0 5.5 1.5 5.5 4.5"/></svg></span><span id="qGroupLabel">Tạo nhóm</span></div>
+        </div>
+        <!-- Thành viên nhóm (chỉ nhóm) -->
+        <div class="ic-sec ic-members" id="membersSec" style="display:none">
+          <h4 id="membersTitle">Thành viên nhóm</h4>
+          <div id="memberList"></div>
+        </div>
+        <div class="ic-sec">
+          <h4>Ảnh/Video</h4>
+          <div class="ic-media"><div class="m"></div><div class="m"></div><div class="m"></div><div class="m"></div></div>
+        </div>
+        <div class="ic-sec"><h4>File</h4><div style="color:var(--text-secondary);font-size:14px">Chưa có File được chia sẻ</div></div>
+      </div>
+
+      <!-- View: Tìm kiếm trong trò chuyện -->
+      <div class="search-view" id="searchView">
+        <div class="sv-head"><h4>Tìm kiếm trong trò chuyện</h4><button class="x" onclick="closeConvSearch()">&times;</button></div>
+        <div class="sv-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+          <input id="convSearch" placeholder="Nhập từ khóa để tìm kiếm" oninput="doConvSearch()" />
+        </div>
+        <div class="sv-count" id="svCount"></div>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- Modal Chia sẻ (chuyển tiếp) -->
+  <div class="modal-overlay" id="fwOverlay">
+    <div class="modal">
+      <div class="mh"><h3>Chia sẻ</h3><button class="x" onclick="closeForward()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button></div>
+      <div class="mbody">
+        <div class="fw-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg><input placeholder="Tìm kiếm..." oninput="fwFilter(this.value)" /></div>
+        <div class="fw-tabs"><span class="fw-tab active">Gần đây</span><span class="fw-tab">Nhóm trò chuyện</span><span class="fw-tab">Bạn bè</span></div>
+        <div id="fwList"></div>
+        <div class="fw-link"><div class="l">Chia sẻ nội dung</div><div class="u" id="fwPreview"></div></div>
+      </div>
+      <div class="mf"><button class="cancel" onclick="closeForward()">Hủy</button><button class="ok" id="fwOk" onclick="doForward()" disabled>Chia sẻ</button></div>
+    </div>
+  </div>
+
+  <!-- Modal Biểu cảm (ai đã thả cảm xúc) -->
+  <div class="modal-overlay" id="rxOverlay">
+    <div class="modal rx-modal">
+      <div class="mh"><h3>Biểu cảm</h3><button class="x" onclick="closeReactions()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button></div>
+      <div class="rx-body">
+        <div class="rx-tabs" id="rxTabs"></div>
+        <div class="rx-people" id="rxPeople"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel Chủ đề (trả lời trong chuỗi) -->
+  <aside class="thread-panel" id="threadPanel">
+    <div class="tp-head">
+      <div class="who"><div class="nm">Chủ đề</div><div class="sub" id="tpFrom"></div></div>
+      <button class="x" onclick="closeThread()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
+    </div>
+    <div class="tp-body" id="tpBody"></div>
+    <div class="tp-composer">
+      <input id="tpInput" placeholder="Nhập tin nhắn..." />
+      <span class="send" onclick="sendThread()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l18-8L3 4l3 8-3 8z"/></svg></span>
+    </div>
+  </aside>
+
+  <!-- Reaction picker -->
+  <div class="pop picker" id="picker">
+    <span onclick="react('👍')">👍</span><span onclick="react('❤️')">❤️</span><span onclick="react('😂')">😂</span><span onclick="react('😮')">😮</span><span onclick="react('😢')">😢</span><span onclick="react('😡')">😡</span>
+  </div>
+  <!-- Menu ... -->
+  <div class="pop menu" id="msgMenu">
+    <div class="it" onclick="msgAct('thread')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1121 11.5z"/></svg>Trả lời trong chuỗi</div>
+    <div class="it" onclick="msgAct('copy')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>Sao chép</div>
+    <div class="it danger" onclick="msgAct('recall')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9"/><path d="M3 4v4h4"/></svg>Thu hồi</div>
+    <div class="it danger" onclick="msgAct('delete')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/></svg>Xóa</div>
+  </div>
+
+<script>
+  // Desktop dùng shell 3 cột; màn hẹp chuyển sang bản mobile hiện có
+  function goMobileIfNarrow(){ if(window.innerWidth < 1024) location.replace('messages.html'); }
+  goMobileIfNarrow();
+  window.addEventListener('resize', goMobileIfNarrow);
+
+  var COLORS = {rn:'linear-gradient(135deg,#F5C543,#9B6BF0)', leaf:'linear-gradient(135deg,#1FB6D6,#1877F2)', dark:'linear-gradient(135deg,#3A1C5A,#7B2FF7)', land:'linear-gradient(135deg,#4FA8F5,#16A085)', gray:'#5B6470'};
+  var convs = [
+    {id:'g1', name:'rtetetet, account001, Chang...', av:'RN', color:COLORS.rn, isGroup:true, preview:'rtetetet đã thêm account001...', time:'15:55', st:'85 thành viên',
+      members:[{n:'Thành Nhân',r:'Trưởng nhóm',c:COLORS.dark,av:'TN'},{n:'Bình An',c:COLORS.leaf,av:'BA'},{n:'Bình LV',c:COLORS.land,av:'BL'},{n:'Cảnh Nguyễn',c:COLORS.rn,av:'CN'},{n:'Cao Tân',c:COLORS.gray,av:'CT'}],
+      msgs:[{text:'Phím để sau này solo'},{text:'Và đánh các kiểu đệm phức tạp'},{me:true,text:'Ko nhu cầu cao tập tay thôi cũng dc',t:'21:45'}]},
+    {id:'c1', name:'Change name55', av:'', color:COLORS.leaf, icon:'leaf', preview:'Bạn: hi', time:'11:16', st:'Truy cập 5 phút trước', msgs:[{text:'99jjjjj',t:'11:11'},{me:true,text:'hi',t:'11:16'}]},
+    {id:'a1', name:'account001', av:'200', color:COLORS.dark, preview:'Bạn: Gọi video', time:'10:42', st:'Ngoại tuyến', msgs:[{me:true,text:'Hi',t:'16:38'},{me:true,text:'Tôi yêu Việt Nam',t:'11:53'}]},
+    {id:'t1', name:'Thuận Đỗ', av:'T', color:COLORS.gray, preview:'Bạn: Hi', time:'21:55', st:'Ngoại tuyến', msgs:[{me:true,text:'Hi',t:'21:55'}]},
+    {id:'h1', name:'[2.HOÀNG TÚ]', av:'', color:COLORS.land, icon:'land', isGroup:true, preview:'', time:'', st:'Nhóm',
+      members:[{n:'Hoàng Tú',r:'Trưởng nhóm',c:COLORS.land,av:'HT'},{n:'Bạn',r:'',c:COLORS.gray,av:'R'}], msgs:[]},
+    {id:'p1', name:'+84966613625', av:'+', color:COLORS.leaf, preview:'', time:'', st:'Chưa kết bạn', msgs:[]}
+  ];
+  var active = null;
+  var list = document.getElementById('convList');
+
+  function avatarHTML(c, cls){
+    var inner = c.icon==='leaf' ? '<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 3c5 1 7 5 6 11-4 1-8-1-9-5 2 1 4 1 5 0-2-1-3-3-2-6z"/></svg>'
+      : c.icon==='land' ? '<svg viewBox="0 0 24 24" fill="#fff" opacity=".9"><path d="M4 18l4-5 3 3 4-6 5 8z"/><circle cx="8" cy="8" r="2"/></svg>'
+      : c.av;
+    return '<div class="'+cls+'" style="background:'+c.color+'">'+inner+'</div>';
+  }
+
+  convs.forEach(function(c){
+    var el = document.createElement('div');
+    el.className = 'conv'; el.dataset.id = c.id;
+    el.innerHTML = avatarHTML(c,'av') +
+      '<div class="mid"><div class="nm">'+c.name+'</div>'+(c.preview?'<div class="pv">'+c.preview+'</div>':'')+'</div>'+
+      (c.time?'<div class="tm">'+c.time+'</div>':'');
+    el.onclick = function(){ openConv(c.id); };
+    list.appendChild(el);
+  });
+
+  function openConv(id){
+    active = convs.find(function(c){ return c.id===id; });
+    document.querySelectorAll('.conv').forEach(function(e){ e.classList.toggle('active', e.dataset.id===id); });
+    // header + info
+    document.getElementById('hAv').outerHTML = avatarHTML(active,'av').replace('class="av"','class="av" id="hAv"');
+    if(!active.isGroup){ var hav=document.getElementById('hAv'); hav.style.cursor='pointer'; hav.onclick=function(){ openFriendModal && openFriendModal({name:active.name, av:active.av||active.name[0], color:active.color}); }; }
+    document.getElementById('hNm').textContent = active.name;
+    document.getElementById('hSt').textContent = active.st;
+    document.getElementById('iAv').outerHTML = avatarHTML(active,'av').replace('class="av"','class="av" id="iAv"');
+    document.getElementById('iNm').textContent = active.name;
+    // Nhóm → "Thêm thành viên"; 1-1 → "Tạo nhóm"
+    document.getElementById('qGroupLabel').textContent = active.isGroup ? 'Thêm thành viên' : 'Tạo nhóm';
+    document.getElementById('icHead').textContent = active.isGroup ? 'Thông tin nhóm' : 'Thông tin hội thoại';
+    renderMembers();
+    closeConvSearch();            // về lại view thông tin khi đổi hội thoại
+    if(typeof cancelReply==='function') cancelReply();
+    renderMsgs();
+  }
+
+  function escapeHtml(s){ return s.replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function escapeRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+
+  var ICON = {
+    emoji:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/><path d="M8.5 14.5a4 4 0 007 0" stroke-linecap="round"/></svg>',
+    reply:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17l-5-5 5-5"/><path d="M4 12h11a5 5 0 015 5v1"/></svg>',
+    forward:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 17l5-5-5-5"/><path d="M20 12H9a5 5 0 00-5 5v1"/></svg>',
+    more:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>'
+  };
+
+  // ----- Thành viên nhóm -----
+  function renderMembers(){
+    var sec = document.getElementById('membersSec');
+    if(!active.isGroup || !active.members){ sec.style.display='none'; return; }
+    sec.style.display='';
+    document.getElementById('membersTitle').textContent = 'Thành viên nhóm (' + active.members.length + ')';
+    var box = document.getElementById('memberList'); box.innerHTML='';
+    active.members.forEach(function(mem){
+      var el = document.createElement('div'); el.className='mem';
+      el.innerHTML = '<div class="a" style="background:'+mem.c+'">'+mem.av+'</div>'+
+        '<div class="nm">'+mem.n+(mem.r?'<div class="role">'+mem.r+'</div>':'')+'</div>'+
+        (mem.n==='Bạn'?'':'<button class="add" onclick="location.href=\'add-friend.html\'">Kết bạn</button>');
+      box.appendChild(el);
+    });
+  }
+
+  // ----- Tin nhắn + menu hover -----
+  function renderMsgs(){
+    var b = document.getElementById('mcBody');
+    b.innerHTML = '<div class="day">Hôm nay</div>';
+    active.msgs.forEach(function(m){
+      var row = document.createElement('div');
+      row.className = 'row' + (m.me?' me':'') + (m.rct?' has-rct':'');
+      if(!m.me) row.innerHTML = avatarHTML(active,'ra');
+      var msg = document.createElement('div'); msg.className='msg';
+      var quoteHTML = m.quote ? '<div class="q"><div class="qn">'+escapeHtml(m.quote.name)+'</div><div class="qt">'+escapeHtml(m.quote.text)+'</div></div>' : '';
+      msg.innerHTML = quoteHTML + '<span class="mt">'+escapeHtml(m.text)+'</span>' + (m.t?'<span class="t">'+m.t+'</span>':'');
+      if(m.rct){ var r=document.createElement('span'); r.className='rct'; r.textContent=m.rct+' 1'; r.onclick=function(e){ e.stopPropagation(); openReactions(m); }; msg.appendChild(r); }
+      attachActions(msg, m, {msg:m, list:active.msgs, render:renderMsgs}, replyMsg);
+      row.appendChild(msg);
+      b.appendChild(row);
+    });
+    b.scrollTop = b.scrollHeight;
+  }
+
+  // ----- Popover (picker / menu) — dùng chung qua ngữ cảnh _ctx -----
+  var _ctx = null;   // {msg, list, render}
+  function openPop(kind, btn, ctx){
+    _ctx = ctx;
+    var el = document.getElementById(kind==='picker'?'picker':'msgMenu');
+    document.getElementById('picker').classList.remove('show');
+    document.getElementById('msgMenu').classList.remove('show');
+    el.classList.add('show');
+    var r = btn.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight;
+    var left = Math.min(r.left, window.innerWidth - w - 8);
+    var top = r.top - h - 6; if(top < 8) top = r.bottom + 6;
+    el.style.left = Math.max(8,left)+'px'; el.style.top = top+'px';
+  }
+  function closePops(){ document.getElementById('picker').classList.remove('show'); document.getElementById('msgMenu').classList.remove('show'); }
+  function react(emoji){ if(_ctx){ _ctx.msg.rct = emoji; _ctx.render(); } closePops(); }
+
+  // Gắn thanh hành động (cảm xúc/trả lời/chuyển tiếp/thêm) cho 1 tin nhắn
+  function attachActions(el, m, ctx, onReply){
+    var acts = document.createElement('div'); acts.className='msg-acts';
+    acts.innerHTML = '<button title="Cảm xúc">'+ICON.emoji+'</button><button title="Trả lời">'+ICON.reply+'</button><button title="Chuyển tiếp">'+ICON.forward+'</button><button title="Thêm">'+ICON.more+'</button>';
+    var bt = acts.querySelectorAll('button');
+    bt[0].onclick=function(e){ openPop('picker', e.currentTarget, ctx); };
+    bt[1].onclick=function(){ onReply(m); };
+    bt[2].onclick=function(){ openForward(m); };
+    bt[3].onclick=function(e){ openPop('menu', e.currentTarget, ctx); };
+    el.appendChild(acts);
+  }
+
+  var replyState = null;
+  function replyMsg(m){
+    replyState = m;
+    document.getElementById('rbName').textContent = m.me ? '· Bạn' : '· ' + active.name;
+    document.getElementById('rbText').textContent = m.text;
+    document.getElementById('mcReply').classList.add('show');
+    document.getElementById('mcInput').focus();
+    closePops();
+  }
+  function cancelReply(){ replyState = null; document.getElementById('mcReply').classList.remove('show'); }
+  function msgAct(act){
+    if(!_ctx) return; var m=_ctx.msg;
+    if(act==='copy'){ navigator.clipboard && navigator.clipboard.writeText(m.text); }
+    else if(act==='thread'){ openThread(m); }
+    else if(act==='recall' || act==='delete'){ var i=_ctx.list.indexOf(m); if(i>-1){ _ctx.list.splice(i,1); _ctx.render(); } }
+    closePops();
+  }
+
+  // ----- Chủ đề (trả lời trong chuỗi) -----
+  var _thm = null;
+  function openThread(m){
+    _thm = m; if(!m.thread) m.thread = [];
+    document.getElementById('tpFrom').textContent = 'Từ: ' + (m.me ? 'Bạn' : active.name);
+    renderThread();
+    document.getElementById('threadPanel').classList.add('show');
+  }
+  function renderThread(){
+    var b = document.getElementById('tpBody'); b.innerHTML = '';
+    var root = document.createElement('div'); root.className='tp-root';
+    root.innerHTML = '<div class="rn">'+(_thm.me?'Bạn':active.name)+'</div><div class="rt">'+escapeHtml(_thm.text)+'</div>'+(_thm.t?'<div class="rtm">'+_thm.t+'</div>':'');
+    b.appendChild(root);
+    var div = document.createElement('div'); div.className='tp-div'; div.textContent = _thm.thread.length + ' phản hồi trong chủ đề'; b.appendChild(div);
+    _thm.thread.forEach(function(r){
+      var el=document.createElement('div'); el.className='tp-reply'+(r.rct?' has-rct':'');
+      el.innerHTML='<span class="mt">'+escapeHtml(r.text)+'</span><span class="t">'+r.t+'</span>';
+      if(r.rct){ var p=document.createElement('span'); p.className='rct'; p.textContent=r.rct+' 1'; p.onclick=function(e){ e.stopPropagation(); openReactions(r); }; el.appendChild(p); }
+      attachActions(el, r, {msg:r, list:_thm.thread, render:renderThread}, function(m){ var i=document.getElementById('tpInput'); i.value='↩ '+m.text+' '; i.focus(); });
+      b.appendChild(el);
+    });
+    b.scrollTop = b.scrollHeight;
+  }
+  function sendThread(){
+    var i = document.getElementById('tpInput'); if(!_thm || !i.value.trim()) return;
+    _thm.thread.push({text:i.value.trim(), t:nowHH()}); i.value=''; renderThread();
+  }
+  function closeThread(){ document.getElementById('threadPanel').classList.remove('show'); }
+  document.getElementById('tpInput').addEventListener('keydown', function(e){ if(e.key==='Enter') sendThread(); });
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.msg-acts') && !e.target.closest('.pop')) closePops();
+  });
+
+  // ----- Tìm kiếm trong trò chuyện -----
+  function openConvSearch(){
+    document.getElementById('infoCol').classList.add('show');
+    document.getElementById('infoToggle').classList.add('active');
+    document.getElementById('infoView').style.display='none';
+    document.getElementById('searchView').classList.add('show');
+    document.getElementById('convSearch').focus();
+  }
+  function closeConvSearch(){
+    document.getElementById('searchView').classList.remove('show');
+    document.getElementById('infoView').style.display='';
+    var s=document.getElementById('convSearch'); if(s) s.value='';
+    document.getElementById('svCount').textContent='';
+    clearHighlight();
+  }
+  function clearHighlight(){ document.querySelectorAll('#mcBody .mt').forEach(function(el){ if(el.dataset.raw!=null){ el.textContent=el.dataset.raw; } }); }
+  function doConvSearch(){
+    var term=document.getElementById('convSearch').value.trim(), count=0;
+    document.querySelectorAll('#mcBody .mt').forEach(function(el){
+      var raw = el.dataset.raw!=null ? el.dataset.raw : el.textContent; el.dataset.raw = raw;
+      if(term){ var re=new RegExp('('+escapeRe(term)+')','gi'); var m=raw.match(re);
+        if(m){ el.innerHTML=raw.replace(re,'<mark>$1</mark>'); count+=m.length; } else el.textContent=raw; }
+      else el.textContent=raw;
+    });
+    document.getElementById('svCount').textContent = term ? (count+' kết quả') : '';
+  }
+
+  function sendMsg(){
+    var i = document.getElementById('mcInput');
+    if(!active || !i.value.trim()) return;
+    var t = new Date(), hh = String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0');
+    var msg = {me:true, text:i.value.trim(), t:hh};
+    if(replyState){ msg.quote = {name: replyState.me ? 'Bạn' : active.name, text: replyState.text}; cancelReply(); }
+    active.msgs.push(msg);
+    i.value=''; renderMsgs();
+  }
+  document.getElementById('mcInput').addEventListener('keydown', function(e){ if(e.key==='Enter') sendMsg(); });
+
+  function toggleInfo(){
+    document.getElementById('infoCol').classList.toggle('show');
+    document.getElementById('infoToggle').classList.toggle('active');
+  }
+  // ----- Modal Chia sẻ (chuyển tiếp) -----
+  var _fwd = null;
+  function nowHH(){ var t=new Date(); return String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0'); }
+  function openForward(m){
+    _fwd = m; closePops();
+    document.getElementById('fwPreview').textContent = m.text;
+    renderFwList(''); document.getElementById('fwOk').disabled = true;
+    document.getElementById('fwOverlay').classList.add('show');
+  }
+  function renderFwList(filter){
+    var box=document.getElementById('fwList'); box.innerHTML='';
+    convs.filter(function(c){ return !filter || c.name.toLowerCase().indexOf(filter.toLowerCase())>-1; }).forEach(function(c){
+      var el=document.createElement('label'); el.className='fw-item';
+      el.innerHTML='<input type="checkbox" value="'+c.id+'" onchange="fwUpdate()">'+avatarHTML(c,'av')+'<span class="nm">'+c.name+'</span>';
+      box.appendChild(el);
+    });
+  }
+  function fwFilter(v){ renderFwList(v); fwUpdate(); }
+  function fwUpdate(){ document.getElementById('fwOk').disabled = document.querySelectorAll('#fwList input:checked').length===0; }
+  function closeForward(){ document.getElementById('fwOverlay').classList.remove('show'); _fwd=null; }
+  function doForward(){
+    var checked=document.querySelectorAll('#fwList input:checked'), reRender=false;
+    checked.forEach(function(ch){ var c=convs.find(function(x){return x.id===ch.value;}); if(c){ c.msgs.push({me:true,text:_fwd.text,t:nowHH()}); if(active&&c.id===active.id) reRender=true; } });
+    if(reRender) renderMsgs();
+    closeForward();
+  }
+
+  // ----- Modal Biểu cảm -----
+  function openReactions(m){
+    if(!m.rct) return;
+    var reactor = {name:'Bạn', av:'B', c:COLORS.dark, emoji:m.rct};   // người đã thả (demo)
+    document.getElementById('rxTabs').innerHTML =
+      '<div class="rx-tab active"><span>Tất cả</span><span>1</span></div>'+
+      '<div class="rx-tab"><span>'+m.rct+'</span><span>1</span></div>';
+    document.getElementById('rxPeople').innerHTML =
+      '<div class="rx-person"><div class="av" style="background:'+reactor.c+'">'+reactor.av+'</div>'+
+      '<span class="nm">'+reactor.name+'</span><span class="emo">'+reactor.emoji+' 1</span></div>';
+    document.getElementById('rxOverlay').classList.add('show');
+  }
+  function closeReactions(){ document.getElementById('rxOverlay').classList.remove('show'); }
+  document.getElementById('rxOverlay').addEventListener('click', function(e){ if(e.target===this) closeReactions(); });
+
+  openConv('a1');  // mở sẵn hội thoại đầu
+</script>
+<script src="account-modal.js"></script>
+<script src="desktop-modals.js"></script>
+</body>
+</html>

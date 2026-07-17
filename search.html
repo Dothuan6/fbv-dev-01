@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Tìm kiếm</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+
+  /* Header tìm kiếm */
+  .sr-header{background:var(--header-gradient);display:flex;align-items:center;gap:14px;padding:14px var(--screen-padding)}
+  .sr-header .back{background:none;border:none;cursor:pointer;color:#fff;display:flex;padding:0}
+  .sr-header .back svg{width:26px;height:26px}
+  .sr-field{flex:1;display:flex;align-items:center;gap:10px;background:#fff;border-radius:24px;padding:9px 14px}
+  .sr-field svg.s{width:20px;height:20px;color:var(--text-secondary);flex:none}
+  .sr-field input{flex:1;border:none;outline:none;font-size:17px;background:transparent;color:var(--text-primary)}
+  .sr-field .clear{background:#C7CCD1;border:none;border-radius:50%;width:22px;height:22px;display:none;align-items:center;justify-content:center;cursor:pointer;flex:none}
+  .sr-field .clear svg{width:13px;height:13px;color:#fff}
+  .sr-field .clear.show{display:flex}
+  .sr-header .qr{width:26px;height:26px;color:#fff;flex:none;cursor:pointer}
+
+  /* Kết quả */
+  .sr-list{flex:1;overflow-y:auto}
+  .sr-item{display:flex;align-items:center;gap:16px;padding:14px var(--screen-padding)}
+  .sr-item .avatar{width:54px;height:54px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:16px;overflow:hidden}
+  .sr-item .nm{flex:1;min-width:0;font-size:18px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sr-item .call{width:30px;height:30px;color:var(--primary);flex:none;cursor:pointer}
+  .av-gray{background:#5B6470}
+  .av-dark{background:linear-gradient(135deg,#3A1C5A,#7B2FF7);font-size:13px}
+  .av-plus-gray{background:#5B6470}
+  .av-plus-blue{background:linear-gradient(135deg,#4FA8F5,#1877F2)}
+  .av-land{background:linear-gradient(135deg,#4FA8F5,#16A085)}
+
+  .btn-add{
+    background:var(--primary);color:#fff;border:none;border-radius:12px;
+    padding:11px 22px;font-size:16px;font-weight:600;cursor:pointer;flex:none;
+  }
+  .btn-add.sent{background:var(--surface-field);color:var(--text-secondary)}
+
+  .sr-empty{text-align:center;color:var(--text-secondary);font-size:16px;padding:40px 0;display:none}
+</style>
+</head>
+<body class="app-body">
+  <div class="app-screen">
+
+    <!-- Header -->
+    <header class="sr-header">
+      <button class="back" aria-label="Quay lại" onclick="window.location.href='messages.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="sr-field">
+        <svg class="s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+        <input type="text" id="q" placeholder="Tìm kiếm" oninput="filter()" autofocus />
+        <button class="clear" id="clearBtn" onclick="clearQ()" aria-label="Xóa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
+      </div>
+      <svg class="qr" onclick="location.href='scan-qr.html'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><line x1="14" y1="14" x2="14" y2="21"/><line x1="18" y1="14" x2="18" y2="18"/><line x1="21" y1="17" x2="21" y2="21"/></svg>
+    </header>
+
+    <!-- Kết quả -->
+    <div class="sr-list" id="list">
+
+      <div class="sr-item" data-name="rtetetet">
+        <div class="avatar av-gray">R</div>
+        <div class="nm">rtetetet</div>
+      </div>
+
+      <div class="sr-item" data-name="account001">
+        <div class="avatar av-dark">200</div>
+        <div class="nm">account001</div>
+        <svg class="call" onclick="location.href='call.html?type=voice&name=account001'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4c.5 0 1 .3 1.2.8l1.2 2.8c.2.5.1 1-.3 1.4l-1.3 1.3c1 2 2.6 3.6 4.6 4.6l1.3-1.3c.4-.4.9-.5 1.4-.3l2.8 1.2c.5.2.8.7.8 1.2v2.8c0 .8-.7 1.5-1.5 1.4C9.6 19.6 4.4 14.4 4 6.5 3.9 5.7 4.6 5 5.4 5z"/></svg>
+      </div>
+
+      <div class="sr-item" data-name="+84912345678">
+        <div class="avatar av-plus-gray">+</div>
+        <div class="nm">+84912345678</div>
+        <button class="btn-add" onclick="addFriend(this)">Kết bạn</button>
+      </div>
+
+      <div class="sr-item" data-name="+84966613625">
+        <div class="avatar av-plus-blue">+</div>
+        <div class="nm">+84966613625</div>
+        <button class="btn-add" onclick="addFriend(this)">Kết bạn</button>
+      </div>
+
+      <div class="sr-item" data-name="[2.hoàng tú]">
+        <div class="avatar av-land"><svg viewBox="0 0 24 24" fill="#fff" opacity=".9"><path d="M4 18l4-5 3 3 4-6 5 8z"/><circle cx="8" cy="8" r="2"/></svg></div>
+        <div class="nm">[2.HOÀNG TÚ]</div>
+        <button class="btn-add" onclick="addFriend(this)">Kết bạn</button>
+      </div>
+
+      <div class="sr-empty" id="empty">Không tìm thấy kết quả</div>
+    </div>
+
+  </div>
+
+<script>
+  var input = document.getElementById('q');
+  var clearBtn = document.getElementById('clearBtn');
+  var items = Array.from(document.querySelectorAll('.sr-item'));
+
+  function filter(){
+    var q = input.value.trim().toLowerCase();
+    clearBtn.classList.toggle('show', q.length > 0);
+    var visible = 0;
+    items.forEach(function(it){
+      var match = it.dataset.name.indexOf(q) !== -1;
+      it.style.display = match ? '' : 'none';
+      if(match) visible++;
+    });
+    document.getElementById('empty').style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+  function clearQ(){ input.value = ''; input.focus(); filter(); }
+
+  function addFriend(btn){
+    btn.textContent = 'Đã gửi';
+    btn.classList.add('sent');
+    btn.disabled = true;
+  }
+</script>
+</body>
+</html>

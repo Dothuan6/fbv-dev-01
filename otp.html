@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Nhập mã xác thực</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .otp .subtitle{text-align:center;color:var(--text-primary);font-size:17px;line-height:1.5;margin-bottom:24px}
+  .otp .phone{font-weight:600}
+  .otp .resend{text-align:center;margin:20px 0 24px}
+  .otp .resend .caption{display:block;margin-bottom:4px}
+  .otp .resend .countdown{font-size:16px;font-weight:600;color:var(--text-primary)}
+</style>
+</head>
+<body class="auth-body">
+
+  <!-- Brand panel (desktop) -->
+  <section class="brand-panel">
+    <div class="logo-mark"><div class="core"><span></span></div></div>
+    <div class="wordmark">FBV.ONE</div>
+    <p class="tagline">Kết nối tức thì — nhắn tin, gọi thoại và video an toàn trên mọi thiết bị.</p>
+  </section>
+
+  <!-- Form panel -->
+  <section class="form-panel">
+    <div class="card otp">
+      <button class="back-btn" aria-label="Quay lại" onclick="history.back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1C1C1E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+
+      <h1 class="title">Nhập mã xác thực</h1>
+      <p class="subtitle">Nhập dãy 6 số đang được gửi đến số điện thoại<br /><span class="phone">+84776562237</span></p>
+
+      <form onsubmit="return false">
+        <div class="otp-row" id="otpRow">
+          <input class="otp-cell" type="tel" inputmode="numeric" maxlength="1" autofocus />
+          <input class="otp-cell" type="tel" inputmode="numeric" maxlength="1" />
+          <input class="otp-cell" type="tel" inputmode="numeric" maxlength="1" />
+          <input class="otp-cell" type="tel" inputmode="numeric" maxlength="1" />
+          <input class="otp-cell" type="tel" inputmode="numeric" maxlength="1" />
+          <input class="otp-cell" type="tel" inputmode="numeric" maxlength="1" />
+        </div>
+
+        <div class="resend">
+          <span class="caption">Bạn không nhận được mã xác thực?</span>
+          <span class="countdown" id="countdown">Gửi lại mã (119s)</span>
+        </div>
+
+        <button class="btn btn-primary" onclick="window.location.href='messages.html'">Xác nhận</button>
+      </form>
+    </div>
+  </section>
+
+<script>
+  // Tự nhảy ô khi nhập / quay lại khi xóa
+  var cells = Array.from(document.querySelectorAll('.otp-cell'));
+  cells.forEach(function(cell, i){
+    cell.addEventListener('input', function(){
+      this.value = this.value.replace(/\D/g,'');           // chỉ nhận số
+      if(this.value && i < cells.length - 1) cells[i+1].focus();
+    });
+    cell.addEventListener('keydown', function(e){
+      if(e.key === 'Backspace' && !this.value && i > 0) cells[i-1].focus();
+    });
+    cell.addEventListener('paste', function(e){
+      var data = (e.clipboardData.getData('text') || '').replace(/\D/g,'').slice(0,6).split('');
+      if(data.length){ e.preventDefault(); data.forEach(function(d,k){ if(cells[k]) cells[k].value = d; }); cells[Math.min(data.length, cells.length-1)].focus(); }
+    });
+  });
+
+  // Đếm ngược gửi lại mã
+  var sec = 119, el = document.getElementById('countdown');
+  var timer = setInterval(function(){
+    sec--;
+    if(sec <= 0){ clearInterval(timer); el.innerHTML = '<a href="#" style="color:var(--primary-link);text-decoration:none">Gửi lại mã</a>'; }
+    else el.textContent = 'Gửi lại mã (' + sec + 's)';
+  }, 1000);
+</script>
+</body>
+</html>

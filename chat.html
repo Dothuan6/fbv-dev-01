@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Thuận Đỗ</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .chat-screen{
+    width:100%;max-width:480px;height:100vh;background:var(--bg-chat);
+    display:flex;flex-direction:column;position:relative;
+  }
+
+  /* Header gradient */
+  .chat-header{
+    background:var(--header-gradient);color:#fff;
+    display:flex;align-items:center;gap:14px;padding:12px var(--screen-padding);
+  }
+  .chat-header .back{background:none;border:none;cursor:pointer;padding:0;display:flex;color:#fff}
+  .chat-header .back svg{width:26px;height:26px}
+  .chat-header .who{flex:1;min-width:0}
+  .chat-header .who .nm{font-size:18px;font-weight:700;line-height:1.2}
+  .chat-header .who .st{font-size:14px;color:rgba(255,255,255,.85)}
+  .chat-header .h-icon{width:26px;height:26px;cursor:pointer;flex:none}
+  .chat-header .ava{width:38px;height:38px;border-radius:50%;background:#8E8E93;flex:none;display:flex;align-items:center;justify-content:center}
+  .chat-header .ava svg{width:22px;height:22px;color:#fff}
+
+  /* Body */
+  .chat-body{flex:1;overflow-y:auto;padding:16px var(--screen-padding);display:flex;flex-direction:column;gap:8px}
+  .day-label{align-self:center;color:var(--text-secondary);font-size:14px;margin:8px 0}
+  .bubble{cursor:default;user-select:text;position:relative}
+
+  /* Composer */
+  .composer{
+    background:var(--bg-base);border-top:1px solid var(--border);
+    display:flex;align-items:center;gap:14px;padding:12px var(--screen-padding);
+  }
+  .composer input{flex:1;border:none;outline:none;font-size:16px;background:transparent;color:var(--text-primary)}
+  .composer input::placeholder{color:var(--text-secondary)}
+  .composer .c-icon{width:26px;height:26px;cursor:pointer;color:var(--text-secondary);flex:none}
+</style>
+</head>
+<body class="app-body">
+  <div class="chat-screen">
+
+    <!-- Header -->
+    <header class="chat-header">
+      <button class="back" aria-label="Quay lại" onclick="window.location.href='messages.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="who">
+        <div class="nm">Thuận Đỗ</div>
+        <div class="st">Ngoại tuyến</div>
+      </div>
+      <svg class="h-icon" onclick="startCall('voice')" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4c.5 0 1 .3 1.2.8l1.2 2.8c.2.5.1 1-.3 1.4l-1.3 1.3c1 2 2.6 3.6 4.6 4.6l1.3-1.3c.4-.4.9-.5 1.4-.3l2.8 1.2c.5.2.8.7.8 1.2v2.8c0 .8-.7 1.5-1.5 1.4C9.6 19.6 4.4 14.4 4 6.5 3.9 5.7 4.6 5 5.4 5z"/></svg>
+      <svg class="h-icon" onclick="startCall('video')" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>
+      <div class="ava" style="cursor:pointer" onclick="window.location.href='profile.html'"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6z"/></svg></div>
+    </header>
+
+    <!-- Body -->
+    <div class="chat-body" id="chatBody">
+      <div class="day-label">Hôm nay</div>
+      <div class="bubble received"><span class="msg-text">99jjjjj</span><span class="time">11:11</span></div>
+      <div class="bubble received"><span class="msg-text">hi</span><span class="time">11:16</span></div>
+      <div class="bubble sent"><span class="msg-text">Hi</span><span class="time">16:38</span></div>
+    </div>
+
+    <!-- Thanh trả lời -->
+    <div class="reply-bar">
+      <div class="rb-content">
+        <div class="rb-name" id="rbName">Trả lời:</div>
+        <div class="rb-text" id="rbText"></div>
+      </div>
+      <button class="rb-close" onclick="cancelReply()" aria-label="Hủy trả lời">&times;</button>
+    </div>
+
+    <!-- Composer -->
+    <div class="composer">
+      <input type="text" id="msgInput" placeholder="Tin nhắn" />
+      <svg class="c-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.5l-8.5 8.5a5 5 0 01-7-7l8.5-8.5a3.5 3.5 0 015 5l-8.5 8.5a2 2 0 01-3-3l8-8"/></svg>
+      <svg class="c-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M5 19l5-5 3 3 3-3 3 3"/></svg>
+    </div>
+
+  </div>
+
+  <!-- Overlay + menu group -->
+  <div class="ctx-overlay" id="ctxOverlay" onclick="closeCtx()"></div>
+  <div class="ctx-group" id="ctxGroup">
+    <div class="ctx-reactions">
+      <span onclick="react('👍')">👍</span>
+      <span onclick="react('❤️')">❤️</span>
+      <span onclick="react('😂')">😂</span>
+      <span onclick="react('😮')">😮</span>
+      <span onclick="react('😢')">😢</span>
+      <span onclick="react('😡')">😡</span>
+    </div>
+    <div class="ctx-menu">
+      <div class="ctx-item" onclick="ctxAction('reply')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17l-5-5 5-5"/><path d="M4 12h11a5 5 0 015 5v1"/></svg>
+        Trả lời
+      </div>
+      <div class="ctx-item" onclick="ctxAction('thread')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1121 11.5z"/></svg>
+        Trả lời trong chuỗi
+      </div>
+      <div class="ctx-item" onclick="ctxAction('copy')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
+        Sao chép
+      </div>
+      <div class="ctx-item" onclick="ctxAction('forward')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 17l5-5-5-5"/><path d="M20 12H9a5 5 0 00-5 5v1"/></svg>
+        Chuyển tiếp
+      </div>
+      <div class="ctx-item danger" onclick="ctxAction('deleteAll')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-12.4 7.5L3 21l2-5.6A8.5 8.5 0 1121 11.5z"/><line x1="9.5" y1="9" x2="14.5" y2="14"/><line x1="14.5" y1="9" x2="9.5" y2="14"/></svg>
+        Xóa với mọi người
+      </div>
+      <div class="ctx-item danger" onclick="ctxAction('deleteMe')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/></svg>
+        Xoá chỉ bên tôi
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom sheet: danh sách cảm xúc -->
+  <div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet()"></div>
+  <div class="sheet" id="reactSheet">
+    <h3>Cảm xúc</h3>
+    <div class="summary"><span class="reaction" id="sheetSummary"></span></div>
+    <div class="reactor" onclick="removeReaction()">
+      <div class="avatar">B</div>
+      <div class="info"><div class="nm">Bạn</div><div class="sub">Nhấn để gỡ</div></div>
+      <div class="emo" id="reactorEmo"></div>
+    </div>
+  </div>
+
+<script>
+  var body = document.getElementById('chatBody');
+  var overlay = document.getElementById('ctxOverlay');
+  var group = document.getElementById('ctxGroup');
+  var target = null;
+  var replyState = null;   // {name, text} khi đang trả lời
+  var reactedBubble = null;
+
+  // Gửi tin nhắn
+  var input = document.getElementById('msgInput');
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' && this.value.trim()){
+      var t = new Date();
+      var hh = String(t.getHours()).padStart(2,'0') + ':' + String(t.getMinutes()).padStart(2,'0');
+      var b = document.createElement('div');
+      b.className = 'bubble sent';
+      if(replyState){
+        var q = document.createElement('div'); q.className = 'quote';
+        var qn = document.createElement('div'); qn.className = 'q-name'; qn.textContent = 'Trả lời: ' + replyState.name;
+        var qt = document.createElement('div'); qt.className = 'q-text'; qt.textContent = replyState.text;
+        q.appendChild(qn); q.appendChild(qt); b.appendChild(q);
+      }
+      var msg = document.createElement('span'); msg.className = 'msg-text'; msg.textContent = this.value.trim();
+      var time = document.createElement('span'); time.className = 'time'; time.textContent = hh;
+      b.appendChild(msg); b.appendChild(time);
+      addDotBtn(b);
+      bindCtx(b);
+      body.appendChild(b);
+      body.scrollTop = body.scrollHeight;
+      this.value = '';
+      cancelReply();
+    }
+  });
+
+  // Tên người gửi của 1 bóng chat
+  function senderName(b){
+    if(b.classList.contains('sent')) return 'bạn';
+    var nm = document.querySelector('.chat-header .nm');
+    return nm ? nm.textContent.trim() : 'Người dùng';
+  }
+
+  // Bật chế độ trả lời
+  function setReply(b){
+    replyState = { name: senderName(b), text: getText(b) };
+    document.getElementById('rbName').textContent = 'Trả lời: ' + replyState.name;
+    document.getElementById('rbText').textContent = replyState.text;
+    document.querySelector('.chat-screen').classList.add('replying');
+    input.focus();
+  }
+  function cancelReply(){
+    replyState = null;
+    document.querySelector('.chat-screen').classList.remove('replying');
+  }
+
+  // Thêm nút 3 chấm vào bubble
+  function addDotBtn(bubble){
+    var btn = document.createElement('button');
+    btn.className = 'dot-btn'; btn.setAttribute('aria-label','Tùy chọn');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
+    btn.addEventListener('click', function(e){ e.stopPropagation(); openCtx(bubble); });
+    bubble.appendChild(btn);
+  }
+
+  // Chuột phải / nhấn giữ
+  function bindCtx(bubble){
+    bubble.addEventListener('contextmenu', function(e){ e.preventDefault(); openCtx(bubble); });
+    var timer;
+    bubble.addEventListener('touchstart', function(){ timer = setTimeout(function(){ openCtx(bubble); }, 500); });
+    bubble.addEventListener('touchend', function(){ clearTimeout(timer); });
+    bubble.addEventListener('touchmove', function(){ clearTimeout(timer); });
+  }
+
+  // Mở menu, neo theo vị trí bubble
+  function openCtx(bubble){
+    if(target) target.classList.remove('selected');
+    target = bubble; target.classList.add('selected');
+    overlay.classList.add('show');
+    group.classList.add('show');
+
+    var r = bubble.getBoundingClientRect();
+    var gw = group.offsetWidth, gh = group.offsetHeight;
+    var left = bubble.classList.contains('sent') ? r.right - gw : r.left;   // canh theo phía bubble
+    left = Math.max(8, Math.min(left, window.innerWidth - gw - 8));
+    var top = r.bottom + 10;
+    if(top + gh > window.innerHeight - 8) top = Math.max(8, r.top - gh - 10); // không đủ chỗ → hiện phía trên
+    group.style.left = left + 'px';
+    group.style.top = top + 'px';
+  }
+
+  function closeCtx(){
+    overlay.classList.remove('show');
+    group.classList.remove('show');
+    if(target){ target.classList.remove('selected'); target = null; }
+  }
+
+  function react(emoji){
+    if(!target) return;
+    var foot = target.querySelector('.foot');
+    if(!foot){
+      foot = document.createElement('div'); foot.className = 'foot';
+      var time = target.querySelector('.time');
+      if(time) foot.appendChild(time);     // gom giờ vào hàng footer
+      target.appendChild(foot);
+    }
+    var old = foot.querySelector('.reaction'); if(old) old.remove();
+    var r = document.createElement('span'); r.className = 'reaction'; r.textContent = emoji + ' 1';
+    bindReaction(r, target);
+    foot.appendChild(r);
+    closeCtx();
+  }
+
+  // Nhấn vào pill cảm xúc → mở bottom sheet
+  function bindReaction(pill, bubble){
+    pill.addEventListener('click', function(e){ e.stopPropagation(); openReactionSheet(bubble); });
+  }
+  function openReactionSheet(bubble){
+    var pill = bubble.querySelector('.reaction'); if(!pill) return;
+    reactedBubble = bubble;
+    var emoji = pill.textContent.trim().split(' ')[0];
+    document.getElementById('sheetSummary').textContent = pill.textContent;
+    document.getElementById('reactorEmo').textContent = emoji;
+    document.getElementById('sheetOverlay').classList.add('show');
+    document.getElementById('reactSheet').classList.add('show');
+  }
+  function closeSheet(){
+    document.getElementById('sheetOverlay').classList.remove('show');
+    document.getElementById('reactSheet').classList.remove('show');
+  }
+  function removeReaction(){
+    if(reactedBubble){
+      var p = reactedBubble.querySelector('.reaction'); if(p) p.remove();
+      reactedBubble = null;
+    }
+    closeSheet();
+  }
+
+  function getText(b){ var m = b && b.querySelector('.msg-text'); return m ? m.textContent : ''; }
+
+  function ctxAction(act){
+    if(!target) return;
+    var text = getText(target);
+    if(act === 'copy'){ navigator.clipboard && navigator.clipboard.writeText(text); }
+    else if(act === 'deleteAll' || act === 'deleteMe'){ target.remove(); target = null; }
+    else if(act === 'thread'){ window.location.href = 'thread.html'; return; }
+    else if(act === 'reply'){ setReply(target); }
+    else if(act === 'forward'){ alert('Chuyển tiếp: "' + text + '"'); }
+    closeCtx();
+  }
+
+  // Khởi tạo cho bubble có sẵn
+  document.querySelectorAll('.bubble').forEach(function(b){ addDotBtn(b); bindCtx(b); });
+  window.addEventListener('resize', closeCtx);
+
+  // Bắt đầu cuộc gọi (voice/video) với tên ở header
+  function startCall(kind){
+    var nm = document.querySelector('.chat-header .nm');
+    var name = nm ? encodeURIComponent(nm.textContent.trim()) : '';
+    window.location.href = 'call.html?type=' + kind + '&name=' + name;
+  }
+</script>
+</body>
+</html>

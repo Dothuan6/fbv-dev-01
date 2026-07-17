@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FBV.ONE — Lời mời kết bạn</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+
+  .fr-header{background:var(--header-gradient);color:#fff;display:flex;align-items:center;gap:16px;padding:16px var(--screen-padding)}
+  .fr-header .back{background:none;border:none;cursor:pointer;color:#fff;display:flex;padding:0}
+  .fr-header .back svg{width:26px;height:26px}
+  .fr-header .ttl{font-size:20px;font-weight:700}
+
+  /* Tabs Đã nhận / Đã gửi */
+  .fr-tabs{display:flex;border-bottom:1px solid var(--border)}
+  .fr-tab{flex:1;text-align:center;padding:16px 0;font-size:18px;color:var(--text-secondary);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+  .fr-tab.active{color:var(--primary);font-weight:600;border-bottom-color:var(--primary)}
+
+  .panel{display:none;flex:1}
+  .panel.active{display:block}
+
+  .fr-item{display:flex;align-items:center;gap:16px;padding:14px var(--screen-padding)}
+  .fr-item .avatar{width:54px;height:54px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:16px;overflow:hidden}
+  .fr-item .meta{flex:1;min-width:0}
+  .fr-item .nm{font-size:18px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fr-item .sub{font-size:15px;color:var(--text-secondary);margin-top:2px}
+  .av-land{background:linear-gradient(135deg,#4FA8F5,#16A085)}
+  .av-plus-blue{background:linear-gradient(135deg,#4FA8F5,#1877F2)}
+  .av-plus-gray{background:#5B6470}
+
+  .btn-revoke{
+    background:#fff;color:var(--text-primary);border:1px solid var(--border);border-radius:12px;
+    padding:11px 20px;font-size:16px;cursor:pointer;flex:none;
+  }
+  .btn-revoke:hover{background:var(--bg-subtle)}
+  .btn-revoke.done{color:var(--text-secondary)}
+
+  /* Nút cho lời mời đã nhận */
+  .fr-actions{display:flex;gap:8px;flex:none}
+  .btn-reject{background:var(--surface-field);color:var(--text-primary);border:1px solid var(--border);border-radius:12px;padding:10px 16px;font-size:15px;cursor:pointer}
+  .btn-reject:hover{background:#EAECEF}
+  .btn-accept{background:var(--primary);color:#fff;border:none;border-radius:12px;padding:10px 16px;font-size:15px;font-weight:600;cursor:pointer}
+  .btn-accept:hover{filter:brightness(1.05)}
+  .fr-status{flex:none;font-size:15px;color:var(--text-secondary)}
+
+  .fr-empty{text-align:center;color:var(--text-secondary);font-size:16px;padding:48px 0}
+</style>
+</head>
+<body class="app-body">
+  <div class="app-screen">
+
+    <!-- Header -->
+    <header class="fr-header">
+      <button class="back" aria-label="Quay lại" onclick="location.href='contacts.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="ttl">Lời mời kết bạn</div>
+    </header>
+
+    <!-- Tabs -->
+    <div class="fr-tabs">
+      <div class="fr-tab" onclick="showTab('received',this)">Đã nhận (2)</div>
+      <div class="fr-tab active" onclick="showTab('sent',this)">Đã gửi (3)</div>
+    </div>
+
+    <!-- Đã nhận -->
+    <div class="panel" id="received">
+      <div class="fr-item">
+        <div class="avatar av-plus-blue">RN</div>
+        <div class="meta"><div class="nm">rtetetet</div><div class="sub">Muốn kết bạn với bạn</div></div>
+        <div class="fr-actions">
+          <button class="btn-reject" onclick="respond(this,'Đã từ chối')">Từ chối</button>
+          <button class="btn-accept" onclick="respond(this,'Bạn bè')">Chấp nhận</button>
+        </div>
+      </div>
+      <div class="fr-item">
+        <div class="avatar av-land"><svg viewBox="0 0 24 24" fill="#fff" opacity=".9"><path d="M4 18l4-5 3 3 4-6 5 8z"/><circle cx="8" cy="8" r="2"/></svg></div>
+        <div class="meta"><div class="nm">Change name55</div><div class="sub">Muốn kết bạn với bạn</div></div>
+        <div class="fr-actions">
+          <button class="btn-reject" onclick="respond(this,'Đã từ chối')">Từ chối</button>
+          <button class="btn-accept" onclick="respond(this,'Bạn bè')">Chấp nhận</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Đã gửi -->
+    <div class="panel active" id="sent">
+      <div class="fr-item">
+        <div class="avatar av-land"><svg viewBox="0 0 24 24" fill="#fff" opacity=".9"><path d="M4 18l4-5 3 3 4-6 5 8z"/><circle cx="8" cy="8" r="2"/></svg></div>
+        <div class="meta"><div class="nm">[2.HOÀNG TÚ]</div><div class="sub">Có thể kết bạn</div></div>
+        <button class="btn-revoke" onclick="revoke(this)">Thu hồi</button>
+      </div>
+      <div class="fr-item">
+        <div class="avatar av-plus-blue">+</div>
+        <div class="meta"><div class="nm">+84966613625</div><div class="sub">Có thể kết bạn</div></div>
+        <button class="btn-revoke" onclick="revoke(this)">Thu hồi</button>
+      </div>
+      <div class="fr-item">
+        <div class="avatar av-plus-gray">+</div>
+        <div class="meta"><div class="nm">+84912345678</div><div class="sub">Có thể kết bạn</div></div>
+        <button class="btn-revoke" onclick="revoke(this)">Thu hồi</button>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  function showTab(id, el){
+    document.querySelectorAll('.fr-tab').forEach(function(t){ t.classList.remove('active'); });
+    el.classList.add('active');
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id === id); });
+  }
+  function revoke(btn){ btn.textContent = 'Đã thu hồi'; btn.classList.add('done'); btn.disabled = true; }
+  // Phản hồi lời mời đã nhận: thay 2 nút bằng trạng thái
+  function respond(btn, status){
+    var actions = btn.parentNode;
+    var span = document.createElement('span');
+    span.className = 'fr-status'; span.textContent = status;
+    actions.parentNode.replaceChild(span, actions);
+  }
+</script>
+</body>
+</html>
