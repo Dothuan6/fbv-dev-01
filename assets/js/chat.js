@@ -156,3 +156,28 @@ function startCall(kind){
   var name = nm ? encodeURIComponent(nm.textContent.trim()) : '';
   window.location.href = 'call.html?type=' + kind + '&name=' + name;
 }
+
+// Mở đúng chuỗi từ thread-box trong bubble: gom dữ liệu → sessionStorage → thread.html
+function openThreadBox(btn){
+  var bubble = btn.closest('.bubble');
+  var isMe = bubble.classList.contains('sent');
+  var headerName = document.querySelector('.chat-header .nm').textContent.trim();
+  // Tên người gửi tin gốc: sent → Bạn; received → span.sender (nhóm) hoặc tên ở header (1-1)
+  var senderEl = bubble.querySelector('.sender');
+  var rootSender = isMe ? 'Bạn' : (senderEl ? senderEl.textContent.trim() : headerName);
+  var data = {
+    from: rootSender,
+    av: rootSender[0].toUpperCase(),
+    text: bubble.querySelector('.msg-text').textContent,
+    time: (bubble.querySelector('.time')||{}).textContent || '',
+    replies: []
+  };
+  bubble.querySelectorAll('.thread-box .trep').forEach(function(r){
+    data.replies.push({
+      n: r.querySelector('.tn').textContent.trim(),
+      t: r.querySelector('.tt').textContent.trim()
+    });
+  });
+  sessionStorage.setItem('threadData', JSON.stringify(data));
+  window.location.href = 'thread.html';
+}

@@ -43,3 +43,7 @@
 .composer input::placeholder{color:var(--text-secondary)}
 .composer .c-icon{width:26px;height:26px;cursor:pointer;color:var(--text-secondary);flex:none}
 .bubble{position:relative}
+
+/* Danh sách phản hồi render động */
+#replyList{display:flex;flex-direction:column;gap:8px}
+.bubble .sender{display:block;font-size:14px;color:var(--text-secondary);margin-bottom:3px}

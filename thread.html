@@ -17,7 +17,7 @@
       </button>
       <div class="who">
         <div class="nm">Chủ đề</div>
-        <div class="st">Từ: Thuận Đỗ</div>
+        <div class="st" id="stFrom">Từ: Thuận Đỗ</div>
       </div>
     </header>
 
@@ -26,11 +26,11 @@
 
       <!-- Tin gốc -->
       <div class="root-msg">
-        <div class="avatar">R</div>
+        <div class="avatar" id="rootAv">R</div>
         <div class="root-card">
-          <div class="sender">rtetetet</div>
-          <div class="text">Hi</div>
-          <span class="time">16:38</span>
+          <div class="sender" id="rootSender">rtetetet</div>
+          <div class="text" id="rootText">Hi</div>
+          <span class="time" id="rootTime">16:38</span>
         </div>
       </div>
 
@@ -39,8 +39,10 @@
       <div class="day-label">Hôm nay</div>
 
       <!-- Phản hồi trong chuỗi -->
-      <div class="bubble sent"><span class="msg-text">hi</span><span class="time">21:43</span></div>
-      <div class="bubble sent"><span class="msg-text">Trả lời trong chuỗi</span><span class="time">21:43</span></div>
+      <div id="replyList">
+        <div class="bubble sent"><span class="msg-text">hi</span><span class="time">21:43</span></div>
+        <div class="bubble sent"><span class="msg-text">Trả lời trong chuỗi</span><span class="time">21:43</span></div>
+      </div>
 
     </div>
 

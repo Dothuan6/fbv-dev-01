@@ -130,5 +130,33 @@ function ctxAction(act){
   closeCtx();
 }
 
+// ---- Render đúng chuỗi được mở (dữ liệu từ sessionStorage 'threadData') ----
+(function(){
+  var raw = sessionStorage.getItem('threadData');
+  if(!raw) return;
+  try{
+    var d = JSON.parse(raw);
+    document.getElementById('stFrom').textContent = 'Từ: ' + d.from;
+    document.getElementById('rootAv').textContent = d.av || d.from[0];
+    document.getElementById('rootSender').textContent = d.from;
+    document.getElementById('rootText').textContent = d.text;
+    document.getElementById('rootTime').textContent = d.time || '';
+    var list = document.getElementById('replyList');
+    list.innerHTML = '';
+    (d.replies || []).forEach(function(r){
+      var b = document.createElement('div');
+      var mine = r.n === 'Bạn';
+      b.className = 'bubble ' + (mine ? 'sent' : 'received');
+      b.innerHTML = (mine ? '' : '<span class="sender">' + r.n + '</span>') +
+        '<span class="msg-text"></span>' + (r.time ? '<span class="time">' + r.time + '</span>' : '');
+      b.querySelector('.msg-text').textContent = r.t;
+      list.appendChild(b);   // bind chung ở cuối file sẽ gắn menu cho các bubble này
+    });
+    count = (d.replies || []).length;
+    document.getElementById('replyCount').firstChild.textContent = count + ' phản hồi trong chủ đề';
+  }catch(e){}
+  sessionStorage.removeItem('threadData');   // dùng xong xoá, lần sau mở mặc định
+})();
+
 document.querySelectorAll('.bubble').forEach(function(b){ addDotBtn(b); bindCtx(b); });
 window.addEventListener('resize', closeCtx);
