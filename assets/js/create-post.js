@@ -12,4 +12,5 @@ function pick(label, el){
   document.querySelectorAll('#privSheet .ck').forEach(function(c){ c.style.visibility = 'hidden'; });
   el.querySelector('.ck').style.visibility = 'visible';
   closeSheet();
+  showToast('Cập nhật quyền riêng tư thành công');
 }

@@ -73,7 +73,10 @@ function openPostMenu(e, id){
   m.style.left=Math.min(r.left,window.innerWidth-m.offsetWidth-8)+'px'; m.style.top=(r.bottom+6)+'px';
 }
 function closePop(){ document.getElementById('postMenu').classList.remove('show'); }
-function deletePost(){ posts=posts.filter(function(p){return p.id!==_pid;}); render(); closePop(); }
+function deletePost(){ posts=posts.filter(function(p){return p.id!==_pid;}); render(); closePop(); showToast('Xóa bài đăng thành công'); }
+// Menu bài đăng: chỉnh sửa quyền xem / chỉnh sửa bài đăng
+function editPostPrivacy(){ closePop(); showToast('Cập nhật quyền riêng tư thành công'); }
+function editPost(){ closePop(); showToast('Sửa bài đăng thành công'); }
 document.addEventListener('click', function(e){ if(!e.target.closest('.more') && !e.target.closest('#postMenu')) closePop(); });
 
 // Dropdown quyền xem bài đăng
@@ -88,6 +91,7 @@ function pickPriv(label, el, e){
   el.classList.add('sel');
   document.getElementById('privLabel').textContent = label;
   closePriv();
+  showToast('Cập nhật quyền riêng tư thành công');
 }
 document.addEventListener('click', function(e){ if(!e.target.closest('.priv')) closePriv(); });
 

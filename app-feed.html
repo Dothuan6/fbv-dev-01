@@ -93,8 +93,8 @@
 
   <!-- Menu bài đăng -->
   <div class="pop" id="postMenu">
-    <div class="it" onclick="closePop()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0"/></svg>Chỉnh sửa quyền xem<span class="chev">›</span></div>
-    <div class="it" onclick="closePop()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Chỉnh sửa bài đăng<span class="chev">›</span></div>
+    <div class="it" onclick="editPostPrivacy()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0"/></svg>Chỉnh sửa quyền xem<span class="chev">›</span></div>
+    <div class="it" onclick="editPost()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Chỉnh sửa bài đăng<span class="chev">›</span></div>
     <div class="it danger" onclick="deletePost()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/></svg>Xóa bài đăng</div>
   </div>
 
@@ -132,6 +132,7 @@
     </div>
   </div>
 
+<script src="assets/js/toast.js"></script>
 <script src="assets/js/app-feed.js"></script>
 <script src="assets/js/account-modal.js"></script>
 <script src="assets/js/desktop-modals.js"></script>
