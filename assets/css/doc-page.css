@@ -1,0 +1,30 @@
+/* Trang tài liệu dài (Chính sách bảo mật, Hỗ trợ) — dùng chung mobile + desktop */
+.doc-body{background:var(--bg-base);min-height:100vh;display:flex;justify-content:center}
+.doc-screen{width:100%;max-width:820px;min-height:100vh;background:var(--bg-base);display:flex;flex-direction:column}
+
+.doc-header{
+  position:sticky;top:0;z-index:10;background:var(--header-gradient);color:#fff;
+  display:flex;align-items:center;gap:16px;padding:14px var(--screen-padding);
+}
+.doc-header .back{background:none;border:none;cursor:pointer;color:#fff;display:flex;padding:0}
+.doc-header .back svg{width:26px;height:26px}
+.doc-header .ttl{font-size:20px;font-weight:700}
+
+.doc-content{flex:1;padding:22px var(--screen-padding) 48px;line-height:1.7;color:var(--text-primary)}
+.doc-content h1{font-size:26px;font-weight:700;margin-bottom:6px}
+.doc-content .updated{font-size:14px;color:var(--text-secondary);margin-bottom:22px}
+.doc-content h2{font-size:20px;font-weight:700;margin:28px 0 10px;padding-top:14px;border-top:1px solid var(--border)}
+.doc-content h3{font-size:17px;font-weight:700;margin:20px 0 8px}
+.doc-content h4{font-size:16px;font-weight:600;margin:16px 0 6px}
+.doc-content p{font-size:16px;margin-bottom:12px;color:var(--text-primary)}
+.doc-content ul{margin:0 0 14px 20px}
+.doc-content li{font-size:16px;margin-bottom:8px}
+.doc-content li ul{margin-top:8px}
+.doc-content a{color:var(--primary-link)}
+.doc-content .lead{background:var(--bg-subtle);border-radius:12px;padding:16px 18px;margin-bottom:20px;color:var(--text-secondary);font-size:15px}
+
+/* Trang Hỗ trợ nhúng form */
+.form-wrap{flex:1;display:flex;flex-direction:column;padding:0}
+.form-wrap iframe{flex:1;width:100%;border:none;min-height:calc(100vh - 60px)}
+.form-note{padding:14px var(--screen-padding);background:var(--bg-subtle);font-size:14px;color:var(--text-secondary);text-align:center}
+.form-note a{color:var(--primary-link)}
