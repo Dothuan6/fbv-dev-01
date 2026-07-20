@@ -9,9 +9,35 @@ var posts = [
   {id:2, author:'account001', av:'200', ac:'linear-gradient(135deg,#3A1C5A,#7B2FF7)', time:'29/04/2026 (đã chỉnh sửa)', text:'Hi, Im Thomas. here my new account', media:false, liked:false, likes:4, comments:[{n:'Change name55', c:'Chào bạn 👋'}]}
 ];
 
+// ---- Bộ lọc cột trái ----
+var ME = 'rtetetet';
+var filter = 'all';
+var TITLES = {all:'Bản tin', mine:'Bài viết của tôi'};
+
+function setFilter(f, el){
+  filter = f;
+  document.querySelectorAll('.side-nav .it').forEach(function(n){ n.classList.remove('active'); });
+  if(el) el.classList.add('active');
+  document.getElementById('feedHead').textContent = TITLES[f];
+  // Chỉ hiện ô soạn bài ở Bảng tin
+  document.getElementById('composerCard').style.display = (f === 'all') ? '' : 'none';
+  document.querySelector('.feed-center').scrollTop = 0;
+  render();
+}
+
+function visiblePosts(){
+  if(filter === 'mine') return posts.filter(function(p){ return p.author === ME; });
+  return posts;
+}
+
 function render(){
   var box=document.getElementById('postList'); box.innerHTML='';
-  posts.forEach(function(p){
+  var list = visiblePosts();
+  if(!list.length){
+    box.innerHTML = '<div class="card" style="padding:40px;text-align:center;color:var(--text-secondary)">Chưa có bài viết</div>';
+    return;
+  }
+  list.forEach(function(p){
     var el=document.createElement('div'); el.className='card post'; el.dataset.id=p.id;
     el.innerHTML =
       '<div class="ph"><div class="av" style="background:'+(p.ac||'#5B6470')+'">'+p.av+'</div>'+

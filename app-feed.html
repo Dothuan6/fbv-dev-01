@@ -20,13 +20,36 @@
       <div class="nav" title="Cài đặt" onclick="openSettingsModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a7.9 7.9 0 000-2l2-1.5-2-3.4-2.3 1a8 8 0 00-1.7-1l-.3-2.6h-4l-.3 2.6a8 8 0 00-1.7 1l-2.3-1-2 3.4L4.6 11a7.9 7.9 0 000 2l-2 1.5 2 3.4 2.3-1a8 8 0 001.7 1l.3 2.6h4l.3-2.6a8 8 0 001.7-1l2.3 1 2-3.4z"/></svg></div>
     </nav>
 
-    <!-- Bản tin -->
-    <div class="feed-wrap">
+    <!-- Bản tin: 3 cột, chỉ cột giữa cuộn -->
+    <div class="feed-layout">
+
+      <!-- Cột trái -->
+      <aside class="feed-left">
+        <div class="side-card">
+          <div class="sp-cover"></div>
+          <div class="sp-body">
+            <div class="sp-av">R</div>
+            <div class="sp-nm">rtetetet</div>
+            <div class="sp-hd">@yase0</div>
+            <div class="sp-stat">
+              <div><div class="n">12</div><div class="l">Bài viết</div></div>
+              <div><div class="n">48</div><div class="l">Bạn bè</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="side-card side-nav">
+          <div class="it active" onclick="setFilter('all',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 15l1.5-4.5L15 9l-1.5 4.5z" fill="currentColor" stroke="none"/></svg>Bảng tin</div>
+          <div class="it" onclick="setFilter('mine',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="13" y2="14"/></svg>Bài viết của tôi</div>
+        </div>
+      </aside>
+
+      <!-- Cột giữa (cuộn) -->
+      <main class="feed-center">
       <div class="feed">
-        <div class="feed-head">Bản tin</div>
+        <div class="feed-head" id="feedHead">Bản tin</div>
 
         <!-- Soạn nhanh -->
-        <div class="card composer">
+        <div class="card composer" id="composerCard">
           <div class="cp-row">
             <div class="av">R</div>
             <div class="cp-prompt" onclick="openCompose()">Hôm nay bạn thế nào?</div>
@@ -39,6 +62,31 @@
 
         <div id="postList"></div>
       </div>
+      </main>
+
+      <!-- Cột phải -->
+      <aside class="feed-right">
+        <div class="side-card sug-card">
+          <h4>Gợi ý kết bạn</h4>
+          <div class="sug"><div class="av" style="background:linear-gradient(135deg,#1FB6D6,#1877F2)">AK</div><div class="mid"><div class="nm">Anh Khoa Doan</div><div class="sub">3 bạn chung</div></div><button class="add" onclick="this.textContent='Đã gửi';this.classList.add('done');this.disabled=true">Kết bạn</button></div>
+          <div class="sug"><div class="av" style="background:linear-gradient(135deg,#F5C543,#9B6BF0)">D</div><div class="mid"><div class="nm">Diệp</div><div class="sub">1 bạn chung</div></div><button class="add" onclick="this.textContent='Đã gửi';this.classList.add('done');this.disabled=true">Kết bạn</button></div>
+          <div class="sug"><div class="av" style="background:linear-gradient(135deg,#4FA8F5,#16A085)">HK</div><div class="mid"><div class="nm">Hm Khôi</div><div class="sub">Từ gợi ý</div></div><button class="add" onclick="this.textContent='Đã gửi';this.classList.add('done');this.disabled=true">Kết bạn</button></div>
+        </div>
+
+        <div class="side-card sug-card" style="margin-top:14px">
+          <h4>Sinh nhật</h4>
+          <div class="bd-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16v-7H4z"/><path d="M6 14v-3a2 2 0 012-2h8a2 2 0 012 2v3"/><line x1="12" y1="4" x2="12" y2="7"/></svg>
+            <span><b>account001</b> có sinh nhật hôm nay</span>
+          </div>
+        </div>
+
+        <div class="side-foot">
+          <a href="terms.html">Điều khoản</a> · <a href="terms.html">Quyền riêng tư</a> · <a href="about.html">Giới thiệu</a><br />
+          FBV.ONE © 2026
+        </div>
+      </aside>
+
     </div>
 
   </div>
