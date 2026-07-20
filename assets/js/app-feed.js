@@ -76,9 +76,24 @@ function closePop(){ document.getElementById('postMenu').classList.remove('show'
 function deletePost(){ posts=posts.filter(function(p){return p.id!==_pid;}); render(); closePop(); }
 document.addEventListener('click', function(e){ if(!e.target.closest('.more') && !e.target.closest('#postMenu')) closePop(); });
 
+// Dropdown quyền xem bài đăng
+function togglePriv(e){
+  e.stopPropagation();
+  document.getElementById('privMenu').classList.toggle('show');
+}
+function closePriv(){ document.getElementById('privMenu').classList.remove('show'); }
+function pickPriv(label, el, e){
+  e.stopPropagation();
+  document.querySelectorAll('#privMenu .pm-it').forEach(function(i){ i.classList.remove('sel'); });
+  el.classList.add('sel');
+  document.getElementById('privLabel').textContent = label;
+  closePriv();
+}
+document.addEventListener('click', function(e){ if(!e.target.closest('.priv')) closePriv(); });
+
 // Modal soạn bài
 function openCompose(){ document.getElementById('composeOverlay').classList.add('show'); document.getElementById('composeText').focus(); }
-function closeCompose(){ document.getElementById('composeOverlay').classList.remove('show'); document.getElementById('composeText').value=''; onType(); }
+function closeCompose(){ closePriv(); document.getElementById('composeOverlay').classList.remove('show'); document.getElementById('composeText').value=''; onType(); }
 function onType(){ document.getElementById('postBtn').classList.toggle('ready', document.getElementById('composeText').value.trim().length>0); }
 function publish(){
   var t=document.getElementById('composeText').value.trim(); if(!t) return;

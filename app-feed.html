@@ -103,7 +103,25 @@
     <div class="modal">
       <div class="mh">
         <button class="x" onclick="closeCompose()">&times;</button>
-        <div class="priv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 19c0-3 2.5-4.5 5.5-4.5"/><path d="M22 19c0-3-2.5-4.5-5.5-4.5"/></svg>Tất cả bạn bè ▾</div>
+        <div class="priv" onclick="togglePriv(event)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 19c0-3 2.5-4.5 5.5-4.5"/><path d="M22 19c0-3-2.5-4.5-5.5-4.5"/></svg>
+          <span id="privLabel">Tất cả bạn bè</span> ▾
+
+          <!-- Dropdown quyền xem -->
+          <div class="priv-menu" id="privMenu">
+            <div class="pm-t">Quyền xem bài đăng</div>
+            <div class="pm-it sel" onclick="pickPriv('Tất cả bạn bè',this,event)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 19c0-3 2.5-4.5 5.5-4.5"/><path d="M22 19c0-3-2.5-4.5-5.5-4.5"/></svg>
+              Tất cả bạn bè
+              <svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-11"/></svg>
+            </div>
+            <div class="pm-it" onclick="pickPriv('Mình tôi',this,event)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0"/></svg>
+              Mình tôi
+              <svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-11"/></svg>
+            </div>
+          </div>
+        </div>
         <button class="post-btn" id="postBtn" onclick="publish()">Đăng</button>
       </div>
       <textarea id="composeText" placeholder="Bạn đang nghĩ gì?" oninput="onType()"></textarea>

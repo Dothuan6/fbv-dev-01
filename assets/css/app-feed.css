@@ -124,11 +124,29 @@ html,body{height:100%}
 /* Modal soạn bài */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:none;align-items:center;justify-content:center;padding:24px}
 .modal-overlay.show{display:flex}
-.modal{width:560px;max-width:94vw;background:#fff;border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
-.modal .mh{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border)}
+/* overflow:visible để dropdown quyền xem không bị cắt; bo góc đặt ở đầu/cuối */
+.modal{width:560px;max-width:94vw;background:#fff;border-radius:14px;display:flex;flex-direction:column;overflow:visible}
+.modal .mh{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);border-radius:14px 14px 0 0}
+.modal .mtools{border-radius:0 0 14px 14px}
 .modal .mh .x{background:none;border:none;cursor:pointer;font-size:24px;color:var(--text-primary)}
-.modal .mh .priv{flex:1;display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer}
+.modal .mh .priv{flex:1;display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer;position:relative}
 .modal .mh .priv svg{width:20px;height:20px}
+.modal .mh .priv:hover{color:var(--primary)}
+
+/* Dropdown quyền xem bài đăng */
+.priv-menu{
+  position:absolute;top:calc(100% + 8px);left:0;z-index:5;min-width:240px;
+  background:#fff;border-radius:12px;box-shadow:0 10px 32px rgba(0,0,0,.2);
+  padding:6px 0;display:none;font-weight:400;
+}
+.priv-menu.show{display:block}
+.priv-menu .pm-t{font-size:13px;color:var(--text-secondary);padding:8px 16px 6px}
+.priv-menu .pm-it{display:flex;align-items:center;gap:12px;padding:11px 16px;font-size:15px;color:var(--text-primary);cursor:pointer}
+.priv-menu .pm-it:hover{background:var(--bg-subtle)}
+.priv-menu .pm-it svg{width:20px;height:20px;color:var(--text-secondary);flex:none}
+.priv-menu .pm-it .ck{margin-left:auto;color:var(--primary);visibility:hidden}
+.priv-menu .pm-it.sel .ck{visibility:visible}
+.priv-menu .pm-it.sel{color:var(--primary);font-weight:600}
 .modal .mh .post-btn{background:var(--primary-soft);color:#fff;border:none;border-radius:20px;padding:9px 22px;font-weight:600;cursor:pointer}
 .modal .mh .post-btn.ready{background:var(--primary)}
 .modal textarea{border:none;outline:none;resize:none;padding:18px 20px;font-size:17px;min-height:180px;font-family:inherit}
