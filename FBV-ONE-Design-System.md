@@ -304,7 +304,7 @@ Ngoài bản mobile, sản phẩm có **bản desktop riêng** bố cục nhiề
 
 **Kiến trúc modal dùng chung (desktop):** các modal nổi **trên màn hiện tại** (không điều hướng), style trong `styles.css`, logic trong 2 file JS nhúng vào mọi shell:
 - `account-modal.js` → `openAccountModal()` (Thông tin tài khoản của tôi) + Cập nhật thông tin cá nhân.
-- `desktop-modals.js` → `openSettingsModal()` (Cài đặt 2 cột), `openAddFriendModal()`, `openCreateGroupModal()`, `openQRModal()` (mã QR của tôi), `openFriendModal(f)` (profile bạn bè: bìa + avatar + Nhắn tin/Gọi thoại/Gọi video + thông tin + Huỷ kết bạn/Chặn).
+- `desktop-modals-v2.js` → `openSettingsModal()` (Cài đặt 2 cột), `openAddFriendModal()`, `openCreateGroupModal()`, `openQRModal()` (mã QR của tôi), `openFriendModal(f)` (profile bạn bè: bìa + avatar + Nhắn tin/Gọi thoại/Gọi video + thông tin + Huỷ kết bạn/Chặn).
 
 **Chat desktop (`app.html`):** bóng nhận trắng-trái (có avatar), gửi xanh `#DBEBFF`-phải. Rê chuột vào tin hiện thanh hành động (`.msg-acts`, có cầu nối `::after` tránh mất hover) gồm Cảm xúc · Trả lời · Chuyển tiếp · Thêm. Có modal Biểu cảm, panel Chủ đề (trả lời trong chuỗi) đầy đủ chức năng, thanh trả lời + trích dẫn, modal Chia sẻ (chuyển tiếp).
 
@@ -399,6 +399,6 @@ Icon dạng line (nét mảnh), bo tròn đầu nét, kích thước ~24px. Trê
 | `app-feed.html` | Shell Bản tin (soạn bài + posts + bình luận) |
 | `app-worklog.html` | Shell Nhật ký làm việc (chat tự gửi + Phương tiện) |
 | `account-modal.js` | Modal Thông tin tài khoản của tôi + Cập nhật (dùng chung) |
-| `desktop-modals.js` | Modal Cài đặt 2 cột · Thêm bạn · Tạo nhóm · Mã QR · Profile bạn bè (dùng chung) |
+| `desktop-modals-v2.js` | Modal Cài đặt 2 cột (Cài đặt chung · Quyền riêng tư · Tài khoản và bảo mật · Thông tin) · Thêm bạn · Tạo nhóm · Mã QR · Profile bạn bè (dùng chung) |
 
 Style của toàn bộ modal desktop nằm trong `styles.css` (mục ACCOUNT MODAL, Cài đặt, Thêm bạn, Tạo nhóm, QR, Profile bạn bè).
