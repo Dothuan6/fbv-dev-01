@@ -46,13 +46,40 @@ function filterFriends(v){ renderFriends(v); }
 
 function renderGroups(){
   var box=document.getElementById('groupList'); box.innerHTML='';
-  groups.forEach(function(g){
+  if(!groups.length){ box.innerHTML='<div class="empty">Bạn chưa tham gia nhóm nào</div>'; return; }
+  groups.forEach(function(g, i){
     var el=document.createElement('div'); el.className='frow'; el.style.marginBottom='6px';
-    el.innerHTML='<div class="av" style="background:'+g.c+'">'+g.av+'</div><div class="nm">'+g.n+'<div style="font-size:13px;color:var(--text-secondary)">'+g.sub+'</div></div>';
+    el.innerHTML='<div class="av" style="background:'+g.c+'">'+g.av+'</div><div class="nm">'+g.n+'<div style="font-size:13px;color:var(--text-secondary)">'+g.sub+'</div></div>'+
+      '<div class="gmore" title="Tùy chọn" onclick="openGroupMenu(event,'+i+')">&#8943;</div>';
     el.onclick=function(){ location.href='app.html'; };
     box.appendChild(el);
   });
 }
+
+// Menu 3 chấm của nhóm — chỉ có Rời nhóm
+var _gi = null;
+var _gm = document.createElement('div');
+_gm.className = 'g-pop'; _gm.id = 'groupMenu';
+_gm.innerHTML = '<div class="it danger" onclick="leaveGroup()">'+
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4"/><path d="M10 16l-4-4 4-4"/><path d="M6 12h10"/></svg>Rời nhóm</div>';
+document.body.appendChild(_gm);
+
+function openGroupMenu(e, i){
+  e.stopPropagation();
+  _gi = i;
+  _gm.classList.add('show');
+  var r = e.currentTarget.getBoundingClientRect();
+  _gm.style.left = Math.min(r.right - _gm.offsetWidth, window.innerWidth - _gm.offsetWidth - 8) + 'px';
+  _gm.style.top = (r.bottom + 6) + 'px';
+}
+function closeGroupMenu(){ _gm.classList.remove('show'); }
+function leaveGroup(){
+  var g = groups[_gi]; closeGroupMenu();
+  if(!g || !confirm('Rời khỏi nhóm "'+g.n+'"?')) return;
+  groups.splice(_gi, 1); renderGroups();
+  if(window.showToast) showToast('Đã rời nhóm');
+}
+document.addEventListener('click', function(e){ if(!e.target.closest('.gmore') && !e.target.closest('#groupMenu')) closeGroupMenu(); });
 
 function reqCard(p, kind){
   var btns = kind==='recv'

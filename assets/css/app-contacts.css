@@ -69,4 +69,15 @@ html,body{height:100%}
 
 .empty{color:var(--text-secondary);text-align:center;padding:40px}
 
+/* Nút 3 chấm + menu của nhóm */
+.frow .gmore{margin-left:auto;flex:none;width:34px;height:34px;border-radius:50%;display:none;align-items:center;justify-content:center;color:var(--text-secondary);font-size:22px;line-height:1;cursor:pointer}
+.frow:hover .gmore{display:flex}
+.frow .gmore:hover{background:#E3EEFD;color:var(--primary)}
+.g-pop{position:fixed;z-index:120;background:#fff;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.2);padding:6px 0;min-width:180px;display:none}
+.g-pop.show{display:block}
+.g-pop .it{display:flex;align-items:center;gap:12px;padding:11px 16px;font-size:15px;cursor:pointer}
+.g-pop .it:hover{background:var(--bg-subtle)}
+.g-pop .it svg{width:19px;height:19px}
+.g-pop .it.danger{color:#E5484D}
+
 @media (max-width:1023px){ .shell{display:none} }
