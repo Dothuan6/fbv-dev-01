@@ -80,4 +80,20 @@ html,body{height:100%}
 .g-pop .it svg{width:19px;height:19px}
 .g-pop .it.danger{color:#E5484D}
 
+/* Modal xác nhận rời nhóm */
+.lv-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:130;display:none;align-items:center;justify-content:center;padding:24px}
+.lv-overlay.show{display:flex}
+.lv-modal{width:420px;max-width:94vw;background:#fff;border-radius:16px;padding:28px 26px 22px;text-align:center;box-shadow:0 18px 60px rgba(0,0,0,.3)}
+.lv-ic{width:56px;height:56px;border-radius:50%;background:#FDECEC;color:#E5484D;margin:0 auto 14px;display:flex;align-items:center;justify-content:center}
+.lv-ic svg{width:28px;height:28px}
+.lv-modal h3{font-size:19px;font-weight:700;margin-bottom:8px}
+.lv-modal p{font-size:15px;color:var(--text-secondary);line-height:1.6;margin-bottom:22px}
+.lv-modal p b{color:var(--text-primary)}
+.lv-btns{display:flex;gap:12px}
+.lv-btns button{flex:1;border:none;border-radius:24px;padding:12px;font-size:15px;font-weight:600;cursor:pointer}
+.lv-btns .cancel{background:var(--surface-field);color:var(--text-primary)}
+.lv-btns .cancel:hover{background:var(--bg-subtle)}
+.lv-btns .ok{background:#E5484D;color:#fff}
+.lv-btns .ok:hover{background:#D13A3F}
+
 @media (max-width:1023px){ .shell{display:none} }

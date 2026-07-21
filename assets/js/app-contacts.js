@@ -73,10 +73,33 @@ function openGroupMenu(e, i){
   _gm.style.top = (r.bottom + 6) + 'px';
 }
 function closeGroupMenu(){ _gm.classList.remove('show'); }
+
+/* --- Modal xác nhận rời nhóm --- */
+var _lv = document.createElement('div');
+_lv.className = 'lv-overlay'; _lv.id = 'leaveOverlay';
+_lv.innerHTML =
+  '<div class="lv-modal">'+
+    '<div class="lv-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h4a2 2 0 012 2v12a2 2 0 01-2 2h-4"/><path d="M10 16l-4-4 4-4"/><path d="M6 12h10"/></svg></div>'+
+    '<h3>Rời nhóm</h3>'+
+    '<p>Bạn có chắc muốn rời khỏi nhóm <b id="lvName"></b>? Bạn sẽ không nhận được tin nhắn mới từ nhóm này.</p>'+
+    '<div class="lv-btns"><button class="cancel" onclick="closeLeaveModal()">Hủy</button>'+
+      '<button class="ok" onclick="confirmLeave()">Rời nhóm</button></div>'+
+  '</div>';
+document.body.appendChild(_lv);
+_lv.addEventListener('click', function(e){ if(e.target===this) closeLeaveModal(); });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLeaveModal(); });
+
 function leaveGroup(){
   var g = groups[_gi]; closeGroupMenu();
-  if(!g || !confirm('Rời khỏi nhóm "'+g.n+'"?')) return;
-  groups.splice(_gi, 1); renderGroups();
+  if(!g) return;
+  document.getElementById('lvName').textContent = g.n;
+  _lv.classList.add('show');
+}
+function closeLeaveModal(){ _lv.classList.remove('show'); }
+function confirmLeave(){
+  closeLeaveModal();
+  if(_gi === null || !groups[_gi]) return;
+  groups.splice(_gi, 1); _gi = null; renderGroups();
   if(window.showToast) showToast('Đã rời nhóm');
 }
 document.addEventListener('click', function(e){ if(!e.target.closest('.gmore') && !e.target.closest('#groupMenu')) closeGroupMenu(); });
