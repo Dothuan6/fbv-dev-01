@@ -91,7 +91,9 @@ html,body{height:100%}
 .post .txt + .media{margin-top:0}
 .post .media .play{width:60px;height:60px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}
 .post .media .play svg{width:28px;height:28px;color:#fff}
-.post .stat{font-size:13px;color:var(--text-secondary);padding:10px 0 6px;border-bottom:1px solid var(--border)}
+.post .stat{display:flex;justify-content:space-between;font-size:13px;color:var(--text-secondary);padding:10px 0 6px;border-bottom:1px solid var(--border)}
+.post .stat .cmt-link{cursor:pointer}
+.post .stat .cmt-link:hover{text-decoration:underline}
 .post .bar{display:flex;gap:6px;padding-top:6px}
 .post .bar .a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px;border-radius:8px;color:var(--text-secondary);cursor:pointer;font-weight:600}
 .post .bar .a:hover{background:var(--bg-subtle)}
@@ -153,5 +155,78 @@ html,body{height:100%}
 .modal .mtools{display:flex;gap:14px;padding:12px 20px;border-top:1px solid var(--border)}
 .modal .mtools .t{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border-radius:20px;font-weight:600;cursor:pointer}
 .modal .mtools .t svg{width:20px;height:20px}
+
+/* ===== Modal chi tiết bài đăng (kiểu Facebook) ===== */
+.pd-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:95;display:none;align-items:center;justify-content:center;padding:24px}
+.pd-overlay.show{display:flex}
+.pd-modal{width:700px;max-width:94vw;max-height:92vh;background:#fff;border-radius:14px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,.3)}
+
+.pd-head{position:relative;display:flex;align-items:center;justify-content:center;padding:14px 20px;border-bottom:1px solid var(--border);flex:none}
+.pd-head h3{font-size:19px;font-weight:700}
+.pd-head .x{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:none;border-radius:50%;background:var(--surface-field);color:var(--text-primary);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pd-head .x:hover{background:var(--bg-subtle)}
+.pd-head .x svg{width:18px;height:18px}
+
+.pd-scroll{flex:1;overflow-y:auto;scrollbar-width:thin}
+.pd-scroll::-webkit-scrollbar{width:8px}
+.pd-scroll::-webkit-scrollbar-thumb{background:#c9d3de;border-radius:4px}
+
+.pd-post{padding:16px 20px 0}
+.pd-post .ph{display:flex;align-items:center;gap:12px}
+.pd-post .ph .av{width:44px;height:44px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;flex:none}
+.pd-post .ph .nm{font-size:16px;font-weight:600}
+.pd-post .ph .meta{font-size:13px;color:var(--text-secondary)}
+.pd-post .txt{font-size:16px;margin:12px 0}
+.pd-post .media{border-radius:12px;background:#d3d8de;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;margin-top:12px}
+.pd-post .txt + .media{margin-top:0}
+.pd-post .media .play{width:60px;height:60px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}
+.pd-post .media .play svg{width:28px;height:28px;color:#fff}
+.pd-stat{display:flex;justify-content:space-between;font-size:14px;color:var(--text-secondary);padding:12px 0 8px;border-bottom:1px solid var(--border)}
+.pd-stat .rc{color:var(--text-primary)}
+.pd-bar{display:flex;gap:6px;padding:4px 0;border-bottom:1px solid var(--border)}
+.pd-bar .a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px;border-radius:8px;color:var(--text-secondary);cursor:pointer;font-weight:600}
+.pd-bar .a:hover{background:var(--bg-subtle)}
+.pd-bar .a.liked{color:var(--primary)}
+.pd-bar svg{width:20px;height:20px}
+
+.pd-sort{padding:12px 20px 4px;font-size:14px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:4px;cursor:pointer}
+.pd-sort svg{width:16px;height:16px}
+.pd-list{padding:6px 20px 18px}
+.pd-empty{padding:28px 0;text-align:center;color:var(--text-secondary);font-size:14px}
+
+.pd-cmt{display:flex;gap:10px;margin-bottom:14px}
+.pd-cmt .av{width:36px;height:36px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex:none}
+.pd-cmt.rep .av{width:30px;height:30px;font-size:12px}
+.pd-cmt .mid{min-width:0;flex:1}
+.pd-cmt .bub{display:inline-block;max-width:100%;background:var(--surface-field);border-radius:16px;padding:8px 14px}
+.pd-cmt .bub .n{font-size:13px;font-weight:700}
+.pd-cmt .bub .c{font-size:15px;word-wrap:break-word}
+.pd-cmt .acts{display:flex;align-items:center;gap:14px;padding:5px 14px 0;font-size:13px;color:var(--text-secondary)}
+.pd-cmt .acts span{cursor:pointer;font-weight:600}
+.pd-cmt .acts span:hover{text-decoration:underline}
+.pd-cmt .acts .t{font-weight:400;cursor:default}
+.pd-cmt .acts .t:hover{text-decoration:none}
+.pd-cmt .acts .on{color:var(--primary)}
+.pd-cmt .acts .lk{font-weight:400;cursor:default;background:var(--surface-field);border-radius:10px;padding:1px 7px}
+.pd-cmt .acts .lk:hover{text-decoration:none}
+
+.rep-toggle{display:flex;align-items:center;gap:6px;padding:8px 14px 2px;font-size:13px;font-weight:600;color:var(--text-secondary);cursor:pointer}
+.rep-toggle:hover{text-decoration:underline}
+.rep-toggle svg{width:16px;height:16px}
+.rep-toggle svg.up{transform:rotate(180deg)}
+.reps{margin-top:8px}
+
+.pd-repinp{display:flex;gap:8px;align-items:center;margin-top:8px}
+.pd-repinp .av{width:30px;height:30px;border-radius:50%;background:#5B6470;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none}
+.pd-repinp input{flex:1;background:var(--surface-field);border:none;border-radius:18px;padding:8px 14px;outline:none;font-size:14px}
+.pd-repinp .send{color:var(--primary);cursor:pointer;display:flex}
+.pd-repinp .send svg{width:20px;height:20px}
+
+.pd-foot{flex:none;display:flex;gap:10px;align-items:center;padding:12px 20px;border-top:1px solid var(--border)}
+.pd-foot .av{width:36px;height:36px;border-radius:50%;background:#5B6470;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex:none}
+.pd-inp{flex:1;display:flex;align-items:center;gap:8px;background:var(--surface-field);border-radius:20px;padding:0 12px 0 16px}
+.pd-inp input{flex:1;background:none;border:none;outline:none;padding:11px 0;font-size:15px}
+.pd-inp .send{color:var(--primary);cursor:pointer;display:flex}
+.pd-inp .send svg{width:22px;height:22px}
 
 @media (max-width:1023px){ .shell{display:none} }
