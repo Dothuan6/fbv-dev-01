@@ -64,7 +64,21 @@
 .gm-mem{display:flex;align-items:center;gap:14px;padding:13px 2px;border-bottom:1px solid var(--border)}
 .gm-mem .av{width:48px;height:48px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:14px}
 .gm-mem .nm{flex:1;font-size:17px;color:var(--text-primary)}
-.gm-mem .role{font-size:15px;color:var(--text-secondary)}
+.gm-mem .role{font-size:14px;color:var(--primary);font-weight:600;background:var(--bg-subtle);padding:3px 10px;border-radius:12px}
+.gm-mem .mem-more{flex:none;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);cursor:pointer;margin-left:2px}
+.gm-mem .mem-more:hover{background:var(--bg-subtle)}
+.gm-mem .mem-more svg{width:22px;height:22px}
+
+/* Sheet tùy chọn thành viên */
+.gm-memsheet .ms-head{display:flex;align-items:center;gap:14px;padding:18px var(--screen-padding);border-bottom:1px solid var(--border)}
+.gm-memsheet .ms-head .av{width:48px;height:48px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:14px}
+.gm-memsheet .ms-head .nm{font-size:18px;font-weight:600}
+.gm-memsheet .ms-it{display:flex;align-items:center;gap:14px;padding:16px var(--screen-padding);font-size:17px;cursor:pointer;color:var(--text-primary)}
+.gm-memsheet .ms-it:hover{background:var(--bg-subtle)}
+.gm-memsheet .ms-it svg{width:24px;height:24px;color:var(--text-secondary)}
+.gm-memsheet .ms-it.danger{color:#E5484D}
+.gm-memsheet .ms-it.danger svg{color:#E5484D}
+.gm-memsheet .ms-it.cancel{justify-content:center;font-weight:600;color:var(--text-secondary);border-top:8px solid var(--bg-subtle)}
 
 .gm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .gm-grid .m{aspect-ratio:1/1;border-radius:10px}

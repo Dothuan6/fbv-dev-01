@@ -85,6 +85,19 @@ html,body{height:100%}
 .ic-members .mem .nm{flex:1;font-size:15px;color:var(--text-primary)}
 .ic-members .mem .role{font-size:12px;color:var(--text-secondary)}
 .ic-members .mem .add{color:var(--primary);font-size:14px;font-weight:600;cursor:pointer;background:none;border:none}
+.ic-members .mem .role{font-size:12px;color:var(--primary);font-weight:600}
+.ic-members .mem .mmore{flex:none;width:32px;height:32px;border:none;background:none;border-radius:50%;color:var(--text-secondary);cursor:pointer;display:none;align-items:center;justify-content:center}
+.ic-members .mem:hover .mmore{display:flex}
+.ic-members .mem .mmore:hover{background:var(--bg-subtle);color:var(--primary)}
+.ic-members .mem .mmore svg{width:18px;height:18px}
+
+.mem-pop{position:fixed;z-index:120;background:#fff;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.2);padding:6px 0;min-width:200px;display:none}
+.mem-pop.show{display:block}
+.mem-pop .it{display:flex;align-items:center;gap:12px;padding:11px 16px;font-size:15px;cursor:pointer;color:var(--text-primary)}
+.mem-pop .it:hover{background:var(--bg-subtle)}
+.mem-pop .it svg{width:19px;height:19px;color:var(--text-secondary)}
+.mem-pop .it.danger{color:#E5484D}
+.mem-pop .it.danger svg{color:#E5484D}
 /* Tìm kiếm trong trò chuyện */
 .search-view{display:none;padding:16px}
 .search-view.show{display:block}

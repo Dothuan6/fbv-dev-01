@@ -71,14 +71,54 @@ function renderMembers(){
   sec.style.display='';
   document.getElementById('membersTitle').textContent = 'Thành viên nhóm (' + active.members.length + ')';
   var box = document.getElementById('memberList'); box.innerHTML='';
-  active.members.forEach(function(mem){
+  active.members.forEach(function(mem, idx){
     var el = document.createElement('div'); el.className='mem';
+    // Trưởng nhóm không có menu quản lý
+    var manage = mem.r==='Trưởng nhóm' ? '' :
+      '<button class="mmore" title="Tùy chọn" onclick="openMemMenu(event,'+idx+')">'+ICON.more+'</button>';
     el.innerHTML = '<div class="a" style="background:'+mem.c+'">'+mem.av+'</div>'+
       '<div class="nm">'+mem.n+(mem.r?'<div class="role">'+mem.r+'</div>':'')+'</div>'+
-      (mem.n==='Bạn'?'':'<button class="add" onclick="location.href=\'add-friend.html\'">Kết bạn</button>');
+      manage;
     box.appendChild(el);
   });
 }
+
+// Menu quản lý thành viên (desktop): bổ nhiệm phó nhóm / xoá
+var _memIdx = null;
+var _memPop = document.createElement('div');
+_memPop.className = 'mem-pop'; _memPop.id = 'memPop';
+document.body.appendChild(_memPop);
+function openMemMenu(e, idx){
+  e.stopPropagation();
+  _memIdx = idx;
+  var mem = active.members[idx];
+  var promoteLbl = mem.r==='Phó nhóm' ? 'Gỡ vai trò phó nhóm' : 'Bổ nhiệm phó nhóm';
+  _memPop.innerHTML =
+    '<div class="it" onclick="viewMemberProfile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>Trang cá nhân</div>'+
+    '<div class="it" onclick="promoteMember()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v5c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>'+promoteLbl+'</div>'+
+    '<div class="it danger" onclick="removeMember()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3.1-6 7-6 1 0 2 .1 2.8.4"/><line x1="16" y1="11" x2="22" y2="11"/></svg>Xoá khỏi nhóm</div>';
+  _memPop.classList.add('show');
+  var r = e.currentTarget.getBoundingClientRect();
+  _memPop.style.left = Math.min(r.right - _memPop.offsetWidth, window.innerWidth - _memPop.offsetWidth - 8) + 'px';
+  _memPop.style.top = (r.bottom + 6) + 'px';
+}
+function closeMemMenu(){ _memPop.classList.remove('show'); }
+function viewMemberProfile(){
+  var mem = active.members[_memIdx]; closeMemMenu(); if(!mem) return;
+  if(window.openFriendModal) openFriendModal({name:mem.n, av:mem.av, color:mem.c});
+}
+function promoteMember(){
+  var mem = active.members[_memIdx]; closeMemMenu(); if(!mem) return;
+  if(mem.r==='Phó nhóm'){ mem.r=''; toastMsg(mem.n+' không còn là phó nhóm'); }
+  else { mem.r='Phó nhóm'; toastMsg('Đã bổ nhiệm '+mem.n+' làm phó nhóm'); }
+  renderMembers();
+}
+function removeMember(){
+  var mem = active.members[_memIdx]; closeMemMenu(); if(!mem) return;
+  active.members.splice(_memIdx,1); renderMembers(); toastMsg('Đã xoá '+mem.n+' khỏi nhóm');
+}
+function toastMsg(m){ if(window.showToast) showToast(m); }
+document.addEventListener('click', function(e){ if(!e.target.closest('.mmore') && !e.target.closest('#memPop')) closeMemMenu(); });
 
 // ----- Tin nhắn + menu hover -----
 function renderMsgs(){
