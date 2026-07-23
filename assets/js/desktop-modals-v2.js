@@ -77,6 +77,17 @@
       '</div>'+
       '<div class="cg-foot"><button class="cancel" onclick="closeCreateGroupModal()">Hủy</button><button class="ok" id="cgOk" disabled onclick="closeCreateGroupModal()">Tạo nhóm</button></div>'+
     '</div></div>'+
+    /* Thêm thành viên vào nhóm */
+    '<div class="cg-overlay" id="amOverlay"><div class="cg-modal">'+
+      '<div class="cg-head"><h3>Thêm thành viên</h3><button class="x" onclick="closeAddMemberModal()">'+x+'</button></div>'+
+      '<div class="cg-body">'+
+        '<div class="cg-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg><input placeholder="Nhập tên, số điện thoại" oninput="amFilter(this.value)" /></div>'+
+        '<div class="cg-chips"><span class="cg-chip active">Tất cả</span><span class="cg-chip">Khách hàng</span><span class="cg-chip">Gia đình</span><span class="cg-chip">Công việc</span><span class="cg-chip">Bạn bè</span></div>'+
+        '<div class="cg-recent">Gợi ý</div>'+
+        '<div class="cg-list" id="amList"></div>'+
+      '</div>'+
+      '<div class="cg-foot"><button class="cancel" onclick="closeAddMemberModal()">Hủy</button><button class="ok" id="amOk" disabled onclick="doAddMember()">Thêm</button></div>'+
+    '</div></div>'+
     /* Mã QR */
     '<div class="qr-overlay" id="qrOverlay"><div class="qr-modal">'+
       '<div class="qr-head"><h3>Mã QR của tôi</h3><button class="x" onclick="closeQRModal()">'+x+'</button></div>'+
@@ -144,6 +155,27 @@
     document.getElementById('cgOk').disabled = !(hasName && picked);
   };
 
+  // Danh sách gợi ý cho "Thêm thành viên" (bạn bè chưa ở trong nhóm)
+  function renderAm(filter){
+    document.getElementById('amList').innerHTML = recent.filter(function(p){ return !filter || p.n.toLowerCase().indexOf(filter.toLowerCase())>-1; }).map(function(p){
+      return '<label class="cg-item"><input type="checkbox" onchange="amValidate()"><div class="av" style="background:'+p.c+'">'+p.av+'</div><span class="nm">'+p.n+'</span></label>';
+    }).join('');
+  }
+  renderAm('');
+  window.amFilter=function(v){ renderAm(v); };
+  window.amValidate=function(){
+    document.getElementById('amOk').disabled = document.querySelectorAll('#amList input:checked').length===0;
+  };
+  window.doAddMember=function(){
+    var n = document.querySelectorAll('#amList input:checked').length;
+    closeAddMemberModal();
+    if(window.showToast) showToast('Đã thêm '+n+' thành viên vào nhóm');
+    if(typeof window.onMembersAdded==='function'){
+      var names=[]; document.querySelectorAll('#amList input:checked').forEach(function(i){ names.push(i.parentNode.querySelector('.nm').textContent); });
+      window.onMembersAdded(names);
+    }
+  };
+
   // Vẽ mã QR (trang trí)
   function drawQR(){
     var c=document.getElementById('qrCanvas'), ctx=c.getContext('2d'), N=25, cell=c.width/N;
@@ -158,6 +190,7 @@
   document.getElementById('setOverlay').addEventListener('click', function(e){ if(e.target===this) closeSettingsModal(); });
   document.getElementById('afOverlay').addEventListener('click', function(e){ if(e.target===this) closeAddFriendModal(); });
   document.getElementById('cgOverlay').addEventListener('click', function(e){ if(e.target===this) closeCreateGroupModal(); });
+  document.getElementById('amOverlay').addEventListener('click', function(e){ if(e.target===this) closeAddMemberModal(); });
   document.getElementById('qrOverlay').addEventListener('click', function(e){ if(e.target===this) closeQRModal(); });
   document.getElementById('frOverlay').addEventListener('click', function(e){ if(e.target===this) closeFriendModal(); });
 
@@ -193,6 +226,11 @@
 
   window.openCreateGroupModal=function(){ document.getElementById('cgOverlay').classList.add('show'); };
   window.closeCreateGroupModal=function(){ document.getElementById('cgOverlay').classList.remove('show'); };
+  window.openAddMemberModal=function(){
+    renderAm(''); document.getElementById('amOk').disabled=true;
+    document.getElementById('amOverlay').classList.add('show');
+  };
+  window.closeAddMemberModal=function(){ document.getElementById('amOverlay').classList.remove('show'); };
   window.openQRModal=function(){ if(!qrDrawn){ drawQR(); qrDrawn=true; } document.getElementById('qrOverlay').classList.add('show'); };
   window.closeQRModal=function(){ document.getElementById('qrOverlay').classList.remove('show'); };
 

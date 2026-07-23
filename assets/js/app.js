@@ -6,7 +6,7 @@ window.addEventListener('resize', goMobileIfNarrow);
 var COLORS = {rn:'linear-gradient(135deg,#F5C543,#9B6BF0)', leaf:'linear-gradient(135deg,#1FB6D6,#1877F2)', dark:'linear-gradient(135deg,#3A1C5A,#7B2FF7)', land:'linear-gradient(135deg,#4FA8F5,#16A085)', gray:'#5B6470'};
 var convs = [
   {id:'g1', name:'rtetetet, account001, Chang...', av:'RN', color:COLORS.rn, isGroup:true, preview:'rtetetet đã thêm account001...', time:'15:55', st:'85 thành viên',
-    members:[{n:'Thành Nhân',r:'Trưởng nhóm',c:COLORS.dark,av:'TN'},{n:'Bình An',c:COLORS.leaf,av:'BA'},{n:'Bình LV',c:COLORS.land,av:'BL'},{n:'Cảnh Nguyễn',c:COLORS.rn,av:'CN'},{n:'Cao Tân',c:COLORS.gray,av:'CT'}],
+    members:[{n:'Thành Nhân',r:'Trưởng nhóm',c:COLORS.dark,av:'TN'},{n:'Bình An',c:COLORS.leaf,av:'BA'},{n:'Bình LV',c:COLORS.land,av:'BL'},{n:'Cảnh Nguyễn',c:COLORS.rn,av:'CN'},{n:'Cao Tân',c:COLORS.gray,av:'CT'},{n:'Diệu Linh',c:COLORS.leaf,av:'DL'},{n:'Đức Huy',c:COLORS.dark,av:'ĐH'},{n:'Gia Bảo',c:COLORS.land,av:'GB'},{n:'Hải Đăng',c:COLORS.rn,av:'HĐ'},{n:'Khánh Vy',c:COLORS.gray,av:'KV'},{n:'Lan Anh',c:COLORS.leaf,av:'LA'},{n:'Minh Quân',c:COLORS.dark,av:'MQ'}],
     msgs:[{text:'Phím để sau này solo'},{text:'Và đánh các kiểu đệm phức tạp'},{me:true,text:'Ko nhu cầu cao tập tay thôi cũng dc',t:'21:45'}]},
   {id:'c1', name:'Change name55', av:'', color:COLORS.leaf, icon:'leaf', preview:'Bạn: hi', time:'11:16', st:'Truy cập 5 phút trước', msgs:[{text:'99jjjjj',t:'11:11'},{me:true,text:'hi',t:'11:16'}]},
   {id:'a1', name:'account001', av:'200', color:COLORS.dark, preview:'Bạn: Gọi video', time:'10:42', st:'Ngoại tuyến', msgs:[{me:true,text:'Hi',t:'16:38'},{me:true,text:'Tôi yêu Việt Nam',t:'11:53'}]},
@@ -47,6 +47,10 @@ function openConv(id){
   document.getElementById('iNm').textContent = active.name;
   // Nhóm → "Thêm thành viên"; 1-1 → "Tạo nhóm"
   document.getElementById('qGroupLabel').textContent = active.isGroup ? 'Thêm thành viên' : 'Tạo nhóm';
+  document.getElementById('qGroup').onclick = function(){
+    if(active.isGroup){ if(window.openAddMemberModal) openAddMemberModal(); }
+    else { if(window.openCreateGroupModal) openCreateGroupModal(); }
+  };
   document.getElementById('icHead').textContent = active.isGroup ? 'Thông tin nhóm' : 'Thông tin hội thoại';
   renderMembers();
   closeConvSearch();            // về lại view thông tin khi đổi hội thoại
@@ -65,23 +69,69 @@ var ICON = {
 };
 
 // ----- Thành viên nhóm -----
+var MEM_PREVIEW = 5;   // số thành viên hiển thị gọn trong panel
+
+function memRowHTML(mem, idx){
+  var manage = mem.r==='Trưởng nhóm' ? '' :
+    '<button class="mmore" title="Tùy chọn" onclick="openMemMenu(event,'+idx+')">'+ICON.more+'</button>';
+  return '<div class="a" style="background:'+mem.c+'">'+mem.av+'</div>'+
+    '<div class="nm">'+mem.n+(mem.r?'<div class="role">'+mem.r+'</div>':'')+'</div>'+
+    manage;
+}
+
 function renderMembers(){
   var sec = document.getElementById('membersSec');
   if(!active.isGroup || !active.members){ sec.style.display='none'; return; }
   sec.style.display='';
-  document.getElementById('membersTitle').textContent = 'Thành viên nhóm (' + active.members.length + ')';
+  var total = active.members.length;
+  document.getElementById('membersTitle').textContent = 'Thành viên nhóm (' + total + ')';
   var box = document.getElementById('memberList'); box.innerHTML='';
-  active.members.forEach(function(mem, idx){
+  active.members.slice(0, MEM_PREVIEW).forEach(function(mem, idx){
     var el = document.createElement('div'); el.className='mem';
-    // Trưởng nhóm không có menu quản lý
-    var manage = mem.r==='Trưởng nhóm' ? '' :
-      '<button class="mmore" title="Tùy chọn" onclick="openMemMenu(event,'+idx+')">'+ICON.more+'</button>';
-    el.innerHTML = '<div class="a" style="background:'+mem.c+'">'+mem.av+'</div>'+
-      '<div class="nm">'+mem.n+(mem.r?'<div class="role">'+mem.r+'</div>':'')+'</div>'+
-      manage;
+    el.innerHTML = memRowHTML(mem, idx);
     box.appendChild(el);
   });
+  if(total > MEM_PREVIEW){
+    var more = document.createElement('div'); more.className='mem-viewall';
+    more.textContent = 'Xem tất cả thành viên (' + total + ')';
+    more.onclick = openAllMembers;
+    box.appendChild(more);
+  }
+  // Đồng bộ modal nếu đang mở
+  if(document.getElementById('amvOverlay').classList.contains('show')) renderAllMembers();
 }
+
+// ----- Modal: Xem tất cả thành viên -----
+var _amvFilter = '';
+var _amv = document.createElement('div');
+_amv.className = 'modal-overlay'; _amv.id = 'amvOverlay';
+_amv.innerHTML =
+  '<div class="modal amv-modal">'+
+    '<div class="mh"><h3 id="amvTitle">Thành viên nhóm</h3>'+
+      '<button class="x" onclick="closeAllMembers()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button></div>'+
+    '<div class="amv-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>'+
+      '<input id="amvSearch" placeholder="Tìm thành viên..." oninput="amvSearch(this.value)"></div>'+
+    '<div class="amv-list" id="amvList"></div>'+
+  '</div>';
+document.body.appendChild(_amv);
+_amv.addEventListener('click', function(e){ if(e.target===this) closeAllMembers(); });
+
+function renderAllMembers(){
+  document.getElementById('amvTitle').textContent = 'Thành viên nhóm (' + active.members.length + ')';
+  var box = document.getElementById('amvList'); box.innerHTML='';
+  var any = false;
+  active.members.forEach(function(mem, idx){
+    if(_amvFilter && mem.n.toLowerCase().indexOf(_amvFilter) < 0) return;
+    any = true;
+    var el = document.createElement('div'); el.className='mem';
+    el.innerHTML = memRowHTML(mem, idx);
+    box.appendChild(el);
+  });
+  if(!any) box.innerHTML = '<div class="amv-empty">Không tìm thấy thành viên</div>';
+}
+function openAllMembers(){ _amvFilter=''; var s=document.getElementById('amvSearch'); if(s) s.value=''; renderAllMembers(); _amv.classList.add('show'); }
+function closeAllMembers(){ _amv.classList.remove('show'); }
+function amvSearch(v){ _amvFilter = (v||'').trim().toLowerCase(); renderAllMembers(); }
 
 // Menu quản lý thành viên (desktop): bổ nhiệm phó nhóm / xoá
 var _memIdx = null;
@@ -119,6 +169,18 @@ function removeMember(){
 }
 function toastMsg(m){ if(window.showToast) showToast(m); }
 document.addEventListener('click', function(e){ if(!e.target.closest('.mmore') && !e.target.closest('#memPop')) closeMemMenu(); });
+
+// Khi thêm thành viên từ modal desktop → cập nhật panel
+var _mColors = [COLORS.leaf, COLORS.land, COLORS.rn, COLORS.dark, COLORS.gray];
+window.onMembersAdded = function(names){
+  if(!active || !active.isGroup) return;
+  active.members = active.members || [];
+  (names||[]).forEach(function(n, i){
+    var av = n.split(/\s+/).map(function(w){ return w[0]; }).join('').slice(-2).toUpperCase();
+    active.members.push({n:n, r:'', c:_mColors[i % _mColors.length], av:av});
+  });
+  renderMembers();
+};
 
 // ----- Tin nhắn + menu hover -----
 function renderMsgs(){
