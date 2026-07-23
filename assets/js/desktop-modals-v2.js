@@ -71,7 +71,6 @@
       '<div class="cg-body">'+
         '<div class="cg-name"><span class="cam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h3l1.5-2h5L16 8h3a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2z"/><circle cx="12" cy="13" r="3"/></svg></span><input id="cgNameInput" placeholder="Nhập tên nhóm..." oninput="cgValidate()" /></div>'+
         '<div class="cg-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg><input placeholder="Nhập tên, số điện thoại" oninput="cgFilter(this.value)" /></div>'+
-        '<div class="cg-chips"><span class="cg-chip active">Tất cả</span><span class="cg-chip">Khách hàng</span><span class="cg-chip">Gia đình</span><span class="cg-chip">Công việc</span><span class="cg-chip">Bạn bè</span></div>'+
         '<div class="cg-recent">Trò chuyện gần đây</div>'+
         '<div class="cg-list" id="cgList"></div>'+
       '</div>'+
@@ -82,7 +81,6 @@
       '<div class="cg-head"><h3>Thêm thành viên</h3><button class="x" onclick="closeAddMemberModal()">'+x+'</button></div>'+
       '<div class="cg-body">'+
         '<div class="cg-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg><input placeholder="Nhập tên, số điện thoại" oninput="amFilter(this.value)" /></div>'+
-        '<div class="cg-chips"><span class="cg-chip active">Tất cả</span><span class="cg-chip">Khách hàng</span><span class="cg-chip">Gia đình</span><span class="cg-chip">Công việc</span><span class="cg-chip">Bạn bè</span></div>'+
         '<div class="cg-recent">Gợi ý</div>'+
         '<div class="cg-list" id="amList"></div>'+
       '</div>'+
