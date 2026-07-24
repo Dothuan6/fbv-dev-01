@@ -25,7 +25,13 @@
     '.ps-resend2 .cd.active{color:var(--primary);cursor:pointer}'+
     '.ps-resend2 .cd.active:hover{text-decoration:underline}'+
     '.ps-done{width:100%;height:48px;border:none;border-radius:24px;background:var(--primary);color:#fff;font-size:16px;font-weight:700;cursor:pointer}'+
-    '.ps-done:hover{background:var(--primary-soft)}';
+    '.ps-done:hover{background:var(--primary-soft)}'+
+    '.ps-actions{display:flex;gap:12px;margin-top:8px}'+
+    '.ps-actions button{flex:1;height:46px;border:none;border-radius:24px;font-size:15px;font-weight:700;cursor:pointer}'+
+    '.ps-actions .cancel{background:var(--surface-field);color:var(--text-primary)}'+
+    '.ps-actions .cancel:hover{background:var(--bg-subtle)}'+
+    '.ps-actions .ok{background:var(--primary);color:#fff}'+
+    '.ps-actions .ok:hover{background:var(--primary-soft)}';
   document.head.appendChild(_ps);
 
   /* ---------- Nội dung các mục Cài đặt ---------- */
@@ -50,7 +56,7 @@
       '<div class="set-sec"><h4>Tài khoản và bảo mật</h4>'+
         '<div class="set-card">'+
           '<div class="set-row"><span class="lbl">Cập nhật thông tin cá nhân</span><span class="link" onclick="closeSettingsModal();openAccountModal&&openAccountModal()">Chỉnh sửa ›</span></div>'+
-          '<div class="set-row"><span class="lbl">Cập nhật mật khẩu</span><span class="link" onclick="if(confirm(\'Gửi liên kết đặt lại mật khẩu đến email của bạn?\')){closeSettingsModal();openPasswordSentModal();}">Đổi ›</span></div>'+
+          '<div class="set-row"><span class="lbl">Cập nhật mật khẩu</span><span class="link" onclick="openPasswordConfirmModal()">Đổi ›</span></div>'+
         '</div></div>'+
       '<div class="set-sec">'+
         '<div class="set-card">'+
@@ -115,6 +121,16 @@
     '<div class="qr-overlay" id="qrOverlay"><div class="qr-modal">'+
       '<div class="qr-head"><h3>Mã QR của tôi</h3><button class="x" onclick="closeQRModal()">'+x+'</button></div>'+
       '<div class="qr-card"><div class="uname">@yase0</div><div class="qr-box"><canvas id="qrCanvas" width="220" height="220"></canvas></div><div class="cap">Quét mã để thêm bạn với tôi</div></div>'+
+    '</div></div>'+
+    /* Xác nhận đổi mật khẩu */
+    '<div class="ps-overlay" id="pcOverlay"><div class="ps-modal">'+
+      '<div class="ps-mhead"><button class="x" onclick="closePasswordConfirmModal()">'+x+'</button></div>'+
+      '<div class="ps-mbody">'+
+        '<div class="ps-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></div>'+
+        '<h3>Xác nhận đổi mật khẩu</h3>'+
+        '<p>Chúng tôi sẽ gửi một liên kết đặt lại mật khẩu đến email đã đăng ký của bạn. Bạn có chắc chắn muốn tiếp tục?</p>'+
+        '<div class="ps-actions"><button class="cancel" onclick="closePasswordConfirmModal()">Hủy</button><button class="ok" onclick="confirmPasswordChange()">Xác nhận</button></div>'+
+      '</div>'+
     '</div></div>'+
     /* Đã gửi liên kết đổi mật khẩu */
     '<div class="ps-overlay" id="psOverlay"><div class="ps-modal">'+
@@ -286,6 +302,12 @@
     document.getElementById('psOverlay').classList.add('show');
   };
   window.closePasswordSentModal=function(){ clearInterval(_psT); document.getElementById('psOverlay').classList.remove('show'); };
+
+  // Modal xác nhận đổi mật khẩu → sau khi xác nhận mới hiện modal "đã gửi liên kết"
+  document.getElementById('pcOverlay').addEventListener('click', function(e){ if(e.target===this) closePasswordConfirmModal(); });
+  window.openPasswordConfirmModal=function(){ closeSettingsModal(); document.getElementById('pcOverlay').classList.add('show'); };
+  window.closePasswordConfirmModal=function(){ document.getElementById('pcOverlay').classList.remove('show'); };
+  window.confirmPasswordChange=function(){ closePasswordConfirmModal(); openPasswordSentModal(); };
 
   window.openSettingsModal=function(){ document.getElementById('setOverlay').classList.add('show'); };
   window.closeSettingsModal=function(){ document.getElementById('setOverlay').classList.remove('show'); };
